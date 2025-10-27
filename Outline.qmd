@@ -1,0 +1,12 @@
+---
+title: "Outline"
+format: html
+---
+
+# Outline for final report
+
+Hey guys!
+Here we can create the outline for the final report.
+I have so far created a repository we can collaborate in and created this quartofile where we can make a common outline for the final report.
+
+There is also a basic .gitignore file
