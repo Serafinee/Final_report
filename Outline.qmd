@@ -1,12 +1,65 @@
 ---
-title: "Outline"
+title: "Outline_Sarah"
 format: html
 ---
 
-# Outline for final report
+## Goal
+Describe a scientific workflow that enables reproducibility and collaboration
 
-Hey guys!
-Here we can create the outline for the final report.
-I have so far created a repository we can collaborate in and created this quartofile where we can make a common outline for the final report.
+* Scienfic workflow
+* Reproducability
+* Collaboration
+  
 
-There is also a basic .gitignore file
+## Decide
+
+* Format of report
+  + Case study of example workflow with links to tutorials
+* Audience of report 
+  + Other scientist/collaborators who havent worked with R and version control before)
+
+## Should include
+
+* All components covered in the course
+
+## Learning outcomes to adress:
+
+* Knowlegde about **data visualization and communication**
+* Knowlegde about **version control** and collaborative scientific writing
+* Present **data analysis** in multiple formats **using R**
+* Manage **collaboration** in complex scientific projects
+* Write and ditribute **R packages**, including data packages
+* Perform **basic simulation and powercalculation** to plan for scientific study
+	
+
+## Outline example
+
+**1. Setting up collaborative workspace**
+
+* How to create a repository in Git Hub
+* How to link it to Rstudio
+* How to create a project in your local computer and export it to GitHub
+* Basic commands for Git and GitHub fromt he RStudio terminal
+
+**2. Do simulation before data aquisition**
+
+* Basic data simulation
+* Explanation of models and how to make a model
+
+**3. Including data package for distribution**
+
+* Instructions for how to create a data package sceleton
+* Example code of cleaning up data package that can take new incoming data files
+
+**4. Create data visuals from data package**
+
+* Make multiple (feks 3) graphs using R based on the data package
+
+
+## Ideas
+* Add links to other documents with more detailed toturials?
+
+#### Useful notes (for sarah at least)
+Shortcut for quarto preview: **ctrl+shift+K**
+
+
