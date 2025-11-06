@@ -4,24 +4,27 @@ format: html
 editor: visual
 ---
 
-
-
-
-
 # 1. Introduction
-
-
 
 # 2. Setting Up a Collaborative Workspace
 
+-   How to create a repository in Git Hub
+-   How to link it to Rstudio
+-   How to create a project in your local computer and export it to GitHub
+-   Basic commands for Git and GitHub fromt he RStudio terminal
 
+A collaborative workflow requires a collaborative work space that enables everyone participating to share and contribute to a project. \
+There are multiple options for such a workspace, like Teams, Discord, or even over e-mail. when working with code however, online repositories on GitHub can be a good alternative.
+
+### what is a repository
+
+A repository is basically like a project box on your computer, where you collect all the files, data, graphs and code scripts from your project. \
+Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space its advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository what a local repository which allows us to work and make changes using our own computer and then we can upload it to the online repository.
+
+Both when working alone and collaborating with others it is useful to have an online repository from where you can
 
 # 3. Conducting Simulations Before Data Acquisition
 
-
-
 # 4. Including Data Packages for Distribution
-
-
 
 # 5. Creating Visualizations from Data Packages

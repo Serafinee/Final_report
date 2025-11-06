@@ -1,6 +1,7 @@
 ---
 title: "Outline_Sarah"
 format: html
+editor: visual
 ---
 
 ## Goal
