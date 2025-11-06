@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.Rproj
-.DS_Store
-.html
+*.Rproj
+*.DS_Store
+*.html

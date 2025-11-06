@@ -1,6 +1,8 @@
 ---
 title: "Manuscript"
-format: html
+format: 
+  html: 
+    self-contained: true
 editor: visual
 ---
 
@@ -16,12 +18,36 @@ editor: visual
 A collaborative workflow requires a collaborative work space that enables everyone participating to share and contribute to a project. \
 There are multiple options for such a workspace, like Teams, Discord, or even over e-mail. when working with code however, online repositories on GitHub can be a good alternative.
 
-### what is a repository
+In this tutorial we assume that you will be working with RStudio and have already downloaded R and Rstudio. In addition you are going to need to have the software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](1  Setting up your software environment – A Crash Course in R).
+
+### What is a repository?
 
 A repository is basically like a project box on your computer, where you collect all the files, data, graphs and code scripts from your project. \
 Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space its advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository what a local repository which allows us to work and make changes using our own computer and then we can upload it to the online repository.
 
-Both when working alone and collaborating with others it is useful to have an online repository from where you can
+When creating a new project and you want to link your local project with an online repository, you can go about it to ways basicly.\
+a) You can create the online repository and then clone it down to you computer\
+b) You can create a local repository and then push it online to GitHub
+
+we´ll go through both options here, starting with the online repository.
+
+### How to create an online repository in GitHub
+
+Creating an online repository in GitHub is fairly simple.
+
+#### 1. Create a GitHUb account
+
+Before you can create an online repository in GitHub, you need to have some essential infrastructure in play.
+
+<figure>
+
+<video width="1000" height="360" controls>
+
+<source src="resources/images/online_rep_video_1.mp4" type="video/mp4">
+
+Your browser does not support the video tag. </video> <figurecaption>Figure 1: Caption for the video.<figurecaption>
+
+<figure>
 
 # 3. Conducting Simulations Before Data Acquisition
 
