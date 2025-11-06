@@ -1,0 +1,81 @@
+---
+title: ""
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+## Creating Visualizations from Data Packages
+
+As the title suggests, this section will aim to describe how to create plots in different ways. 
+
+### Prior to plotting
+
+Since we already have a data package that should tidy up and make our data ready for visualization, we can simply import the data from this package. <!-- I'll be using my own data package here, since it would be contrary to progress to wait for the data package to be finished in section 4, might be able to switch later -->
+
+<!-- the code chunk below simply hides/shows code in the output (echo), supresses messages produced from R functions, and warnings - and it makes it default for all code chunks-->
+```{r, setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+
+The data in the package Im using is organized by test, meaning no other info than what was measured in each specific test. Thus, it is necessary to wrangle the data a bit further, to get info such as what age group, condition and allocation each participant had. 
+
+```{r, data import}
+library(tidyverse)
+library(dplyr)
+
+# Importing the data from the data package
+
+humac.dat <- reliefdata::relief_humac # this is the test data
+
+condition <- reliefdata::relief_volume %>% # this is info about volume condition
+  mutate(participant = as.character(participant))
+
+participants <- reliefdata::relief_participants %>% # this is info about age group and allocation
+  
+  mutate(age_group = if_else(age < 40, "yng", "old"))
+
+# It would probably be a good idea to make 1 dataset overall from relief_volum and relief_participants - as a note to self
+
+# Joining the data sets
+
+# Joining condition and participant info
+humac.dat <- humac.dat %>%
+  # Using left_join to add the info from condition and participants to humac.dat
+  left_join(condition) %>%
+  # There is no "arm" data from this test, so we exclude it
+  select(-arm) %>% 
+  
+  left_join(participants) %>%
+  
+  mutate(age_group = factor(age_group, levels = c("yng", "old")),
+         # using factor() to sort the order of the respective variables
+         condition = factor(condition, levels = c("low", "mod")),
+         
+         time = factor(time, levels = c("pre", "mid",  "post")),
+         
+         speed = factor(speed, levels = c("0", "60", "120", "240")),
+         
+         allocation = factor(allocation, levels = c("int", "con")),
+         # case_when makes sure that control participants are not grouped with a volum                condition
+         condition = case_when(participant %in% c("3071", "3075", "3076", 
+                                                  "3083", "3084", "3085",
+                                                  "3086", "3090", "3091",
+                                                  "3094") ~ "none", TRUE ~ condition))
+  
+
+```
+
+
+### Plotting some figures
+
+```{r, plot 1}
+
+
+
+
+```
+
+
