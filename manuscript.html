@@ -93,13 +93,47 @@ div.csl-indent {
 <h1>3. Conducting Simulations Before Data Acquisition</h1>
 <p>Doing simulations before data acquisition is useful for several reasons, including:</p>
 <ol type="1">
-<li><em>Model design</em>.</li>
-<li><em>Model checking</em>.</li>
-<li><em>Software validation</em>.</li>
-<li><em>Research design</em>.</li>
-<li><em>Forecasting</em>.</li>
+<li><em>Model design</em>. We can sample not only from the posterior distribution but also from the prior, which reflects our expectations about what might happen. Observing what the model anticipates before the data arrives is an effective way to gain a better understanding of the implications of the prior.</li>
+<li><em>Model checking</em>. After a model is updated using real data, it is worthwhile to simulate implied data to check whether the fit was successful and to investigate the model’s behaviour.</li>
+<li><em>Software validation</em>. In order to ensure that our model fitting software is functioning correctly, it is helpful to simulate observations under a known model and then attempt to recover the parameter values from which the data were simulated.</li>
+<li><em>Research design</em>. If you can simulate observations from your hypothesis, you can evaluate whether the research design can be effective. This is similar to conducting a <em>power analysis</em>, but the possibilities are broader.<br>
+</li>
+<li><em>Forecasting</em>. Estimates can be used to simulate new predictions for new cases and future observations. <span class="citation" data-cites="noauthor_statistical_2018">[<a href="#ref-noauthor_statistical_2018" role="doc-biblioref">1</a>]</span></li>
 </ol>
-<p><span class="citation" data-cites="noauthor_statistical_2018">[<a href="#ref-noauthor_statistical_2018" role="doc-biblioref">1</a>]</span></p>
+<p>To demonstrate some of the properties of conducting simulations, we can consider the following hypothesis: <strong>Increasing daily exercise time reduces blood pressure levels in adults</strong></p>
+<p>To investigate this hypothesis, it is valuable to invest effort into finding methods that distinguish causal inferences from associations. To achieve this, it is extremely helpful to first draw a causal model that is separate from the statistical model. The simplest graphical causal model is a <em>DIRECTED ACYCLIC GRAPH</em>, commonly referred to as a <em>DAG</em>. <span class="citation" data-cites="noauthor_statistical_2018">[<a href="#ref-noauthor_statistical_2018" role="doc-biblioref">1</a>]</span> <span class="citation" data-cites="digitale_tutorial_2022">[<a href="#ref-digitale_tutorial_2022" role="doc-biblioref">2</a>]</span></p>
+<p>A DAG is not a detailed statistical model; it is primarily constructed to represent prior knowledge about biological and behavioural systems that might confound the specific causal research question. <span class="citation" data-cites="digitale_tutorial_2022">[<a href="#ref-digitale_tutorial_2022" role="doc-biblioref">2</a>]</span> Let us take our research question as an example. Our goal is to investigate the causal effect of increasing exercise time, which we denote as E, on blood pressure, referred to as B. A DAG in its simplest form might therefore look like this (Figure 1).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-dag1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dag1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="manuscript_files/figure-html/fig-dag1-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dag1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is not confounded
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This DAG assumes that the causal effect of increasing exercise time on blood pressure is not confounded, which is arguably a naive assumption. For instance, both age and diet are potential confounding variables (source). A DAG that includes these confounders might look like this (Figure 2).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-dag2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dag2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="manuscript_files/figure-html/fig-dag2-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dag2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is confounded by both age (A) and diet (D)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In this DAG, we assume that age directly influences blood pressure, as we know that aging is associated with higher blood pressures (sources). Additionally, age influences exercise time, which indirectly affects blood pressure, given that aging is also associated with increased inactivity. The DAG further assumes that diet acts as a confounding factor for blood pressure, as it is influenced by factors such as high-fat diets (source).</p>
+<p>Given that we believe our DAG to be accurate, we can construct our model with stronger scientific justifications regarding which confounding factors should be accounted for and how we will do so.</p>
 <ul>
 <li>create an simple hypothesis</li>
 <li>create a DAG for this hypothesis</li>
@@ -110,14 +144,20 @@ div.csl-indent {
 <section id="including-data-packages-for-distribution" class="level1">
 <h1>4. Including Data Packages for Distribution</h1>
 </section>
-<section id="creating-visualizations-from-data-packages" class="level1 unnumbered">
+<section id="creating-visualizations-from-data-packages" class="level1">
+<h1>5. Creating Visualizations from Data Packages</h1>
+</section>
+<section id="bibliography" class="level1 unnumbered">
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">5. Creating Visualizations from Data Packages</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="1" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Bibliography</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="1" role="list">
 <div id="ref-noauthor_statistical_2018" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[1] </div><div class="csl-right-inline"><em><a href="https://doi.org/10.1201/9781315372495">Statistical rethinking : A bayesian course with examples in r and stan</a></em>. Chapman; Hall/<span>CRC</span>, 2018. </div>
+</div>
+<div id="ref-digitale_tutorial_2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Digitale, J.C. et al.: <a href="https://doi.org/10.1016/j.jclinepi.2021.08.001">Tutorial on directed acyclic graphs</a>. <em>Journal of Clinical Epidemiology</em>, <strong>142</strong>, 2022, p. 264–267. </div>
 </div>
 </div></section></div></main>
 <!-- /main column -->

@@ -1,7 +1,11 @@
 ---
 title: "Manuscript"
 format: html
-editor: visual
+editor_options: 
+  chunk_output_type: console
+bibliography: resources/bib.bib
+csl: resources/citation-style.csl
+link-citations: true
 ---
 
 
@@ -18,6 +22,148 @@ editor: visual
 
 # 3. Conducting Simulations Before Data Acquisition
 
+Doing simulations before data acquisition is useful for several reasons, including: 
+
+1. *Model design*. We can sample not only from the posterior distribution but also 
+from the prior, which reflects our expectations about what might happen. Observing 
+what the model anticipates before the data arrives is an effective way to gain a 
+better understanding of the implications of the prior.
+2. *Model checking*. After a model is updated using real data, it is worthwhile 
+to simulate implied data to check whether the fit was successful and to investigate 
+the model's behaviour.
+3. *Software validation*. In order to ensure that our model fitting software is
+functioning correctly, it is helpful to simulate observations under a known model 
+and then attempt to recover the parameter values from which the data were simulated. 
+4. *Research design*. If you can simulate observations from your hypothesis, you 
+can evaluate whether the research design can be effective. This is similar to conducting 
+a *power analysis*, but the possibilities are broader.   
+5. *Forecasting*. Estimates can be used to simulate new predictions for new cases 
+and future observations. [@noauthor_statistical_2018]
+
+To demonstrate some of the properties of conducting simulations, we can consider 
+the following hypothesis: **Increasing daily exercise time reduces blood pressure 
+levels in adults** 
+
+
+To investigate this hypothesis, it is valuable to invest effort into finding methods 
+that distinguish causal inferences from associations. To achieve this, it is extremely 
+helpful to first draw a causal model that is separate from the statistical model. 
+The simplest graphical causal model is a *DIRECTED ACYCLIC GRAPH*, commonly referred 
+to as a *DAG*. [@noauthor_statistical_2018] [@digitale_tutorial_2022]
+
+A DAG is not a detailed statistical model; it is primarily constructed to represent 
+prior knowledge about biological and behavioural systems that might confound the 
+specific causal research question. [@digitale_tutorial_2022] Let us take our research 
+question as an example. Our goal is to investigate the causal effect of increasing 
+exercise time, which we denote as E, on blood pressure, referred to as B. A DAG in its 
+simplest form might therefore look like this (Figure 1).
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is not confounded"
+#| label: fig-dag1
+#| fig-width: 6
+#| fig-height: 3
+
+
+library(tidyverse)
+library(ggdag)
+
+
+coord <- tibble(name = c("E", "B"),
+                x = c(1, 2),
+                y = c(1, 1))
+
+dag <- dagify(B ~ E,
+              coords = coord)
+
+
+fig1 <- dag |> 
+  tidy_dagitty() |>
+  ggplot(aes(x = x, y = y,
+             xend = xend, yend = yend)) +
+  geom_dag_point(color = "white") +
+  geom_dag_text(color = "black", size = 8) +
+  geom_dag_edges(arrow_directed = grid::arrow(length = grid::unit(5, "pt"), 
+                                              type = "closed")) +
+  
+  theme_dag()
+
+
+
+fig1
+
+```
+
+
+This DAG assumes that the causal effect of increasing exercise time on blood pressure 
+is not confounded, which is arguably a naive assumption. For instance, both age and 
+diet are potential confounding variables (source). A DAG that includes these confounders 
+might look like this (Figure 2).
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is confounded by both age (A) and diet (D)"
+#| label: fig-dag2
+#| fig-width: 6
+#| fig-height: 3
+
+
+
+coord <- tibble(name = c("E", "B", "A", "D"),
+                x = c(1, 2, 1.2, 1.7),
+                y = c(1, 1, 2, 2))
+
+dag <- dagify(B ~ E,
+              B ~ A,
+              E ~ A,
+              B ~ D,
+              coords = coord)
+
+
+fig1 <- dag |> 
+  tidy_dagitty() |>
+  ggplot(aes(x = x, y = y,
+             xend = xend, yend = yend)) +
+  geom_dag_point(color = "white") +
+  geom_dag_text(color = "black", size = 8) +
+  geom_dag_edges(arrow_directed = grid::arrow(length = grid::unit(5, "pt"), 
+                                              type = "closed")) +
+  
+  theme_dag()
+
+
+
+fig1
+
+```
+
+
+In this DAG, we assume that age directly influences blood pressure, as we know that 
+aging is associated with higher blood pressures (sources). Additionally, age influences 
+exercise time, which indirectly affects blood pressure, given that aging is also 
+associated with increased inactivity. The DAG further assumes that diet acts as a 
+confounding factor for blood pressure, as it is influenced by factors such as high-fat 
+diets (source).
+
+Given that we believe our DAG to be accurate, we can construct our model with stronger 
+scientific justifications regarding which confounding factors should be accounted 
+for and how we will do so.
+
+
+
+* create an simple hypothesis 
+* create a DAG for this hypothesis 
+* Describe the model 
+* Do simulations 
+
+
 
 
 # 4. Including Data Packages for Distribution
@@ -25,3 +171,5 @@ editor: visual
 
 
 # 5. Creating Visualizations from Data Packages
+
+# Bibliography
