@@ -156,6 +156,216 @@ Given that we believe our DAG to be accurate, we can construct our model with st
 scientific justifications regarding which confounding factors should be accounted 
 for and how we will do so.
 
+**Model design** 
+Now that we have established that the causal effect of increasing exercise time on 
+blood pressure is confounded by both age and diet, we have a solid foundation for 
+designing our model. We have decided to recruit 100 sedentary individuals aged 20 
+to 70 to participate in a one-year training study. The participants will follow the 
+recommendation of doing 150 minutes of endurance exercise per week as proposed by 
+the WHO. Blood pressure will be measured before and after the one-year intervention 
+period. To account for the effects of age and diet, we will register the participants' 
+age at inclusion and evaluate their diet using a binominal scale, where 1 indicates 
+a healthy diet and 0 indicates a unhealthy diet. 
+
+The model can now be described mathematically, for exemple in termes of a simple 
+liniar regression mode:
+
+$$
+\begin{align}
+\operatorname{BloodPressure}_i &= \beta_0 + \beta_1 \cdot \operatorname{Exercise}_i 
++ \beta_2 \cdot \operatorname{Age}_i + \beta_3 \cdot \operatorname{Diet}_i + \epsilon_i \\
+\end{align}
+$$
+
+
+
+Here, 
+$$
+\begin{align}
+\beta_0 &: \operatorname{Intercept}\\
+\beta_1 &: \operatorname{Coefficient for exercise time}\\
+\beta_2 &: \operatorname{Coefficient for age}\\
+\beta_3 &: \operatorname{Coefficient for diet}\\
+\epsilon_i &: \operatorname{Random error term}\\
+\end{align}
+$$
+
+
+
+
+The linear regression model can be implemented in R as follows: 
+
+```{r}
+#| results: false
+#| label: "Example data and model"
+
+# Example dataset
+data <- data.frame(
+  exercise = rnorm(100, mean=150, sd=20),
+  age = rnorm(100, mean=45, sd=15),
+  diet = rnorm(100, mean=2, sd=1),
+  bloodpressure = rnorm(100, mean=120, sd=10)
+)
+
+# Fit a simple linear regression model
+model <- lm(bloodpressure ~ exercise + age + diet, data = data)
+
+# Summarize the model results
+summary(model)
+```
+
+**Run simulations**
+
+Now it is time to run some simulation, and we will do this to test our model design.
+To do this we first have to define our parameter values:
+
+$$
+
+\begin{align}
+\operatorname{BP}_i & = \beta_0 + \beta_E \cdot \operatorname{E}_i + \beta_A \cdot \operatorname{A}_i + \beta_D \cdot \operatorname{D}_i + \epsilon_i \\
+\operatorname{E}_i & \sim \operatorname{Normal}(\mu_E, \sigma_E) \\
+\operatorname{A}_i & \sim \operatorname{Normal}(\mu_A, \sigma_A) \\
+\operatorname{D}_i & \sim \operatorname{Binomial}(n=1, p=0.5) \\
+\epsilon_i & \sim \operatorname{Normal}(\mu_\epsilon, \sigma_\epsilon) \\
+\beta_0 & = 120 \quad (\text{intercept}) \\
+\beta_E & = -0.1 \quad (\text{beta for exercise}) \\
+\beta_A & = 0.2 \quad (\text{beta for age}) \\
+\beta_D & = -5 \quad (\text{beta for diet}) \\
+\mu_E & = 150 \quad (\text{mean exercise}) \\
+\mu_A & = 45 \quad (\text{mean age}) \\
+\mu_\epsilon & = 0 \quad (\text{mean error term}) \\
+\sigma_E & = 20 \quad (\text{exercise standard deviation}) \\
+\sigma_A & = 10 \quad (\text{age standard deviation}) \\
+\sigma_\epsilon & = 5 \quad (\text{error term standard deviation}) \\
+\end{align}
+
+$$
+
+
+After setting the parameter values, we can simulate data based on these parameters. 
+To do this, it is convenient to create a function where you specify information about 
+each parameter that can be manipulated. This allows us to experiment with different 
+values later to test the robustness of our model. Take a look at the code!
+
+```{r}
+#| results: false
+
+
+# Simulate data based on the hypothetical model
+
+# a basic function
+sim <- function(n = 100,
+                intercept = 120,
+                mean_exercise = 150,
+                beta_exercise = -0.1,
+                sigma_exercise = 20,
+                mean_age = 45,
+                beta_age = 0.2,
+                sigma_age = 10,
+                size_diet = 1,
+                prob_diet = 0.5,
+                beta_diet = -5, 
+                mean_epsilon = 0,
+                sigma_epsilon = 5) {
+  
+  #this is the body
+  diet <- rbinom(n, size = size_diet, prob = prob_diet) #simulate diet 
+  age <- rnorm(n, mean = mean_age, sd = sigma_age) #simulate age
+  exercise <- rnorm(n, mean = mean_exercise, sd = sigma_exercise) #simulate exercise duration
+  epsilon <- rnorm(n, mean = mean_epsilon, sd = sigma_epsilon) #error term 
+  bloodpressure <- intercept + (beta_exercise * exercise) + (beta_age * age) + (beta_diet * diet) + epsilon
+  
+  
+  
+  #the output
+  return(data.frame(age, exercise, diet, bloodpressure, epsilon))
+  
+}
+
+
+
+```
+
+Now that we have our simulated dataset, we can easily test our hypotheses using 
+the linear mixed model: *lm(bloodpressure ~ exercise + age + diet, sim_data)*. 
+
+```{r}
+#| echo: false
+
+sim_data <- sim()
+
+
+sim.m1 <- lm(bloodpressure ~ exercise + age + diet, sim_data)
+
+summary.m1 <- summary(sim.m1)
+
+```
+
+The output will look like this and we can see that there seems like there is an 
+effect of exercise on blood pressure! 
+
+
+
+```{r}
+#| echo: false
+summary.m1
+
+exercise_effect <- summary(sim.m1)$coefficients["exercise", "Estimate"]
+
+```
+
+In this model we can see that each minute of increase exercise time is asssiated with
+**`r exercise_effect`** reduction i blood pressure, when we acount for age and diet!
+
+
+
+
+```{r}
+
+set.seed(1)
+results <- list()
+
+for(i in 1:1000) {
+  
+  dat1 <- sim()
+  
+  
+  m1 <- lm(bloodpressure ~ exercise + age + diet, data = dat1)
+
+  
+  results[[i]] <- data.frame(model = c("m1"),
+             estimate = c(coef(m1)[2]))
+  
+  
+  
+}
+
+
+bind_rows(results) |>
+  ggplot(aes(model, estimate)) +
+  geom_point(position = position_jitter(width = 0.1),
+             alpha = 0.2, 
+             shape = 21,
+             color = "blue") + 
+  theme_classic()
+
+
+
+
+
+
+
+```
+
+
+Now it is ready to test our data in our model 
+
+
+Compare true coefficients (true_beta) with the estimated coefficients.
+Adjust parameters to evaluate how robust your model is.
+
+
+
 
 
 * create an simple hypothesis 

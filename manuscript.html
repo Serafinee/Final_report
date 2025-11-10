@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -55,6 +89,35 @@ div.csl-indent {
 <link href="manuscript_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="manuscript_files/libs/bootstrap/bootstrap-c55efa1fd218a545ebab9e5bcab7af02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -134,6 +197,157 @@ Figure&nbsp;2: A DAG, assuming that the causal effect of increasing exercise tim
 </div>
 <p>In this DAG, we assume that age directly influences blood pressure, as we know that aging is associated with higher blood pressures (sources). Additionally, age influences exercise time, which indirectly affects blood pressure, given that aging is also associated with increased inactivity. The DAG further assumes that diet acts as a confounding factor for blood pressure, as it is influenced by factors such as high-fat diets (source).</p>
 <p>Given that we believe our DAG to be accurate, we can construct our model with stronger scientific justifications regarding which confounding factors should be accounted for and how we will do so.</p>
+<p><strong>Model design</strong> Now that we have established that the causal effect of increasing exercise time on blood pressure is confounded by both age and diet, we have a solid foundation for designing our model. We have decided to recruit 100 sedentary individuals aged 20 to 70 to participate in a one-year training study. The participants will follow the recommendation of doing 150 minutes of endurance exercise per week as proposed by the WHO. Blood pressure will be measured before and after the one-year intervention period. To account for the effects of age and diet, we will register the participants’ age at inclusion and evaluate their diet using a binominal scale, where 1 indicates a healthy diet and 0 indicates a unhealthy diet.</p>
+<p>The model can now be described mathematically, for exemple in termes of a simple liniar regression mode:</p>
+<p><span class="math display">\[
+\begin{align}
+\operatorname{BloodPressure}_i &amp;= \beta_0 + \beta_1 \cdot \operatorname{Exercise}_i
++ \beta_2 \cdot \operatorname{Age}_i + \beta_3 \cdot \operatorname{Diet}_i + \epsilon_i \\
+\end{align}
+\]</span></p>
+<p>Here, <span class="math display">\[
+\begin{align}
+\beta_0 &amp;: \operatorname{Intercept}\\
+\beta_1 &amp;: \operatorname{Coefficient for exercise time}\\
+\beta_2 &amp;: \operatorname{Coefficient for age}\\
+\beta_3 &amp;: \operatorname{Coefficient for diet}\\
+\epsilon_i &amp;: \operatorname{Random error term}\\
+\end{align}
+\]</span></p>
+<p>The linear regression model can be implemented in R as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example dataset</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">exercise =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean=</span><span class="dv">150</span>, <span class="at">sd=</span><span class="dv">20</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean=</span><span class="dv">45</span>, <span class="at">sd=</span><span class="dv">15</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">diet =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean=</span><span class="dv">2</span>, <span class="at">sd=</span><span class="dv">1</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">bloodpressure =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean=</span><span class="dv">120</span>, <span class="at">sd=</span><span class="dv">10</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a simple linear regression model</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(bloodpressure <span class="sc">~</span> exercise <span class="sc">+</span> age <span class="sc">+</span> diet, <span class="at">data =</span> data)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the model results</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Run simulations</strong></p>
+<p>Now it is time to run some simulation, and we will do this to test our model design. To do this we first have to define our parameter values:</p>
+<p>$$</p>
+<p><span class="math display">\[\begin{align}
+\operatorname{BP}_i &amp; = \beta_0 + \beta_E \cdot \operatorname{E}_i + \beta_A \cdot \operatorname{A}_i + \beta_D \cdot \operatorname{D}_i + \epsilon_i \\
+\operatorname{E}_i &amp; \sim \operatorname{Normal}(\mu_E, \sigma_E) \\
+\operatorname{A}_i &amp; \sim \operatorname{Normal}(\mu_A, \sigma_A) \\
+\operatorname{D}_i &amp; \sim \operatorname{Binomial}(n=1, p=0.5) \\
+\epsilon_i &amp; \sim \operatorname{Normal}(\mu_\epsilon, \sigma_\epsilon) \\
+\beta_0 &amp; = 120 \quad (\text{intercept}) \\
+\beta_E &amp; = -0.1 \quad (\text{beta for exercise}) \\
+\beta_A &amp; = 0.2 \quad (\text{beta for age}) \\
+\beta_D &amp; = -5 \quad (\text{beta for diet}) \\
+\mu_E &amp; = 150 \quad (\text{mean exercise}) \\
+\mu_A &amp; = 45 \quad (\text{mean age}) \\
+\mu_\epsilon &amp; = 0 \quad (\text{mean error term}) \\
+\sigma_E &amp; = 20 \quad (\text{exercise standard deviation}) \\
+\sigma_A &amp; = 10 \quad (\text{age standard deviation}) \\
+\sigma_\epsilon &amp; = 5 \quad (\text{error term standard deviation}) \\
+\end{align}\]</span></p>
+<p>$$</p>
+<p>After setting the parameter values, we can simulate data based on these parameters. To do this, it is convenient to create a function where you specify information about each parameter that can be manipulated. This allows us to experiment with different values later to test the robustness of our model. Take a look at the code!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate data based on the hypothetical model</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a basic function</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">100</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">intercept =</span> <span class="dv">120</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">mean_exercise =</span> <span class="dv">150</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">beta_exercise =</span> <span class="sc">-</span><span class="fl">0.1</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">sigma_exercise =</span> <span class="dv">20</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">mean_age =</span> <span class="dv">45</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">beta_age =</span> <span class="fl">0.2</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">sigma_age =</span> <span class="dv">10</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">size_diet =</span> <span class="dv">1</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">prob_diet =</span> <span class="fl">0.5</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">beta_diet =</span> <span class="sc">-</span><span class="dv">5</span>, </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">mean_epsilon =</span> <span class="dv">0</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">sigma_epsilon =</span> <span class="dv">5</span>) {</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#this is the body</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  diet <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="at">size =</span> size_diet, <span class="at">prob =</span> prob_diet) <span class="co">#simulate diet </span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  age <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mean_age, <span class="at">sd =</span> sigma_age) <span class="co">#simulate age</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  exercise <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mean_exercise, <span class="at">sd =</span> sigma_exercise) <span class="co">#simulate exercise duration</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  epsilon <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mean_epsilon, <span class="at">sd =</span> sigma_epsilon) <span class="co">#error term </span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  bloodpressure <span class="ot">&lt;-</span> intercept <span class="sc">+</span> (beta_exercise <span class="sc">*</span> exercise) <span class="sc">+</span> (beta_age <span class="sc">*</span> age) <span class="sc">+</span> (beta_diet <span class="sc">*</span> diet) <span class="sc">+</span> epsilon</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#the output</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(age, exercise, diet, bloodpressure, epsilon))</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we have our simulated dataset, we can easily test our hypotheses using the linear mixed model: <em>lm(bloodpressure ~ exercise + age + diet, sim_data)</em>.</p>
+<p>The output will look like this and we can see that there seems like there is an effect of exercise on blood pressure!</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = bloodpressure ~ exercise + age + diet, data = sim_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-16.5552  -3.6778   0.4587   4.1158  11.4575 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 125.43264    5.34063  23.486  &lt; 2e-16 ***
+exercise     -0.11504    0.02880  -3.994 0.000127 ***
+age           0.12107    0.05969   2.028 0.045303 *  
+diet         -4.50177    1.11405  -4.041 0.000107 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.502 on 96 degrees of freedom
+Multiple R-squared:  0.2685,    Adjusted R-squared:  0.2457 
+F-statistic: 11.75 on 3 and 96 DF,  p-value: 1.27e-06</code></pre>
+</div>
+</div>
+<p>In this model we can see that each minute of increase exercise time is asssiated with <strong>-0.1150427</strong> reduction i blood pressure, when we acount for age and diet!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  dat1 <span class="ot">&lt;-</span> <span class="fu">sim</span>()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(bloodpressure <span class="sc">~</span> exercise <span class="sc">+</span> age <span class="sc">+</span> diet, <span class="at">data =</span> dat1)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  results[[i]] <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">model =</span> <span class="fu">c</span>(<span class="st">"m1"</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">estimate =</span> <span class="fu">c</span>(<span class="fu">coef</span>(m1)[<span class="dv">2</span>]))</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(results) <span class="sc">|&gt;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(model, estimate)) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>),</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.2</span>, </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="manuscript_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now it is ready to test our data in our model</p>
+<p>Compare true coefficients (true_beta) with the estimated coefficients. Adjust parameters to evaluate how robust your model is.</p>
 <ul>
 <li>create an simple hypothesis</li>
 <li>create a DAG for this hypothesis</li>
