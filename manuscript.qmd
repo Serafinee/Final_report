@@ -1,6 +1,12 @@
 ---
 title: "Manuscript"
-format: pdf
+format: 
+  pdf:  
+    documentclass: scrartcl
+    pdf-engine: lualatex
+    header-includes:
+      - \usepackage{wrapfig}
+output-extensions: ["tex"]
 ---
 
 # 1. Introduction
@@ -32,7 +38,7 @@ GitHub is a collaborative online platform that allows you to host and join onlin
 
 In this toturial we will only work with the RStudio interface and the online GitHub interface. however, if you want an expanded commandline and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See toturials here: [GitHub CLI](GitHub%20CLI%20quickstart%20-%20GitHub%20Docs) and [GitHub Desktop](Getting%20started%20with%20GitHub%20Desktop%20-%20GitHub%20Docs).
 
-## How to create a project that is connected between RStudio and GitHub?
+## 2.1 How to create a project that is connected between RStudio and GitHub?
 
 When creating a new project and you want to link your local project with an online repository, you can go about it to ways basicly.\
 a) You can create the online repository and then clone it down to you computer\
@@ -40,33 +46,174 @@ b) You can create a local repository and then push it online to GitHub
 
 We´ll go through both options here, starting with the online repository.
 
-#### 1. Create a new online repository in GitHub ([Video tutorial](Creating Your First GitHub Repository and Pushing Code - YouTube))
-
 Image file path:
 
 resources/images/
 
-Once you\\ve logged into GitHub, navigate to the top right corner of your page and find the + tab. Drop it down to reveal the "New repository" option.n Click on it.
+\newpage
 
-\![Creating a new online repository](resources/images/image_1)
+### 2.1.1 Starting with an online repository
+
+#### Step 1. Create a new online repository in GitHub ([Video tutorial](Creating%20Your%20First%20GitHub%20Repository%20and%20Pushing%20Code%20-%20YouTube))
+
+```{r}
+#| echo: false
+#| results: asis
+cat("
+\\begin{wrapfigure}{l}{0.5\\textwidth}
+  \\centering
+  \\includegraphics[width=0.38\\textwidth]{resources/images/image_1.png}
+  \\caption{Creating a new online repository.}
+  \\vspace{-1cm} % Adjust vertical spacing below the figure
+\\end{wrapfigure}
+")
+
+```
+
+Once you´ve logged into GitHub, navigate to the top right corner of your page and find the + tab. Drop it down to reveal the "New repository" option. Click on it.
 
 This will take you ta the repository creation page.\
-Here you give your repository a name, a description of what it will entail and wherever it is public or not.\
-You also have the options of adding a README file and a .gitignore file upon creation, but it is possible to create these after the repository is made as well.
+Here you give your repository a name, a description of what it will entail and wherever it is public or not.
 
-\![Repository setup page](resources/images/image_3.png)
+You also have the options of adding a README file and a .gitignore file upon creation, but it is possible to create these after the repository is made as well.
 
 ##### README
 
 A README file is a descriptive file that should explain what the project/repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
 
+```{r}
+#| echo: false
+#| results: asis
+cat("
+\\begin{wrapfigure}{r}{0.4\\textwidth}
+  \\vspace{-1cm} % Adjust vertical spacing to remove extra white space
+  \\centering
+  \\includegraphics[width=0.50\\textwidth]{resources/images/image_3.png}
+  \\caption{Repository setup-page.}
+  \\vspace{-2cm} % Adjust vertical spacing to remove extra white space
+\\end{wrapfigure}
+")
+
+```
+
 ##### .gitignore
 
-The .gitignore file is an information file that tells Git what types of files it should track, or specifically not track. This is useful when you for example dont want to track the generated images or graphs from your code, but just your code.
+The .gitignore file is an information file that tells Git what types of files it should track, or specifically not track. This is useful when you for example don't want to track the generated images or graphs from your code, but just your code.
 
-when doing a commit on a file that has been staged, that version of the file goes into the version history. It is also tracked.
+So, now that you have created your first online repository you want to connect it to your local computer.\
+You can do this multiple ways, but in this tutorial we´ll use commands in the terminal to initialize
 
--   we make snapshots of the files using commit
+#### **Step 2: Copy the Repository URL**
+
+1.  Go to your GitHub repository page.
+
+2.  Click the green **Code** button.
+
+3.  Copy the repository URL:
+
+    -   For example: **`https://github.com/yourusername/repositoryname.git`**
+
+#### **Step 3: Open RStudio and Clone the Repository**
+
+1.  Open RStudio.
+
+2.  Go to **File** → **New Project** → **Version Control** → **Git**.
+
+3.  Paste the GitHub repository URL into the "Repository URL" field.
+
+4.  Choose a folder on your local computer where you want to clone the repository.
+
+5.  Click **Create Project**.when doing a commit on a file that has been staged, that version of the file goes into the version history. It is also tracked.
+
+And tada! You have now cloned the online repository to your computer! Great job!
+
+#### Step 4 (Optional): Configure Git in RStudio
+
+If this is your first time using Git with RStudio, you’ll need to configure your Git credentials. Open the RStudio terminal (**Tools** → **Terminal**) or navigate to the **terminal tab** at the top right of the RStudio interface and run the following commands:
+
+```         
+git config –global user.name "Your Name"
+
+git config --global user.email "your_email@example.com"
+```
+
+Replace the placeholder names in "Your Name" and "your_email\@example.com" with your own.
+
+Now, what if you wanted to do it the other way around, like if you already have a local project on your computer and want to create an online repository for it?
+
+### 2.1.2 Starting with a local project in RStudio
+
+#### **Step 1. Create a New Local Project in RStudio**
+
+If you already have a local project, you can skip this step. If not:
+
+1.  Open **RStudio**.
+
+2.  Go to **File \> New Project \> New Directory \> New Project**.
+
+3.  Choose a folder where you want the project to live and give it a name.
+
+4.  Make sure to check the box **Create a Git repository**.
+
+5.  Click **Create Project**.
+
+This initializes a local Git repository in your project directory.
+
+If you already have made a project but it is not connected to a Git repository
+
+#### Step 2. Create a New Repository on GitHub
+
+1.  Log in to your GitHub account.
+
+2.  Click the **+** icon in the top-right corner and select **New repository**.
+
+3.  Fill out the form:
+
+    -   **Repository name**: Use the same name as your local RStudio project (or choose a descriptive name).
+
+    -   **Description**: Add an optional description.
+
+    -   Do **not** initialize the repository with a README, **`.gitignore`**, or license (we’ll connect the existing local repository later).
+
+4.  Click **Create repository**.
+
+You now have a new, empty GitHub repository.
+
+#### Step 3. Link the Local project to the GitHub Repository
+
+1.  Copy the URL in the same way as previously in section 2.1.1 step 2.
+2.  Open the **Terminal** in RStudio (or use any terminal on your computer).
+3.  Navigate to your project folder, if you're not already there using this command in the terminal
+
+```         
+```bash
+cd /path/to/your/local/project
+```
+
+4.  Add the GitHub repository as the remote origin using this command in the terminal:
+
+cd /path/to/your/local/project
+
+``` bash
+git remote add origin https://github.com/yourusername/your-repository.git
+```
+
+5.  Verify the remote connection using this command in the terminal
+
+``` bash
+git remote -v
+```
+
+You should be able to see something like this:
+
+``` bash
+origin  https://github.com/yourusername/your-repo.git (fetch)
+origin  https://github.com/yourusername/your-repo.git (push)
+```
+
+That means you have now successfully established a connection between your local project and the online repository on GitHub. Congratulations!
+
+we make snapshots of the files using commit
 
 git push - sed things to remote directory on git hub
 
@@ -90,6 +237,8 @@ command = git status\
 read me file is added to the list of files and the file is opened in the editor. when writing in the README file git hub will convert it to a htlm file.
 
 .md filending stands for markdown
+
+**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](Sikt KI).
 
 # 3. Conducting Simulations Before Data Acquisition
 
