@@ -60,11 +60,11 @@ resources/images/
 #| echo: false
 #| results: asis
 cat("
-\\begin{wrapfigure}{l}{0.5\\textwidth}
+\\begin{wrapfigure}{lt}{0.5\\textwidth}
   \\centering
   \\includegraphics[width=0.38\\textwidth]{resources/images/image_1.png}
   \\caption{Creating a new online repository.}
-  \\vspace{-1cm} % Adjust vertical spacing below the figure
+  \\vspace{-1.5cm} % Adjust vertical spacing below the figure
 \\end{wrapfigure}
 ")
 
@@ -131,7 +131,7 @@ And tada! You have now cloned the online repository to your computer! Great job!
 
 If this is your first time using Git with RStudio, you’ll need to configure your Git credentials. Open the RStudio terminal (**Tools** → **Terminal**) or navigate to the **terminal tab** at the top right of the RStudio interface and run the following commands:
 
-```         
+``` bash
 git config –global user.name "Your Name"
 
 git config --global user.email "your_email@example.com"
@@ -159,23 +159,16 @@ If you already have a local project, you can skip this step. If not:
 
 This initializes a local Git repository in your project directory.
 
-If you already have made a project but it is not connected to a Git repository
+If you already have made a project but it is not connected to a Git repository you can do it like this:
+
+1.  Navigate to **Tools \> Project Options \> Git/SVN**.
+2.  Select **Git** and click **Yes** when prompted to initialize a Git repository for your project.
 
 #### Step 2. Create a New Repository on GitHub
 
-1.  Log in to your GitHub account.
-
-2.  Click the **+** icon in the top-right corner and select **New repository**.
-
-3.  Fill out the form:
-
-    -   **Repository name**: Use the same name as your local RStudio project (or choose a descriptive name).
-
-    -   **Description**: Add an optional description.
+1.  Create a new repository in Git Hub like previously in section 2.1.1 step 1
 
     -   Do **not** initialize the repository with a README, **`.gitignore`**, or license (we’ll connect the existing local repository later).
-
-4.  Click **Create repository**.
 
 You now have a new, empty GitHub repository.
 
@@ -185,14 +178,9 @@ You now have a new, empty GitHub repository.
 2.  Open the **Terminal** in RStudio (or use any terminal on your computer).
 3.  Navigate to your project folder, if you're not already there using this command in the terminal
 
-```         
-```bash
-cd /path/to/your/local/project
-```
+<!-- -->
 
 4.  Add the GitHub repository as the remote origin using this command in the terminal:
-
-cd /path/to/your/local/project
 
 ``` bash
 git remote add origin https://github.com/yourusername/your-repository.git
@@ -212,6 +200,25 @@ origin  https://github.com/yourusername/your-repo.git (push)
 ```
 
 That means you have now successfully established a connection between your local project and the online repository on GitHub. Congratulations!
+
+## 2.2 Workflow between local and online repositories
+
+Now that we have connected or local repository with the online one, we can start to push out some code! But before we jump to the commands for placing files in and out of our online repository, we should better understand how these commands actually function.
+
+When you are
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out.height: "60%"
+#| out.width: "100%"
+#| fig-cap: "Visaluzation of local and online workflow in Rstudio."
+
+knitr::include_graphics("resources/images/Local_vs_online_workflow.png")
+```
+
+To do this we need to know a couple of simple commands that will help us control what we place in and take out of our online repository.
 
 we make snapshots of the files using commit
 
