@@ -1,6 +1,6 @@
 ---
 title: "Manuscript"
-format: html
+format: pdf
 editor_options: 
   chunk_output_type: console
 bibliography: resources/bib.bib
@@ -9,6 +9,16 @@ link-citations: true
 ---
 
 
+```{r}
+#| echo: false
+#| warning: false
+#| results: false
+#| label: Required packages
+
+
+library(tidyverse)
+library(ggdag)
+```
 
 
 
@@ -22,55 +32,45 @@ link-citations: true
 
 # 3. Conducting Simulations Before Data Acquisition
 
-Doing simulations before data acquisition is useful for several reasons, including: 
+Conducting simulations prior to data acquisition is useful for several reasons, including: 
 
-1. *Model design*. We can sample not only from the posterior distribution but also 
-from the prior, which reflects our expectations about what might happen. Observing 
-what the model anticipates before the data arrives is an effective way to gain a 
-better understanding of the implications of the prior.
-2. *Model checking*. After a model is updated using real data, it is worthwhile 
-to simulate implied data to check whether the fit was successful and to investigate 
-the model's behaviour.
+1. *Model design*. By sampling from the prior distributions, we can understand our 
+expectations about potential outcomes. This pre-data exploration offers insights 
+into the implications of the prior assumptions.
+2. *Model checking*. Once a model is updated using real data, simulating implied 
+data can help assess the success of the fit and explore the model's behavior.
 3. *Software validation*. In order to ensure that our model fitting software is
 functioning correctly, it is helpful to simulate observations under a known model 
 and then attempt to recover the parameter values from which the data were simulated. 
-4. *Research design*. If you can simulate observations from your hypothesis, you 
-can evaluate whether the research design can be effective. This is similar to conducting 
+4. *Research design*. Simulating observations based on our hypothesis allows for 
+an evaluation of the research design's effectiveness. This is similar to conducting 
 a *power analysis*, but the possibilities are broader.   
-5. *Forecasting*. Estimates can be used to simulate new predictions for new cases 
-and future observations. [@noauthor_statistical_2018]
+5. *Forecasting*. Estimates derived from simulations can be utilized to generate 
+predictions for new cases and future observations [@McElreath_2018].
 
-To demonstrate some of the properties of conducting simulations, we can consider 
-the following hypothesis: **Increasing daily exercise time reduces blood pressure 
-levels in adults** 
+To illustrate some of the properties of conducting simulations, we will consider 
+the following hypothesis: **Increasing daily exercise time is associated with lower 
+blood pressure levels in adults**. 
 
 
 To investigate this hypothesis, it is valuable to invest effort into finding methods 
-that distinguish causal inferences from associations. To achieve this, it is extremely 
-helpful to first draw a causal model that is separate from the statistical model. 
-The simplest graphical causal model is a *DIRECTED ACYCLIC GRAPH*, commonly referred 
-to as a *DAG*. [@noauthor_statistical_2018] [@digitale_tutorial_2022]
+that distinguish causal inferences from associations. A helpful first step to do 
+this is to construct a causal model that is separate from the statistical model. 
+The simplest graphical representation of such a causal model is a *DIRECTED ACYCLIC GRAPH*, 
+commonly referred to as a *DAG* [@McElreath_2018; @digitale_tutorial_2022].
 
-A DAG is not a detailed statistical model; it is primarily constructed to represent 
-prior knowledge about biological and behavioural systems that might confound the 
-specific causal research question. [@digitale_tutorial_2022] Let us take our research 
-question as an example. Our goal is to investigate the causal effect of increasing 
-exercise time, which we denote as E, on blood pressure, referred to as B. A DAG in its 
-simplest form might therefore look like this (Figure 1).
+A DAG primarily serves to represent our prior knowledge about biological and behavioral systems that may confound the specific causal research question. In our example, we aim to investigate the causal effect of increasing exercise time, denoted as "E", on blood pressure, "B". A basic DAG for this relationship might look like this (Figure 1):
 
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is not confounded"
-#| label: fig-dag1
+#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is not confounded."
+#| label: Fig-dag1
 #| fig-width: 6
 #| fig-height: 3
 
-
-library(tidyverse)
-library(ggdag)
 
 
 coord <- tibble(name = c("E", "B"),
@@ -101,16 +101,16 @@ fig1
 
 This DAG assumes that the causal effect of increasing exercise time on blood pressure 
 is not confounded, which is arguably a naive assumption. For instance, both age and 
-diet are potential confounding variables (source). A DAG that includes these confounders 
-might look like this (Figure 2).
+diet could potentially confound this relationship. A more comprehensive DAG that 
+accounts for these confounders might appear as follows (Figure 2):
 
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is confounded by both age (A) and diet (D)"
-#| label: fig-dag2
+#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is confounded by both age (A) and diet (D)."
+#| label: Fig-dag2
 #| fig-width: 6
 #| fig-height: 3
 
@@ -145,50 +145,52 @@ fig1
 ```
 
 
-In this DAG, we assume that age directly influences blood pressure, as we know that 
-aging is associated with higher blood pressures (sources). Additionally, age influences 
-exercise time, which indirectly affects blood pressure, given that aging is also 
-associated with increased inactivity. The DAG further assumes that diet acts as a 
-confounding factor for blood pressure, as it is influenced by factors such as high-fat 
-diets (source).
+In this adjusted DAG, we presume that age directly influences blood pressure— an 
+assumption supported by the correlation between aging and increased blood pressures 
+[@Miall_1967]. Additionally, age may indirectly influence exercise time since older 
+individuals often engage in less physical activity. Diet is also included as a confounding 
+factor affecting blood pressure, linked to dietary habits like high-fat intake [@Wilde_2000].
 
 Given that we believe our DAG to be accurate, we can construct our model with stronger 
 scientific justifications regarding which confounding factors should be accounted 
 for and how we will do so.
 
 **Model design** 
-Now that we have established that the causal effect of increasing exercise time on 
-blood pressure is confounded by both age and diet, we have a solid foundation for 
-designing our model. We have decided to recruit 100 sedentary individuals aged 20 
-to 70 to participate in a one-year training study. The participants will follow the 
-recommendation of doing 150 minutes of endurance exercise per week as proposed by 
-the WHO. Blood pressure will be measured before and after the one-year intervention 
-period. To account for the effects of age and diet, we will register the participants' 
-age at inclusion and evaluate their diet using a binominal scale, where 1 indicates 
-a healthy diet and 0 indicates a unhealthy diet. 
 
-The model can now be described mathematically, for exemple in termes of a simple 
-liniar regression mode:
+Having established the confounding factors of age and diet in the relationship between 
+exercise time and blood pressure, we are now prepared to design our study. We plan 
+to recruit 100 sedentary adults aged between 20 and 70 for a one-year training study, 
+during which participants will adhere to the WHO guideline of 150 minutes of endurance 
+exercise per week. Unfortunately, we will only be able to measure blood pressure 
+after the intervention period due to logistical constraints. Therefore, we can only 
+investigate whether there is an association between how many minutes of physical 
+activity the participants complete and their blood pressure levels after the intervention. 
+To control for age and diet, we will document participants' ages at the time of inclusion 
+and assess their diets using a binomial scale, where 1 indicates a healthy diet and
+0 indicates an unhealthy diet. 
 
-$$
+The model can now be described mathematically, for example in terms of a simple 
+linear regression model:
+
+
 \begin{align}
 \operatorname{BloodPressure}_i &= \beta_0 + \beta_1 \cdot \operatorname{Exercise}_i 
 + \beta_2 \cdot \operatorname{Age}_i + \beta_3 \cdot \operatorname{Diet}_i + \epsilon_i \\
 \end{align}
-$$
 
 
 
-Here, 
-$$
+
+Where: 
+
 \begin{align}
-\beta_0 &: \operatorname{Intercept}\\
-\beta_1 &: \operatorname{Coefficient for exercise time}\\
-\beta_2 &: \operatorname{Coefficient for age}\\
-\beta_3 &: \operatorname{Coefficient for diet}\\
-\epsilon_i &: \operatorname{Random error term}\\
+\beta_0 &: \text{Intercept}\\
+\beta_1 &: \text{Coefficient for exercise time}\\
+\beta_2 &: \text{Coefficient for age}\\
+\beta_3 &: \text{Coefficient for diet}\\
+\epsilon_i &: \text{Random error term}\\
 \end{align}
-$$
+
 
 
 
@@ -197,7 +199,7 @@ The linear regression model can be implemented in R as follows:
 
 ```{r}
 #| results: false
-#| label: "Example data and model"
+#| label: Example data and model
 
 # Example dataset
 data <- data.frame(
@@ -216,10 +218,9 @@ summary(model)
 
 **Run simulations**
 
-Now it is time to run some simulation, and we will do this to test our model design.
-To do this we first have to define our parameter values:
+We will now run simulations to evaluate our model design. First, we need to define 
+our parameter values:
 
-$$
 
 \begin{align}
 \operatorname{BP}_i & = \beta_0 + \beta_E \cdot \operatorname{E}_i + \beta_A \cdot \operatorname{A}_i + \beta_D \cdot \operatorname{D}_i + \epsilon_i \\
@@ -239,22 +240,22 @@ $$
 \sigma_\epsilon & = 5 \quad (\text{error term standard deviation}) \\
 \end{align}
 
-$$
 
 
-After setting the parameter values, we can simulate data based on these parameters. 
+After defining our parameter values, we can simulate data using these parameters. 
 To do this, it is convenient to create a function where you specify information about 
-each parameter that can be manipulated. This allows us to experiment with different 
-values later to test the robustness of our model. Take a look at the code!
+each parameter that can be manipulated later, thereby enabling experimentation with 
+different values to assess the model's robustness. Below is the code for this simulation:
 
 ```{r}
 #| results: false
+#| label: Sim.function
 
 
 # Simulate data based on the hypothetical model
 
-# a basic function
-sim <- function(n = 100,
+# A basic function
+sim.fun <- function(n = 100,
                 intercept = 120,
                 mean_exercise = 150,
                 beta_exercise = -0.1,
@@ -268,31 +269,38 @@ sim <- function(n = 100,
                 mean_epsilon = 0,
                 sigma_epsilon = 5) {
   
-  #this is the body
+  # This is the body 
+  epsilon <- rnorm(n, mean = mean_epsilon, sd = sigma_epsilon) #error term 
   diet <- rbinom(n, size = size_diet, prob = prob_diet) #simulate diet 
   age <- rnorm(n, mean = mean_age, sd = sigma_age) #simulate age
   exercise <- rnorm(n, mean = mean_exercise, sd = sigma_exercise) #simulate exercise duration
-  epsilon <- rnorm(n, mean = mean_epsilon, sd = sigma_epsilon) #error term 
-  bloodpressure <- intercept + (beta_exercise * exercise) + (beta_age * age) + (beta_diet * diet) + epsilon
+  bloodpressure <- intercept + (beta_exercise * exercise) + (beta_age * age) + 
+    (beta_diet * diet) + epsilon
   
   
   
-  #the output
+  # The output
   return(data.frame(age, exercise, diet, bloodpressure, epsilon))
   
 }
 
 
+# Store the data frame as "sim_data"
+sim_data <- sim.fun()
+
 
 ```
 
-Now that we have our simulated dataset, we can easily test our hypotheses using 
-the linear mixed model: *lm(bloodpressure ~ exercise + age + diet, sim_data)*. 
+With our simulated dataset, we can now test our hypotheses using the linear model: 
+*lm(bloodpressure ~ exercise + age + diet, sim_data)*. The output will indicate whether
+there is an observed effect of exercise on blood pressure:
 
 ```{r}
 #| echo: false
+#| label: Simulatetd.m1
 
-sim_data <- sim()
+set.seed(1)
+sim_data <- sim.fun()
 
 
 sim.m1 <- lm(bloodpressure ~ exercise + age + diet, sim_data)
@@ -301,44 +309,104 @@ summary.m1 <- summary(sim.m1)
 
 ```
 
-The output will look like this and we can see that there seems like there is an 
-effect of exercise on blood pressure! 
+
+
+```{r}
+#| echo: false
+#| label: Sim.m1.output 
+
+
+summary.m1
+
+exercise_effect <- sprintf("%.3f",summary(sim.m1)$coefficients["exercise", "Estimate"])
+
+```
+
+In this model, we can see that each minute of increased exercise time is associated 
+with a **`r exercise_effect`** mmHg lower blood pressure, when age and diet 
+are included as covariates.
+
+Now it is time to play with our simulation! Lets say we only manage to include 50 
+participents, what will happen whit our results?
+
+This can easily be tested by manipulating our function and then running the model, 
+like this:
+
+
+```{r}
+#| label: Manipulate function 
+
+# Changing number of observations to 50!
+set.seed(7)
+sim_data2 <- sim.fun(n = 50)
+
+
+```
 
 
 
 ```{r}
 #| echo: false
-summary.m1
+#| label: Sim.m2.output 
 
-exercise_effect <- summary(sim.m1)$coefficients["exercise", "Estimate"]
 
+sim.m2 <- lm(bloodpressure ~ exercise + age + diet, sim_data2)
+
+summary.sim.m2 <- summary(sim.m2)
+
+summary.sim.m2
+
+exercise_effect2 <- sprintf("%.3f", summary(sim.m2)$coefficients["exercise", "Estimate"])
 ```
 
-In this model we can see that each minute of increase exercise time is asssiated with
-**`r exercise_effect`** reduction i blood pressure, when we acount for age and diet!
+
+The output for this model may reveal that the **`r exercise_effect2`** mmHg effect 
+of exercise is no longer significant, suggesting that 50 participants may not be 
+sufficient to detect the true effect of exercise which we know is **-0.1** mmHg. 
+However, this is just one simulation; results may vary due to random chance. It is 
+therefore prudent to conduct multiple simulations to evaluate the robustness of our 
+model, which can be executed in a loop as demonstrated below:
 
 
 
 
 ```{r}
+#| label: Simulations loop
 
 set.seed(1)
 results <- list()
 
 for(i in 1:1000) {
   
-  dat1 <- sim()
+  dat1 <- sim.fun()
+  dat2 <- sim.fun(n = 50)
   
   
   m1 <- lm(bloodpressure ~ exercise + age + diet, data = dat1)
+  m2 <- lm(bloodpressure ~ exercise + age + diet, data = dat2)
 
   
-  results[[i]] <- data.frame(model = c("m1"),
-             estimate = c(coef(m1)[2]))
+  results[[i]] <- data.frame(model = c("m1", "m2"),
+             estimate = c(coef(m1)[2],
+                          coef(m2)[2]))
   
   
   
 }
+
+
+```
+
+
+
+To visualize the estimates of model 1 and model 2, it is convenient to create a 
+figure similar to Figure 3.
+
+
+```{r}
+#| label: Simulation figure 
+#| echo: false
+#| fig-cap: "Demonstrating the variation in the estimated effect of exercise on blood pressure using 100 participants (m1) compared to 50 participants (m2) by simulating 1,000 different datasets."
 
 
 bind_rows(results) |>
@@ -348,32 +416,16 @@ bind_rows(results) |>
              shape = 21,
              color = "blue") + 
   theme_classic()
-
-
-
-
-
-
-
 ```
 
 
-Now it is ready to test our data in our model 
+In the simulated models shown in Figure 3, the estimate for model m1 clusters more 
+tightly around -0.1, which represents the true effect of exercise on blood pressure
+as specified. In contrast, model m2 exhibits more variation, indicating that the 
+effect is less reliably detected with only 50 participants.
 
-
-Compare true coefficients (true_beta) with the estimated coefficients.
-Adjust parameters to evaluate how robust your model is.
-
-
-
-
-
-* create an simple hypothesis 
-* create a DAG for this hypothesis 
-* Describe the model 
-* Do simulations 
-
-
+This brief introduction illustrates how to conduct basic data simulations before 
+data acquisition, empowering you to enhance the robustness of your research! 
 
 
 # 4. Including Data Packages for Distribution
