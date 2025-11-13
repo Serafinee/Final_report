@@ -11,6 +11,8 @@ output-extensions: ["tex"]
 
 # 1. Introduction
 
+\newpage
+
 # 2. Setting Up a Collaborative Workspace
 
 -   How to create a repository in Git Hub
@@ -139,9 +141,23 @@ git config --global user.email "your_email@example.com"
 
 Replace the placeholder names in "Your Name" and "your_email\@example.com" with your own.
 
-Now, what if you wanted to do it the other way around, like if you already have a local project on your computer and want to create an online repository for it?
+Also, if Git has not yet been initiated in your RStudio project you can use the command:
+
+``` bash
+git init
+```
+
+To check whet ever Git is initialized in your project you can write:
+
+``` bash
+git status
+```
+
+If git is not initialized an error message will show up. Then just run the `git init` command and follow the instructions.
 
 ### 2.1.2 Starting with a local project in RStudio
+
+Now, what if you wanted to do it the other way around, like if you already have a local project on your computer and want to create an online repository for it?
 
 #### **Step 1. Create a New Local Project in RStudio**
 
@@ -176,21 +192,14 @@ You now have a new, empty GitHub repository.
 
 1.  Copy the URL in the same way as previously in section 2.1.1 step 2.
 2.  Open the **Terminal** in RStudio (or use any terminal on your computer).
-3.  Navigate to your project folder, if you're not already there using this command in the terminal
-
-<!-- -->
-
+3.  Navigate to your project folder, if you're not already there, by clicking on the dropdown menu in the top right corner of the RStudio interface and choose your project.
 4.  Add the GitHub repository as the remote origin using this command in the terminal:
 
 ``` bash
 git remote add origin https://github.com/yourusername/your-repository.git
 ```
 
-5.  Verify the remote connection using this command in the terminal
-
-``` bash
-git remote -v
-```
+5.  Verify the remote connection using this command in the terminal `git remote -v`
 
 You should be able to see something like this:
 
@@ -203,9 +212,9 @@ That means you have now successfully established a connection between your local
 
 ## 2.2 Workflow between local and online repositories
 
-Now that we have connected or local repository with the online one, we can start to push out some code! But before we jump to the commands for placing files in and out of our online repository, we should better understand how these commands actually function.
+Now that we have connected our local repository with the online one, we can start to pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
 
-When you are
+Take a look at the figure below:
 
 ```{r}
 #| echo: false
@@ -218,34 +227,105 @@ When you are
 knitr::include_graphics("resources/images/Local_vs_online_workflow.png")
 ```
 
-To do this we need to know a couple of simple commands that will help us control what we place in and take out of our online repository.
+Your **working tree** (also called **working directory**) is the project folder you are currently working in on your local computer. This is where you do all your edits on your files and code.
 
-we make snapshots of the files using commit
+The **index/staging area** is a list is a list of files that Git is tracking for changes. When you "stage" files you tell Git to include these files in the next commit.
 
-git push - sed things to remote directory on git hub
+The **local branch** is a version of your project that exists entirely on your local computer. When you "commit" changes, you create a permanent snapshot of the files currently staged in the index and save them to your local repository.
 
-git pull - sends files from remote to your working directory
+The **remote tracking ref** is where you track the state of the online repository. When you "fetch" changes from the online repository, Git downloads the latest updates from the online repository but without merging it into your working directory. This allows you to see changes from collaborators or updates from the remote repository while keeping your working tree unaffected until you explicitly merge or rebase the changes.
 
-git fetch - sends remote file to your local repository
+#### 2.2.1 Commands
 
-git merge - moving and merging from local repository to working directory
+Okay, now we can take a look at the commands we can use for this workflow.
 
-concsol - communicate with R
+Lets say you have edited some files in your working directory and want to add them to your **staging area** before committing them to your repository.  If you only want to "stage" some files, but not all, you can use the command in the terminal:
 
-terminal - communicate with Git and Git hub and quarto (the command promt)
+``` bash
+git add file_name.txt
+```
 
-command = git status\
-(in terminal)
+Just replace the file_name.txt with the name of the file that you want to stage. Remember to also include the file extentions (like .txt or .pdf etc.)
 
--   shows what is in the repository and what is commited and
+If you want to stage **all files in your repository** that have had changes to them you can write:
 
--   adding a \*and then the file type (feks \*.Rproj) allows you to igor all files of that type
+``` bash
+git add -A
+```
 
-read me file is added to the list of files and the file is opened in the editor. when writing in the README file git hub will convert it to a htlm file.
+This command stages **all changes** in the repository, including modified files, newly created files and deleted files.
 
-.md filending stands for markdown
+Great! Now your edited files are ready to be committed! You can commit your files using this command:
 
-**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](Sikt KI).
+``` bash
+git commit -m "Commit message"
+```
+
+When you run this commit command, all the files that you have staged are committed to your **local branch!** Its good to include a **descriptive commit message** that explains what your commit entails. That way its easier to track where changes or errors are introduced in your repository. Messages could be "Changed font headings" or "Added statistical ANOVA analysis to data processing".
+
+Now that you have committed the files you want to push them to your remote directory using:
+
+``` bash
+git push
+```
+
+This command uploads everything you have committed so far this session to your online repository and updates it based on your commits. Using this command you can push multiple commits at the same time.
+
+Now lets say your colleague, who you are collaborate with, has added a new file to the online repository on GitHub. You want to pull that document from the online directory down to your local repositopry and start editing it. The most straightforward way is to use:
+
+``` bash
+git pull
+```
+
+This command pulls the latest changes from your remote repository and merges them into your **current branch** in your local repository, so that they are exactly the same. Then you can just start editing and making changes.
+
+If you don't want to fully copy the online repository yet, but take a look at it first before merging it ito your working directory you can use the command
+
+``` bash
+git fetch
+```
+
+This command downloads the changes from the remote repository (e.g., **`origin`**) and updates your remote-tracking branches (e.g., **`origin/main`**) without modifying your working directory or local branch.
+
+To look at the branch you have fetched you can use one of these two commands:
+
+``` bash
+git log HEAD..origin/main
+
+git diff HEAD..origin/main
+```
+
+**git log** will give you a list of the commits that are not in your local branch (**HEAD**) together with their metadata (authors, date etc.). This is helpful if you want to quickly answer "What was changed?" and "Who changed it?".
+
+**git diff** will show you the actual changes that are between two points, ex. your local branch (**HEAD**) and your fetched branch (**origin/main**). git diff will show you the specific lines of code that were added modified or deleted in the fetched branch. This is helpful if you want to know exactly what was changed.
+
+If you then want to integrate the fetched branch with your current branch, you can use the command:
+
+``` bash
+git merge
+```
+
+Using this command, Git creates a **merge commit**, which combines the changes from both branches while preserving the complete commit history of both branches. The merge commit explicitly shows the point where the branches diverged and were brought together.
+
+An alternative way to integrate the fetched branch is to use:
+
+``` bash
+git rebase
+```
+
+This command does **not create a merge commit**. Instead, it **rewrites the commit history** of your current branch by replaying its commits on top of the fetched branch, creating a **linear history**. Essentially, it re-aligns your current branch so that it starts from the latest commit of the fetched branch, as if your changes were made after the fetched branch's changes. This results in a cleaner, more linear commit history.
+
+Questions:
+
+-   add sections about README files and .gitignore
+
+-   should I add a section about the concole and the terminal andhow they are used? Or could this perhaps go into the Introduction?
+
+-   Should we include stuff about creating branches?
+
+**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](Sikt%20KI).
+
+\newpage
 
 # 3. Conducting Simulations Before Data Acquisition
 
