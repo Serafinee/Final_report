@@ -1,0 +1,766 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\KOMAoption{captions}{tableheading}
+\usepackage{wrapfig}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Manuscript},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Manuscript}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+
+\section{1. Introduction}\label{introduction}
+
+\section{2. Setting Up a Collaborative
+Workspace}\label{setting-up-a-collaborative-workspace}
+
+\begin{itemize}
+\tightlist
+\item
+  How to create a repository in Git Hub
+\item
+  How to link it to Rstudio
+\item
+  How to create a project in your local computer and export it to GitHub
+\item
+  Basic commands for Git and GitHub fromt he RStudio terminal
+\end{itemize}
+
+A collaborative workflow requires a collaborative work space that
+enables everyone participating to share and contribute to a project.\\
+There are multiple options for such a workspace, like Teams, Discord, or
+even over e-mail. When working with code however, online repositories on
+GitHub can be a good alternative.
+
+In this tutorial we assume that you will be working with RStudio and
+have already downloaded R and Rstudio. In addition you are going to need
+to have the version control software Git installed and have an account
+in GitHub. If you need guidance for this you can find a helpful tutorial
+\href{1\%20Setting\%20up\%20your\%20software\%20environment\%20–\%20A\%20Crash\%20Course\%20in\%20R}{here}.
+
+\subsubsection{What is a repository?}\label{what-is-a-repository}
+
+A repository is basically like a project box where you collect all the
+files, data, graphs and code scripts from your project.\\
+Online repositories can be accessed from the internet and from any
+computer, while a local repository is only stored in a specific computer
+and cannot be accessed elsewhere. When setting up a collaborative work
+space its advantageous to have an online repository so that multiple
+people can contribute from their own computer to a shared repository,
+without having to send files by mail etc. In addition we can connect the
+online repository what a local repository which allows us to work and
+make changes using our own computer and then we can upload it to the
+online repository.
+
+\subsubsection{What is Git?}\label{what-is-git}
+
+Git is a version control software that allows you to track the different
+version of your files. It basically allows you to keep a detailed
+history of changes you have done in your document and also what other
+people have added or removed in your collaborative documents. Having a
+version controls software set up for your workflow is very handy as it
+prevents major losses of documents and changes, and if any error is
+introduced in a document or code, you can track it back to see what and
+who submitted it. This fosters reproducibility, transparency,
+collaboration and robustness for your project.
+
+\subsubsection{What is GitHub?}\label{what-is-github}
+
+GitHub is a collaborative online platform that allows you to host and
+join online repositories. its kinda like facebook for coding. gitHub
+allows us to share and collaborate with the people on the same code at
+the same time. It can also be used to host webpages and other stuff.
+
+In this toturial we will only work with the RStudio interface and the
+online GitHub interface. however, if you want an expanded commandline
+and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop.
+See toturials here:
+\href{GitHub\%20CLI\%20quickstart\%20-\%20GitHub\%20Docs}{GitHub CLI}
+and
+\href{Getting\%20started\%20with\%20GitHub\%20Desktop\%20-\%20GitHub\%20Docs}{GitHub
+Desktop}.
+
+\subsection{2.1 How to create a project that is connected between
+RStudio and
+GitHub?}\label{how-to-create-a-project-that-is-connected-between-rstudio-and-github}
+
+When creating a new project and you want to link your local project with
+an online repository, you can go about it to ways basicly.\\
+a) You can create the online repository and then clone it down to you
+computer\\
+b) You can create a local repository and then push it online to GitHub
+
+We´ll go through both options here, starting with the online repository.
+
+Image file path:
+
+resources/images/
+
+\newpage
+
+\subsubsection{2.1.1 Starting with an online
+repository}\label{starting-with-an-online-repository}
+
+\paragraph{\texorpdfstring{Step 1. Create a new online repository in
+GitHub
+(\href{Creating\%20Your\%20First\%20GitHub\%20Repository\%20and\%20Pushing\%20Code\%20-\%20YouTube}{Video
+tutorial})}{Step 1. Create a new online repository in GitHub (Video tutorial)}}\label{step-1.-create-a-new-online-repository-in-github-video-tutorial}
+
+\begin{wrapfigure}{lt}{0.5\textwidth}
+  \centering
+  \includegraphics[width=0.38\textwidth]{resources/images/image_1.png}
+  \caption{Creating a new online repository.}
+  \vspace{-1.5cm} % Adjust vertical spacing below the figure
+\end{wrapfigure}
+
+Once you´ve logged into GitHub, navigate to the top right corner of your
+page and find the + tab. Drop it down to reveal the ``New repository''
+option. Click on it.
+
+This will take you ta the repository creation page.\\
+Here you give your repository a name, a description of what it will
+entail and wherever it is public or not.
+
+You also have the options of adding a README file and a .gitignore file
+upon creation, but it is possible to create these after the repository
+is made as well.
+
+\subparagraph{README}\label{readme}
+
+A README file is a descriptive file that should explain what the
+project/repository is about, how it is organized and what the data in it
+means etc. Any additional information you want people to know when using
+your repository should go into the README.
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+  \vspace{-1cm} % Adjust vertical spacing to remove extra white space
+  \centering
+  \includegraphics[width=0.50\textwidth]{resources/images/image_3.png}
+  \caption{Repository setup-page.}
+  \vspace{-2cm} % Adjust vertical spacing to remove extra white space
+\end{wrapfigure}
+
+\subparagraph{.gitignore}\label{gitignore}
+
+The .gitignore file is an information file that tells Git what types of
+files it should track, or specifically not track. This is useful when
+you for example don't want to track the generated images or graphs from
+your code, but just your code.
+
+So, now that you have created your first online repository you want to
+connect it to your local computer.\\
+You can do this multiple ways, but in this tutorial we´ll use commands
+in the terminal to initialize
+
+\paragraph{\texorpdfstring{\textbf{Step 2: Copy the Repository
+URL}}{Step 2: Copy the Repository URL}}\label{step-2-copy-the-repository-url}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Go to your GitHub repository page.
+\item
+  Click the green \textbf{Code} button.
+\item
+  Copy the repository URL:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For example:
+    \textbf{\texttt{https://github.com/yourusername/repositoryname.git}}
+  \end{itemize}
+\end{enumerate}
+
+\paragraph{\texorpdfstring{\textbf{Step 3: Open RStudio and Clone the
+Repository}}{Step 3: Open RStudio and Clone the Repository}}\label{step-3-open-rstudio-and-clone-the-repository}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Open RStudio.
+\item
+  Go to \textbf{File} → \textbf{New Project} → \textbf{Version Control}
+  → \textbf{Git}.
+\item
+  Paste the GitHub repository URL into the ``Repository URL'' field.
+\item
+  Choose a folder on your local computer where you want to clone the
+  repository.
+\item
+  Click \textbf{Create Project}.when doing a commit on a file that has
+  been staged, that version of the file goes into the version history.
+  It is also tracked.
+\end{enumerate}
+
+And tada! You have now cloned the online repository to your computer!
+Great job!
+
+\paragraph{Step 4 (Optional): Configure Git in
+RStudio}\label{step-4-optional-configure-git-in-rstudio}
+
+If this is your first time using Git with RStudio, you'll need to
+configure your Git credentials. Open the RStudio terminal
+(\textbf{Tools}~→~\textbf{Terminal}) or navigate to the \textbf{terminal
+tab} at the top right of the RStudio interface and run the following
+commands:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ config –global user.name }\StringTok{"Your Name"}
+
+\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.email }\StringTok{"your\_email@example.com"}
+\end{Highlighting}
+\end{Shaded}
+
+Replace the placeholder names in ``Your Name'' and
+``your\_email@example.com'' with your own.
+
+Also, if Git has not yet been initiated in your RStudio project you can
+use the command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ init}
+\end{Highlighting}
+\end{Shaded}
+
+To check whet ever Git is initialized in your project you can write:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ status}
+\end{Highlighting}
+\end{Shaded}
+
+If git is not initialized an error message will show up. Then just run
+the \texttt{git\ init} command and follow the instructions.
+
+\subsubsection{2.1.2 Starting with a local project in
+RStudio}\label{starting-with-a-local-project-in-rstudio}
+
+Now, what if you wanted to do it the other way around, like if you
+already have a local project on your computer and want to create an
+online repository for it?
+
+\paragraph{\texorpdfstring{\textbf{Step 1. Create a New Local Project in
+RStudio}}{Step 1. Create a New Local Project in RStudio}}\label{step-1.-create-a-new-local-project-in-rstudio}
+
+If you already have a local project, you can skip this step. If not:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Open \textbf{RStudio}.
+\item
+  Go to \textbf{File \textgreater{} New Project \textgreater{} New
+  Directory \textgreater{} New Project}.
+\item
+  Choose a folder where you want the project to live and give it a name.
+\item
+  Make sure to check the box \textbf{Create a Git repository}.
+\item
+  Click \textbf{Create Project}.
+\end{enumerate}
+
+This initializes a local Git repository in your project directory.
+
+If you already have made a project but it is not connected to a Git
+repository you can do it like this:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Navigate to \textbf{Tools \textgreater{} Project Options
+  \textgreater{} Git/SVN}.
+\item
+  Select \textbf{Git} and click \textbf{Yes} when prompted to initialize
+  a Git repository for your project.
+\end{enumerate}
+
+\paragraph{Step 2. Create a New Repository on
+GitHub}\label{step-2.-create-a-new-repository-on-github}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Create a new repository in Git Hub like previously in section 2.1.1
+  step 1
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Do \textbf{not} initialize the repository with a README,
+    \textbf{\texttt{.gitignore}}, or license (we'll connect the existing
+    local repository later).
+  \end{itemize}
+\end{enumerate}
+
+You now have a new, empty GitHub repository.
+
+\paragraph{Step 3. Link the Local project to the GitHub
+Repository}\label{step-3.-link-the-local-project-to-the-github-repository}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Copy the URL in the same way as previously in section 2.1.1 step 2.
+\item
+  Open the \textbf{Terminal} in RStudio (or use any terminal on your
+  computer).
+\item
+  Navigate to your project folder, if you're not already there, by
+  clicking on the dropdown menu in the top right corner of the RStudio
+  interface and choose your project.
+\item
+  Add the GitHub repository as the remote origin using this command in
+  the terminal:
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ remote add origin https://github.com/yourusername/your{-}repository.git}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Verify the remote connection using this command in the terminal
+  \texttt{git\ remote\ -v}
+\end{enumerate}
+
+You should be able to see something like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{origin}\NormalTok{  https://github.com/yourusername/your{-}repo.git }\ErrorTok{(}\ExtensionTok{fetch}\KeywordTok{)}
+\ExtensionTok{origin}\NormalTok{  https://github.com/yourusername/your{-}repo.git }\ErrorTok{(}\ExtensionTok{push}\KeywordTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+That means you have now successfully established a connection between
+your local project and the online repository on GitHub. Congratulations!
+
+\subsection{2.2 Workflow between local and online
+repositories}\label{workflow-between-local-and-online-repositories}
+
+Now that we have connected our local repository with the online one, we
+can start to pushing some code! But before we jump into the commands for
+transferring files between our local and online repository, we should
+better understand how these processes work.
+
+Take a look at the figure below:
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth,height=0.6\textheight]{resources/images/Local_vs_online_workflow.png}
+
+}
+
+\caption{Visaluzation of local and online workflow in Rstudio.}
+
+\end{figure}%
+
+Your \textbf{working tree} (also called \textbf{working directory}) is
+the project folder you are currently working in on your local computer.
+This is where you do all your edits on your files and code.
+
+The \textbf{index/staging area} is a list is a list of files that Git is
+tracking for changes. When you ``stage'' files you tell Git to include
+these files in the next commit.
+
+The \textbf{local branch} is a version of your project that exists
+entirely on your local computer. When you ``commit'' changes, you create
+a permanent snapshot of the files currently staged in the index and save
+them to your local repository.
+
+The \textbf{remote tracking ref} is where you track the state of the
+online repository. When you ``fetch'' changes from the online
+repository, Git downloads the latest updates from the online repository
+but without merging it into your working directory. This allows you to
+see changes from collaborators or updates from the remote repository
+while keeping your working tree unaffected until you explicitly merge or
+rebase the changes.
+
+\paragraph{2.2.1 Commands}\label{commands}
+
+Okay, now we can take a look at the commands we can use for this
+workflow.
+
+Lets say you have edited some files in your working directory and want
+to add them to your~\textbf{staging area}~before committing them to your
+repository.~ If you only want to ``stage'' some files, but not all, you
+can use the command in the terminal:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ add file\_name.txt}
+\end{Highlighting}
+\end{Shaded}
+
+Just replace the file\_name.txt with the name of the file that you want
+to stage. Remember to also include the file extentions (like .txt or
+.pdf etc.)
+
+If you want to stage \textbf{all files in your repository} that have had
+changes to them you can write:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ add }\AttributeTok{{-}A}
+\end{Highlighting}
+\end{Shaded}
+
+This command stages \textbf{all changes} in the repository, including
+modified files, newly created files and deleted files.
+
+Great! Now your edited files are ready to be committed! You can commit
+your files using this command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Commit message"}
+\end{Highlighting}
+\end{Shaded}
+
+When you run this commit command, all the files that you have staged are
+committed to your \textbf{local branch!} Its good to include a
+\textbf{descriptive commit message} that explains what your commit
+entails. That way its easier to track where changes or errors are
+introduced in your repository. Messages could be ``Changed font
+headings'' or ``Added statistical ANOVA analysis to data processing''.
+
+Now that you have committed the files you want to push them to your
+remote directory using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ push}
+\end{Highlighting}
+\end{Shaded}
+
+This command uploads everything you have committed so far this session
+to your online repository and updates it based on your commits. Using
+this command you can push multiple commits at the same time.
+
+Now lets say your colleague, who you are collaborate with, has added a
+new file to the online repository on GitHub. You want to pull that
+document from the online directory down to your local repositopry and
+start editing it. The most straightforward way is to use:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ pull}
+\end{Highlighting}
+\end{Shaded}
+
+This command pulls the latest changes from your remote repository and
+merges them into your~\textbf{current branch}~in your local repository,
+so that they are exactly the same. Then you can just start editing and
+making changes.
+
+If you don't want to fully copy the online repository yet, but take a
+look at it first before merging it ito your working directory you can
+use the command
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ fetch}
+\end{Highlighting}
+\end{Shaded}
+
+This command downloads the changes from the remote repository
+(e.g.,~\textbf{\texttt{origin}}) and updates your remote-tracking
+branches (e.g.,~\textbf{\texttt{origin/main}}) without modifying your
+working directory or local branch.
+
+To look at the branch you have fetched you can use one of these two
+commands:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ log HEAD..origin/main}
+
+\FunctionTok{git}\NormalTok{ diff HEAD..origin/main}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{git log} will give you a list of the commits that are not in
+your local branch (\textbf{HEAD}) together with their metadata (authors,
+date etc.). This is helpful if you want to quickly answer ``What was
+changed?'' and ``Who changed it?''.
+
+\textbf{git diff} will show you the actual changes that are between two
+points, ex. your local branch (\textbf{HEAD}) and your fetched branch
+(\textbf{origin/main}). git diff will show you the specific lines of
+code that were added modified or deleted in the fetched branch. This is
+helpful if you want to know exactly what was changed.
+
+If you then want to integrate the fetched branch with your current
+branch, you can use the command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ merge}
+\end{Highlighting}
+\end{Shaded}
+
+Using this command, Git creates a \textbf{merge commit}, which combines
+the changes from both branches while preserving the complete commit
+history of both branches. The merge commit explicitly shows the point
+where the branches diverged and were brought together.
+
+An alternative way to integrate the fetched branch is to use:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ rebase}
+\end{Highlighting}
+\end{Shaded}
+
+This command does~\textbf{not create a merge commit}. Instead,
+it~\textbf{rewrites the commit history}~of your current branch by
+replaying its commits on top of the fetched branch, creating
+a~\textbf{linear history}. Essentially, it re-aligns your current branch
+so that it starts from the latest commit of the fetched branch, as if
+your changes were made after the fetched branch's changes. This results
+in a cleaner, more linear commit history.
+
+Questions:
+
+\begin{itemize}
+\item
+  add sections about README files and .gitignore
+\item
+  should I add a section about the concole and the terminal andhow they
+  are used? Or could this perhaps go into the Introduction?
+\item
+  Should we include stuff about creating branches?
+\end{itemize}
+
+\textbf{Disclaimer:} This section was written with the help of SIKT KI
+chat using the gpt-4o model. The AI was used to verify code chunks,
+summarize steps in an organized format and rewrite original text for
+better grammar and flow. The author takes full responsibility for the
+resulting output. \href{Sikt\%20KI}{Link to AI model}.
+
+\newpage
+
+\section{3. Conducting Simulations Before Data
+Acquisition}\label{conducting-simulations-before-data-acquisition}
+
+\section{4. Including Data Packages for
+Distribution}\label{including-data-packages-for-distribution}
+
+\section{5. Creating Visualizations from Data
+Packages}\label{creating-visualizations-from-data-packages}
+
+
+
+
+\end{document}

@@ -11,8 +11,6 @@ output-extensions: ["tex"]
 
 # 1. Introduction
 
-\newpage
-
 # 2. Setting Up a Collaborative Workspace
 
 -   How to create a repository in Git Hub
