@@ -1,12 +1,6 @@
 ---
 title: "Manuscript"
-format: 
-  pdf:  
-    documentclass: scrartcl
-    pdf-engine: lualatex
-    header-includes:
-      - \usepackage{wrapfig}
-output-extensions: ["tex"]
+format: pdf
 ---
 
 # 1. Introduction
