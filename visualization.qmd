@@ -256,7 +256,7 @@ ptfig <- plot_grid(
   pt240.plot,
   ncol = 2,
   nrow = 2,
-  labels = c("A) Isometric", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
+  labels = c("A) 0 d/s", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
   rel_heights = c(0.8, 1) 
 )
 
