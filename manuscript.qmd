@@ -9,16 +9,6 @@ link-citations: true
 ---
 
 
-```{r}
-#| echo: false
-#| warning: false
-#| results: false
-#| label: Required packages
-
-
-library(tidyverse)
-library(ggdag)
-```
 
 
 
@@ -31,6 +21,18 @@ library(ggdag)
 
 
 # 3. Conducting Simulations Before Data Acquisition
+
+```{r}
+#| echo: false
+#| warning: false
+#| results: false
+#| label: Required packages
+
+
+library(tidyverse)
+library(ggdag)
+```
+
 
 Conducting simulations prior to data acquisition is useful for several reasons, including: 
 
