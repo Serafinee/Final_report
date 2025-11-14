@@ -20,13 +20,6 @@ As the title suggests, this section will aim to describe how to create plots in 
 
 Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. <!-- I'll be using my own data package here, since it would be contrary to progress to wait for the data package to be finished in section 4. -->
 
-<!-- the code chunk below simply hides/shows code in the output (echo), supresses messages produced from R functions, and warnings - and it makes it default for all code chunks-->
-```{r, setup, include=FALSE}
-
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-
-```
-
 The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier. 
 
 ```{r, data import and wrangling}
