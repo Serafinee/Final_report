@@ -2,7 +2,13 @@
 .Rhistory
 .RData
 .Ruserdata
+
 *.Rproj
-*.DS_Store
-*.html
+
+*.docx
 *.pdf
+*.html
+*.png
+*.DS_Store
+
+/manuscript_files/
