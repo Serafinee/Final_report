@@ -9,5 +9,6 @@
 *.pdf
 *.html
 *.png
+*.DS_Store
 
 /manuscript_files/
