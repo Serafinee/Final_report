@@ -4,24 +4,27 @@ format: html
 editor: visual
 ---
 
-
-
-
-
 # 1. Introduction
 
+Disposition:
 
+-   Recent focus on reproducibility and transparency
+-   Implications for scientific workflow, collaboration, transparency\
+-   Lack of guidelines and examples of scientific workflows collaborative infrastructure which ensures this
+-   Aim of this assignment...
+
+\textcolor{red}{The text below is a first draft of the introduciotn. The text itself needs alot of work to convey the scientific aims and background more understanble and precise. However, i feel that my overreaching "red line" and idea for the introducion is covered in this draft, and I want your thoughts in the logic of the text before revisiting it further. In addition, References are kept outside of the document due to possible conflicts when merging branches.}
+
+Computational reproducibility and transparency are core principles of scientific research, essential for ensuring the validity, reliability, and credibility of scientific results. These principles facilitate independent verification, foster critical evaluation, and enable the accumulation of robust scientific knowledge. By adhering to these principles, researchers enhance methodological rigor, promote accountability, and strengthen trust in scientific results. As such, computational reproducibility and transparency are not only key for scientific progress but also represent ethical imperatives in the advancement of scientific understanding. However, researchers often face challenges in achieving this due to the requirement for specialized computational frameworks and the absence of guidelines for scientific workflows that facilitate these practices.
+
+Achieving computational reproducibility and transparency is further complicated when researchers collaborate on scientific projects due to the complexity and often unstructured nature of scientific workflow. For example, multiple versions of files may coexist, with changes made in parallel, increasing the risk of inconsistencies and loss of critical information. Although a more structured approach to tasks such as project planning, data analysis, and scientific writing could significantly improve collaboration, the lack of standardized workflows and shared frameworks often hinders the implementation of such practices.
+
+To address the challenges of collaboration in scientific projects, this assignment highlights tools and workflows designed to enhance organizational efficiency and ensure reproducibility. This assignment aims to (1) describe key components of robust, reproducible, and transparent scientific workflows, including setting up a collaborative work space, conduction simulations prior to data acquisition, including data packages for distribution, and creating visualizations from data packages, and (2) present collaborative framework for managing joint research and writing efforts, with a focus on version control systems, R, and GitHub, to streamline the creation of a transparent and reproducible framework for scientific workflows. While the primary outcome of this assignment is a PDF report, the accompanying GitHub repository provides a comprehensive view of the collaborative workflow and serves as an integral part of the project.
 
 # 2. Setting Up a Collaborative Workspace
 
-
-
 # 3. Conducting Simulations Before Data Acquisition
 
-
-
 # 4. Including Data Packages for Distribution
-
-
 
 # 5. Creating Visualizations from Data Packages
