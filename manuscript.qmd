@@ -1,10 +1,15 @@
 ---
 title: "Manuscript"
-format: html
-editor: visual
+format: pdf
+editor_options: 
+  chunk_output_type: console
+bibliography: resources/bib.bib
+csl: resources/citation-style.csl
+link-citations: true
 ---
 
 # 1. Introduction
+
 
 Disposition:
 
@@ -23,8 +28,1427 @@ To address the challenges of collaboration in scientific projects, this assignme
 
 # 2. Setting Up a Collaborative Workspace
 
+-   How to create a repository in Git Hub
+-   How to link it to Rstudio
+-   How to create a project in your local computer and export it to GitHub
+-   Basic commands for Git and GitHub fromt he RStudio terminal
+In this tutorial we assume that you will be working with RStudio and have already downloaded R and Rstudio. In addition you are going to need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](1%20Setting%20up%20your%20software%20environment%20–%20A%20Crash%20Course%20in%20R).
+
+### What is a repository?
+
+A repository is basically like a project box where you collect all the files, data, graphs and code scripts from your project.\
+Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space its advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository what a local repository which allows us to work and make changes using our own computer and then we can upload it to the online repository.
+
+
+### What is Git?
+Git is a version control software that allows you to track the different version of your files. It basically allows you to keep a detailed history of changes you have done in your document and also what other people have added or removed in your collaborative documents. Having a version controls software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced in a document or code, you can track it back to see what and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
+
+### What is GitHub?
+
+GitHub is a collaborative online platform that allows you to host and join online repositories. its kinda like facebook for coding. gitHub allows us to share and collaborate with the people on the same code at the same time. It can also be used to host webpages and other stuff.
+
+In this toturial we will only work with the RStudio interface and the online GitHub interface. however, if you want an expanded commandline and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See toturials here: [GitHub CLI](GitHub%20CLI%20quickstart%20-%20GitHub%20Docs) and [GitHub Desktop](Getting%20started%20with%20GitHub%20Desktop%20-%20GitHub%20Docs).
+
+## 2.1 How to create a project that is connected between RStudio and GitHub?
+
+When creating a new project and you want to link your local project with an online repository, you can go about it to ways basicly.\
+a) You can create the online repository and then clone it down to you computer\
+b) You can create a local repository and then push it online to GitHub
+
+We´ll go through both options here, starting with the online repository.
+
+Image file path:
+
+resources/images/
+
+\newpage
+
+### 2.1.1 Starting with an online repository
+
+#### Step 1. Create a new online repository in GitHub ([Video tutorial](Creating%20Your%20First%20GitHub%20Repository%20and%20Pushing%20Code%20-%20YouTube))
+
+```{r}
+#| echo: false
+#| results: asis
+cat("
+\\begin{wrapfigure}{lt}{0.5\\textwidth}
+  \\centering
+  \\includegraphics[width=0.38\\textwidth]{resources/images/image_1.png}
+  \\caption{Creating a new online repository.}
+  \\vspace{-1.5cm} % Adjust vertical spacing below the figure
+\\end{wrapfigure}
+")
+
+```
+
+Once you´ve logged into GitHub, navigate to the top right corner of your page and find the + tab. Drop it down to reveal the "New repository" option. Click on it.
+
+This will take you ta the repository creation page.\
+Here you give your repository a name, a description of what it will entail and wherever it is public or not.
+
+You also have the options of adding a README file and a .gitignore file upon creation, but it is possible to create these after the repository is made as well.
+
+##### README
+
+A README file is a descriptive file that should explain what the project/repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
+
+```{r}
+#| echo: false
+#| results: asis
+cat("
+\\begin{wrapfigure}{r}{0.4\\textwidth}
+  \\vspace{-1cm} % Adjust vertical spacing to remove extra white space
+  \\centering
+  \\includegraphics[width=0.50\\textwidth]{resources/images/image_3.png}
+  \\caption{Repository setup-page.}
+  \\vspace{-2cm} % Adjust vertical spacing to remove extra white space
+\\end{wrapfigure}
+")
+
+```
+
+##### .gitignore
+
+The .gitignore file is an information file that tells Git what types of files it should track, or specifically not track. This is useful when you for example don't want to track the generated images or graphs from your code, but just your code.
+
+So, now that you have created your first online repository you want to connect it to your local computer.\
+You can do this multiple ways, but in this tutorial we´ll use commands in the terminal to initialize
+
+#### **Step 2: Copy the Repository URL**
+
+1.  Go to your GitHub repository page.
+
+2.  Click the green **Code** button.
+
+3.  Copy the repository URL:
+
+    -   For example: **`https://github.com/yourusername/repositoryname.git`**
+
+#### **Step 3: Open RStudio and Clone the Repository**
+
+1.  Open RStudio.
+
+2.  Go to **File** → **New Project** → **Version Control** → **Git**.
+
+3.  Paste the GitHub repository URL into the "Repository URL" field.
+
+4.  Choose a folder on your local computer where you want to clone the repository.
+
+5.  Click **Create Project**.when doing a commit on a file that has been staged, that version of the file goes into the version history. It is also tracked.
+
+And tada! You have now cloned the online repository to your computer! Great job!
+
+#### Step 4 (Optional): Configure Git in RStudio
+
+If this is your first time using Git with RStudio, you’ll need to configure your Git credentials. Open the RStudio terminal (**Tools** → **Terminal**) or navigate to the **terminal tab** at the top right of the RStudio interface and run the following commands:
+
+``` bash
+git config –global user.name "Your Name"
+
+git config --global user.email "your_email@example.com"
+```
+
+Replace the placeholder names in "Your Name" and "your_email\@example.com" with your own.
+
+Also, if Git has not yet been initiated in your RStudio project you can use the command:
+
+``` bash
+git init
+```
+
+To check whet ever Git is initialized in your project you can write:
+
+``` bash
+git status
+```
+
+If git is not initialized an error message will show up. Then just run the `git init` command and follow the instructions.
+
+### 2.1.2 Starting with a local project in RStudio
+
+Now, what if you wanted to do it the other way around, like if you already have a local project on your computer and want to create an online repository for it?
+
+#### **Step 1. Create a New Local Project in RStudio**
+
+If you already have a local project, you can skip this step. If not:
+
+1.  Open **RStudio**.
+
+2.  Go to **File \> New Project \> New Directory \> New Project**.
+
+3.  Choose a folder where you want the project to live and give it a name.
+
+4.  Make sure to check the box **Create a Git repository**.
+
+5.  Click **Create Project**.
+
+This initializes a local Git repository in your project directory.
+
+If you already have made a project but it is not connected to a Git repository you can do it like this:
+
+1.  Navigate to **Tools \> Project Options \> Git/SVN**.
+2.  Select **Git** and click **Yes** when prompted to initialize a Git repository for your project.
+
+#### Step 2. Create a New Repository on GitHub
+
+1.  Create a new repository in Git Hub like previously in section 2.1.1 step 1
+
+    -   Do **not** initialize the repository with a README, **`.gitignore`**, or license (we’ll connect the existing local repository later).
+
+You now have a new, empty GitHub repository.
+
+#### Step 3. Link the Local project to the GitHub Repository
+
+1.  Copy the URL in the same way as previously in section 2.1.1 step 2.
+2.  Open the **Terminal** in RStudio (or use any terminal on your computer).
+3.  Navigate to your project folder, if you're not already there, by clicking on the dropdown menu in the top right corner of the RStudio interface and choose your project.
+4.  Add the GitHub repository as the remote origin using this command in the terminal:
+
+``` bash
+git remote add origin https://github.com/yourusername/your-repository.git
+```
+
+5.  Verify the remote connection using this command in the terminal `git remote -v`
+
+You should be able to see something like this:
+
+``` bash
+origin  https://github.com/yourusername/your-repo.git (fetch)
+origin  https://github.com/yourusername/your-repo.git (push)
+```
+
+That means you have now successfully established a connection between your local project and the online repository on GitHub. Congratulations!
+
+## 2.2 Workflow between local and online repositories
+
+Now that we have connected our local repository with the online one, we can start to pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
+
+Take a look at the figure below:
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out.height: "60%"
+#| out.width: "100%"
+#| fig-cap: "Visaluzation of local and online workflow in Rstudio."
+
+knitr::include_graphics("resources/images/Local_vs_online_workflow.png")
+```
+
+Your **working tree** (also called **working directory**) is the project folder you are currently working in on your local computer. This is where you do all your edits on your files and code.
+
+The **index/staging area** is a list is a list of files that Git is tracking for changes. When you "stage" files you tell Git to include these files in the next commit.
+
+The **local branch** is a version of your project that exists entirely on your local computer. When you "commit" changes, you create a permanent snapshot of the files currently staged in the index and save them to your local repository.
+
+The **remote tracking ref** is where you track the state of the online repository. When you "fetch" changes from the online repository, Git downloads the latest updates from the online repository but without merging it into your working directory. This allows you to see changes from collaborators or updates from the remote repository while keeping your working tree unaffected until you explicitly merge or rebase the changes.
+
+#### 2.2.1 Commands
+
+Okay, now we can take a look at the commands we can use for this workflow.
+
+Lets say you have edited some files in your working directory and want to add them to your **staging area** before committing them to your repository.  If you only want to "stage" some files, but not all, you can use the command in the terminal:
+
+``` bash
+git add file_name.txt
+```
+
+Just replace the file_name.txt with the name of the file that you want to stage. Remember to also include the file extentions (like .txt or .pdf etc.)
+
+If you want to stage **all files in your repository** that have had changes to them you can write:
+
+``` bash
+git add -A
+```
+
+This command stages **all changes** in the repository, including modified files, newly created files and deleted files.
+
+Great! Now your edited files are ready to be committed! You can commit your files using this command:
+
+``` bash
+git commit -m "Commit message"
+```
+
+When you run this commit command, all the files that you have staged are committed to your **local branch!** Its good to include a **descriptive commit message** that explains what your commit entails. That way its easier to track where changes or errors are introduced in your repository. Messages could be "Changed font headings" or "Added statistical ANOVA analysis to data processing".
+
+Now that you have committed the files you want to push them to your remote directory using:
+
+``` bash
+git push
+```
+
+This command uploads everything you have committed so far this session to your online repository and updates it based on your commits. Using this command you can push multiple commits at the same time.
+
+Now lets say your colleague, who you are collaborate with, has added a new file to the online repository on GitHub. You want to pull that document from the online directory down to your local repositopry and start editing it. The most straightforward way is to use:
+
+``` bash
+git pull
+```
+
+This command pulls the latest changes from your remote repository and merges them into your **current branch** in your local repository, so that they are exactly the same. Then you can just start editing and making changes.
+
+If you don't want to fully copy the online repository yet, but take a look at it first before merging it ito your working directory you can use the command
+
+``` bash
+git fetch
+```
+
+This command downloads the changes from the remote repository (e.g., **`origin`**) and updates your remote-tracking branches (e.g., **`origin/main`**) without modifying your working directory or local branch.
+
+To look at the branch you have fetched you can use one of these two commands:
+
+``` bash
+git log HEAD..origin/main
+
+git diff HEAD..origin/main
+```
+
+**git log** will give you a list of the commits that are not in your local branch (**HEAD**) together with their metadata (authors, date etc.). This is helpful if you want to quickly answer "What was changed?" and "Who changed it?".
+
+**git diff** will show you the actual changes that are between two points, ex. your local branch (**HEAD**) and your fetched branch (**origin/main**). git diff will show you the specific lines of code that were added modified or deleted in the fetched branch. This is helpful if you want to know exactly what was changed.
+
+If you then want to integrate the fetched branch with your current branch, you can use the command:
+
+``` bash
+git merge
+```
+
+Using this command, Git creates a **merge commit**, which combines the changes from both branches while preserving the complete commit history of both branches. The merge commit explicitly shows the point where the branches diverged and were brought together.
+
+An alternative way to integrate the fetched branch is to use:
+
+``` bash
+git rebase
+```
+
+This command does **not create a merge commit**. Instead, it **rewrites the commit history** of your current branch by replaying its commits on top of the fetched branch, creating a **linear history**. Essentially, it re-aligns your current branch so that it starts from the latest commit of the fetched branch, as if your changes were made after the fetched branch's changes. This results in a cleaner, more linear commit history.
+
+Questions:
+
+-   add sections about README files and .gitignore
+
+-   should I add a section about the concole and the terminal andhow they are used? Or could this perhaps go into the Introduction?
+
+-   Should we include stuff about creating branches?
+
+**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](Sikt%20KI).
+
+\newpage
+
+
 # 3. Conducting Simulations Before Data Acquisition
+```{r}
+#| echo: false
+#| warning: false
+#| results: false
+#| label: Required packages
+
+
+library(tidyverse)
+library(ggdag)
+```
+
+
+Conducting simulations prior to data acquisition is useful for several reasons, including: 
+
+1. *Model design*. By sampling from the prior distributions, we can understand our 
+expectations about potential outcomes. This pre-data exploration offers insights 
+into the implications of the prior assumptions.
+2. *Model checking*. Once a model is updated using real data, simulating implied 
+data can help assess the success of the fit and explore the model's behavior.
+3. *Software validation*. In order to ensure that our model fitting software is
+functioning correctly, it is helpful to simulate observations under a known model 
+and then attempt to recover the parameter values from which the data were simulated. 
+4. *Research design*. Simulating observations based on our hypothesis allows for 
+an evaluation of the research design's effectiveness. This is similar to conducting 
+a *power analysis*, but the possibilities are broader.   
+5. *Forecasting*. Estimates derived from simulations can be utilized to generate 
+predictions for new cases and future observations [@McElreath_2018].
+
+To illustrate some of the properties of conducting simulations, we will consider 
+the following hypothesis: **Increasing daily exercise time is associated with lower 
+blood pressure levels in adults**. 
+
+
+To investigate this hypothesis, it is valuable to invest effort into finding methods 
+that distinguish causal inferences from associations. A helpful first step to do 
+this is to construct a causal model that is separate from the statistical model. 
+The simplest graphical representation of such a causal model is a *DIRECTED ACYCLIC GRAPH*, 
+commonly referred to as a *DAG* [@McElreath_2018; @digitale_tutorial_2022].
+
+A DAG primarily serves to represent our prior knowledge about biological and behavioral systems that may confound the specific causal research question. In our example, we aim to investigate the causal effect of increasing exercise time, denoted as "E", on blood pressure, "B". A basic DAG for this relationship might look like this (Figure 1):
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is not confounded."
+#| label: Fig-dag1
+#| fig-width: 6
+#| fig-height: 3
+
+
+
+coord <- tibble(name = c("E", "B"),
+                x = c(1, 2),
+                y = c(1, 1))
+
+dag <- dagify(B ~ E,
+              coords = coord)
+
+
+fig1 <- dag |> 
+  tidy_dagitty() |>
+  ggplot(aes(x = x, y = y,
+             xend = xend, yend = yend)) +
+  geom_dag_point(color = "white") +
+  geom_dag_text(color = "black", size = 8) +
+  geom_dag_edges(arrow_directed = grid::arrow(length = grid::unit(5, "pt"), 
+                                              type = "closed")) +
+  
+  theme_dag()
+
+
+
+fig1
+
+```
+
+
+This DAG assumes that the causal effect of increasing exercise time on blood pressure 
+is not confounded, which is arguably a naive assumption. For instance, both age and 
+diet could potentially confound this relationship. A more comprehensive DAG that 
+accounts for these confounders might appear as follows (Figure 2):
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is confounded by both age (A) and diet (D)."
+#| label: Fig-dag2
+#| fig-width: 6
+#| fig-height: 3
+
+
+
+coord <- tibble(name = c("E", "B", "A", "D"),
+                x = c(1, 2, 1.2, 1.7),
+                y = c(1, 1, 2, 2))
+
+dag <- dagify(B ~ E,
+              B ~ A,
+              E ~ A,
+              B ~ D,
+              coords = coord)
+
+
+fig1 <- dag |> 
+  tidy_dagitty() |>
+  ggplot(aes(x = x, y = y,
+             xend = xend, yend = yend)) +
+  geom_dag_point(color = "white") +
+  geom_dag_text(color = "black", size = 8) +
+  geom_dag_edges(arrow_directed = grid::arrow(length = grid::unit(5, "pt"), 
+                                              type = "closed")) +
+  
+  theme_dag()
+
+
+
+fig1
+
+```
+
+
+In this adjusted DAG, we presume that age directly influences blood pressure— an 
+assumption supported by the correlation between aging and increased blood pressures 
+[@Miall_1967]. Additionally, age may indirectly influence exercise time since older 
+individuals often engage in less physical activity. Diet is also included as a confounding 
+factor affecting blood pressure, linked to dietary habits like high-fat intake [@Wilde_2000].
+
+Given that we believe our DAG to be accurate, we can construct our model with stronger 
+scientific justifications regarding which confounding factors should be accounted 
+for and how we will do so.
+
+**Model design** 
+
+Having established the confounding factors of age and diet in the relationship between 
+exercise time and blood pressure, we are now prepared to design our study. We plan 
+to recruit 100 sedentary adults aged between 20 and 70 for a one-year training study, 
+during which participants will adhere to the WHO guideline of 150 minutes of endurance 
+exercise per week. Unfortunately, we will only be able to measure blood pressure 
+after the intervention period due to logistical constraints. Therefore, we can only 
+investigate whether there is an association between how many minutes of physical 
+activity the participants complete and their blood pressure levels after the intervention. 
+To control for age and diet, we will document participants' ages at the time of inclusion 
+and assess their diets using a binomial scale, where 1 indicates a healthy diet and
+0 indicates an unhealthy diet. 
+
+The model can now be described mathematically, for example in terms of a simple 
+linear regression model:
+
+
+\begin{align}
+\operatorname{BloodPressure}_i &= \beta_0 + \beta_1 \cdot \operatorname{Exercise}_i 
++ \beta_2 \cdot \operatorname{Age}_i + \beta_3 \cdot \operatorname{Diet}_i + \epsilon_i \\
+\end{align}
+
+
+
+
+Where: 
+
+\begin{align}
+\beta_0 &: \text{Intercept}\\
+\beta_1 &: \text{Coefficient for exercise time}\\
+\beta_2 &: \text{Coefficient for age}\\
+\beta_3 &: \text{Coefficient for diet}\\
+\epsilon_i &: \text{Random error term}\\
+\end{align}
+
+
+
+
+
+The linear regression model can be implemented in R as follows: 
+
+```{r}
+#| results: false
+#| label: Example data and model
+
+# Example dataset
+data <- data.frame(
+  exercise = rnorm(100, mean=150, sd=20),
+  age = rnorm(100, mean=45, sd=15),
+  diet = rnorm(100, mean=2, sd=1),
+  bloodpressure = rnorm(100, mean=120, sd=10)
+)
+
+# Fit a simple linear regression model
+model <- lm(bloodpressure ~ exercise + age + diet, data = data)
+
+# Summarize the model results
+summary(model)
+```
+
+**Run simulations**
+
+We will now run simulations to evaluate our model design. First, we need to define 
+our parameter values:
+
+
+\begin{align}
+\operatorname{BP}_i & = \beta_0 + \beta_E \cdot \operatorname{E}_i + \beta_A \cdot \operatorname{A}_i + \beta_D \cdot \operatorname{D}_i + \epsilon_i \\
+\operatorname{E}_i & \sim \operatorname{Normal}(\mu_E, \sigma_E) \\
+\operatorname{A}_i & \sim \operatorname{Normal}(\mu_A, \sigma_A) \\
+\operatorname{D}_i & \sim \operatorname{Binomial}(n=1, p=0.5) \\
+\epsilon_i & \sim \operatorname{Normal}(\mu_\epsilon, \sigma_\epsilon) \\
+\beta_0 & = 120 \quad (\text{intercept}) \\
+\beta_E & = -0.1 \quad (\text{beta for exercise}) \\
+\beta_A & = 0.2 \quad (\text{beta for age}) \\
+\beta_D & = -5 \quad (\text{beta for diet}) \\
+\mu_E & = 150 \quad (\text{mean exercise}) \\
+\mu_A & = 45 \quad (\text{mean age}) \\
+\mu_\epsilon & = 0 \quad (\text{mean error term}) \\
+\sigma_E & = 20 \quad (\text{exercise standard deviation}) \\
+\sigma_A & = 10 \quad (\text{age standard deviation}) \\
+\sigma_\epsilon & = 5 \quad (\text{error term standard deviation}) \\
+\end{align}
+
+
+
+After defining our parameter values, we can simulate data using these parameters. 
+To do this, it is convenient to create a function where you specify information about 
+each parameter that can be manipulated later, thereby enabling experimentation with 
+different values to assess the model's robustness. Below is the code for this simulation:
+
+```{r}
+#| results: false
+#| label: Sim.function
+
+
+# Simulate data based on the hypothetical model
+
+# A basic function
+sim.fun <- function(n = 100,
+                intercept = 120,
+                mean_exercise = 150,
+                beta_exercise = -0.1,
+                sigma_exercise = 20,
+                mean_age = 45,
+                beta_age = 0.2,
+                sigma_age = 10,
+                size_diet = 1,
+                prob_diet = 0.5,
+                beta_diet = -5, 
+                mean_epsilon = 0,
+                sigma_epsilon = 5) {
+  
+  # This is the body 
+  epsilon <- rnorm(n, mean = mean_epsilon, sd = sigma_epsilon) #error term 
+  diet <- rbinom(n, size = size_diet, prob = prob_diet) #simulate diet 
+  age <- rnorm(n, mean = mean_age, sd = sigma_age) #simulate age
+  exercise <- rnorm(n, mean = mean_exercise, sd = sigma_exercise) #simulate exercise duration
+  bloodpressure <- intercept + (beta_exercise * exercise) + (beta_age * age) + 
+    (beta_diet * diet) + epsilon
+  
+  
+  
+  # The output
+  return(data.frame(age, exercise, diet, bloodpressure, epsilon))
+  
+}
+
+
+# Store the data frame as "sim_data"
+sim_data <- sim.fun()
+
+
+```
+
+With our simulated dataset, we can now test our hypotheses using the linear model: 
+*lm(bloodpressure ~ exercise + age + diet, sim_data)*. The output will indicate whether
+there is an observed effect of exercise on blood pressure:
+
+```{r}
+#| echo: false
+#| label: Simulatetd.m1
+
+set.seed(1)
+sim_data <- sim.fun()
+
+
+sim.m1 <- lm(bloodpressure ~ exercise + age + diet, sim_data)
+
+summary.m1 <- summary(sim.m1)
+
+```
+
+
+
+```{r}
+#| echo: false
+#| label: Sim.m1.output 
+
+
+summary.m1
+
+exercise_effect <- sprintf("%.3f",summary(sim.m1)$coefficients["exercise", "Estimate"])
+
+```
+
+In this model, we can see that each minute of increased exercise time is associated 
+with a **`r exercise_effect`** mmHg lower blood pressure, when age and diet 
+are included as covariates.
+
+Now it is time to play with our simulation! Lets say we only manage to include 50 
+participents, what will happen whit our results?
+
+This can easily be tested by manipulating our function and then running the model, 
+like this:
+
+
+```{r}
+#| label: Manipulate function 
+
+# Changing number of observations to 50!
+set.seed(7)
+sim_data2 <- sim.fun(n = 50)
+
+
+```
+
+
+
+```{r}
+#| echo: false
+#| label: Sim.m2.output 
+
+
+sim.m2 <- lm(bloodpressure ~ exercise + age + diet, sim_data2)
+
+summary.sim.m2 <- summary(sim.m2)
+
+summary.sim.m2
+
+exercise_effect2 <- sprintf("%.3f", summary(sim.m2)$coefficients["exercise", "Estimate"])
+```
+
+
+The output for this model may reveal that the **`r exercise_effect2`** mmHg effect 
+of exercise is no longer significant, suggesting that 50 participants may not be 
+sufficient to detect the true effect of exercise which we know is **-0.1** mmHg. 
+However, this is just one simulation; results may vary due to random chance. It is 
+therefore prudent to conduct multiple simulations to evaluate the robustness of our 
+model, which can be executed in a loop as demonstrated below:
+
+
+
+
+```{r}
+#| label: Simulations loop
+
+set.seed(1)
+results <- list()
+
+for(i in 1:1000) {
+  
+  dat1 <- sim.fun()
+  dat2 <- sim.fun(n = 50)
+  
+  
+  m1 <- lm(bloodpressure ~ exercise + age + diet, data = dat1)
+  m2 <- lm(bloodpressure ~ exercise + age + diet, data = dat2)
+
+  
+  results[[i]] <- data.frame(model = c("m1", "m2"),
+             estimate = c(coef(m1)[2],
+                          coef(m2)[2]))
+  
+  
+  
+}
+
+
+```
+
+
+
+To visualize the estimates of model 1 and model 2, it is convenient to create a 
+figure similar to Figure 3.
+
+
+```{r}
+#| label: Simulation figure 
+#| echo: false
+#| fig-cap: "Demonstrating the variation in the estimated effect of exercise on blood pressure using 100 participants (m1) compared to 50 participants (m2) by simulating 1,000 different datasets."
+
+
+bind_rows(results) |>
+  ggplot(aes(model, estimate)) +
+  geom_point(position = position_jitter(width = 0.1),
+             alpha = 0.2, 
+             shape = 21,
+             color = "blue") + 
+  theme_classic()
+```
+
+
+In the simulated models shown in Figure 3, the estimate for model m1 clusters more 
+tightly around -0.1, which represents the true effect of exercise on blood pressure
+as specified. In contrast, model m2 exhibits more variation, indicating that the 
+effect is less reliably detected with only 50 participants.
+
+This brief introduction illustrates how to conduct basic data simulations before 
+data acquisition, empowering you to enhance the robustness of your research! 
 
 # 4. Including Data Packages for Distribution
 
 # 5. Creating Visualizations from Data Packages
+
+As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of. 
+
+### Prior to plotting
+
+Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. <!-- I'll be using my own data package here, since it would be contrary to progress to wait for the data package to be finished in section 4. -->
+
+The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier. 
+
+```{r, data import and wrangling}
+library(tidyverse)
+library(dplyr)
+
+## Importing the data from the data package
+
+humac.dat <- reliefdata::relief_humac # this is the peak torque test data
+
+condition <- reliefdata::relief_volume %>% # this is info about volume condition
+  mutate(participant = as.character(participant))
+
+participants <- reliefdata::relief_participants %>% # this is info about age group and allocation
+  
+  mutate(age_group = if_else(age < 40, "yng", "old"))
+
+# It would probably be a good idea to make 1 dataset overall from relief_volum and relief_participants - as a note to self
+
+
+
+## Joining the data sets
+
+# Joining condition and participant info
+humac.dat <- humac.dat %>%
+  # Using left_join to add the info from condition and participants to humac.dat
+  left_join(condition) %>%
+  # There is no "arm" data from this test, so we exclude it
+  select(-arm) %>% 
+  
+  left_join(participants) %>%
+  
+  mutate(age_group = factor(age_group, levels = c("yng", "old")),
+         # using factor() to sort the order of the respective variables
+         condition = factor(condition, levels = c("low", "mod")),
+         
+         time = factor(time, levels = c("pre", "mid",  "post")),
+         
+         speed = factor(speed, levels = c("0", "60", "120", "240")),
+         
+         allocation = factor(allocation, levels = c("int", "con")),
+         # case_when makes sure that control participants are not grouped with a volum                condition
+         condition = case_when(participant %in% c("3071", "3075", "3076", 
+                                                  "3083", "3084", "3085",
+                                                  "3086", "3090", "3091",
+                                                  "3094") ~ "none", TRUE ~ condition))
+
+## Further data wrangling
+# The data set contains 2x test per time point, so I've decided to take the highest value observed at each time point for analysis. Another option would be to take the average from each time point. Getting the highest observed measurement from each time point could be done using the summarise() function alone, however, this produced alot of NA's and corresponding errors. Therefore I've included the below code, which makes a functions that returns proper NA values where all values are NA for a group.
+
+
+safe_max <- function(x) {
+  if (all(is.na(x))) return(NA_real_)
+  max(x, na.rm = TRUE)
+}
+
+safe_min <- function(x) {
+  if (all(is.na(x))) return(NA_real_)
+  min(x, na.rm = TRUE)
+}
+
+
+## Step-by-step explanation:
+#1. function(x) - This creates a function that takes one input called x (which will be your vector of values)
+#2. if (all(is.na(x))) - This checks the condition:
+
+#is.na(x) checks each element and returns TRUE/FALSE for each
+#all() checks if ALL elements are TRUE
+#So this asks: "Are ALL values in x missing (NA)?"
+
+#3. return(NA_real_) - If all values are NA:
+
+#Return NA_real_ (which is specifically a numeric NA, as opposed to NA_character_ or NA_integer_)
+#return() immediately exits the function
+
+#4. max(x, na.rm = TRUE) - If NOT all values are NA:
+
+#Calculate the maximum, ignoring any NAs that exist
+#This line only runs if the if condition is FALSE
+
+## Get max values for all outcomes
+# With the new "safe_max" variable, we can safely get the highest measurements without producing erroneous NAs.
+
+max.dat <- humac.dat %>%
+  filter(!participant == "3012") %>% # Missing data
+  group_by(participant, time, leg, speed, condition, age_group, allocation, sex) %>%
+  summarise(pt_max = safe_max(pt),
+            power_max = safe_max(rep_power),
+            work_max = safe_max(rep_work),
+            tt_min = safe_min(pt_tt),
+            angle = mean(pt_angle, na.rn = TRUE),
+            .groups = "drop")
+
+
+## Reshape the data to long format for faceting
+# This simply formats the data to where each observation is stored in its own row, with variables spread
+# across columns - thus minimizing redundancy. 
+
+long.dat <- max.dat %>%
+  pivot_longer(names_to = "outcome",
+               values_to = "value",
+               cols = c(pt_max, power_max, work_max, tt_min, angle))
+
+## Filter by speed and parameter
+# Below separate data sets for the different velocities are created with the filter() function, also filtering to only the peak torque measurement, since thats what Im interested in here. This could also be done in the plot itself, but I prefer it this way to minimize the amount of code that goes into the actual plot. This might be a personal preference, and there's probably better ways to do it. 
+
+# Isometric/ 0 d/s
+
+ptisom <- long.dat %>%
+  filter(speed == "0", outcome == "pt_max")
+
+
+# 60 d/s
+
+pt60 <- long.dat %>%
+  filter(speed == "60", outcome == "pt_max")
+
+  
+# 120 d/s
+
+pt120 <- long.dat %>%
+  filter(speed == "120", outcome == "pt_max")
+
+
+# 240 d/s
+
+pt240 <- long.dat %>%
+  filter(speed == "240", outcome == "pt_max")
+
+
+```
+
+
+### Plotting some figures
+
+Now that the data is tidied up for our purpose, we can make some different plots. The backbone of these plots will be the ggplot() function from ggplot2 (also loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 
+
+**Plot 1: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
+
+```{r, Plot1}
+
+library(cowplot)
+
+## Peak torque Isometric
+
+ptisom.plot <- ptisom %>%
+  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
+  geom_line(aes(color = condition), alpha = 0.3) +
+  geom_point(aes(color = condition), alpha = 0.3, size = 1) +
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +
+  labs(title = "",
+       subtitle = "",
+       x = "",
+       y = "Peak Torque (Nm)") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.line.x = element_blank(),
+        axis.text.x = element_blank(),
+        strip.text = element_blank())
+
+## Peak torque 60
+
+pt60.plot <- pt60 %>%
+  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
+  geom_line(aes(color = condition), alpha = 0.3) +
+  geom_point(aes(color = condition), alpha = 0.3, size = 1) +
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +
+  labs(title = "",
+       subtitle = "",
+       x = "",
+       y = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.line.x = element_blank(),
+        axis.text.x = element_blank())
+
+## Peak torque 120
+
+pt120.plot <- pt120 %>%
+  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
+  geom_line(aes(color = condition), alpha = 0.3) +
+  geom_point(aes(color = condition), alpha = 0.3, size = 1) +
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +
+  labs(title = "",
+       subtitle = "",
+       x = "Time",
+       y = "Peak Torque (Nm)") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"))
+
+## Peak torque 240
+
+pt240.plot <- pt240 %>%
+  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
+  geom_line(aes(color = condition), alpha = 0.3) +
+  geom_point(aes(color = condition), alpha = 0.3, size = 1) +
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +
+  labs(title = "",
+       subtitle = "", #Each line represents one leg from one participant
+       x = "Time",
+       y = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.box.margin = margin(0, 0, 0, 0)) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"))
+
+
+
+
+# Combinding the plots
+
+ptfig <- plot_grid(
+  ptisom.plot + theme(legend.position = "none"),
+  pt60.plot + theme(legend.position = "none"),
+  pt120.plot,
+  pt240.plot,
+  ncol = 2,
+  nrow = 2,
+  labels = c("A) 0 d/s", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
+  rel_heights = c(0.8, 1) 
+)
+
+
+ptfig
+
+
+
+```
+
+
+
+<!--**Plot 2: Mean Change Peak Torque per Age Group**-->
+
+```{r, Plot2}
+
+
+## Isometric 
+#
+#ptisommean <- ptisom %>%
+#  #summarising means
+#  group_by(age_group, allocation, condition, time) %>%
+#  summarise(mean = mean(value, na.rm = TRUE),
+#            sd = sd(value, na.rm = TRUE),
+#            .groups = "drop" ) %>%
+#  
+#  #creating the plot
+#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+#  
+#  geom_line(linewidth = 1, position = position_dodge(.2)) +
+#  geom_point(size = 3, position = position_dodge(.2)) +
+#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+#  
+#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+#  
+#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+#                     name = "Training Volume") +
+#  
+#  labs(title = "",
+#       subtitle = "",
+#       x = "",
+#       y = "Peak Torque (Nm)") +
+#  
+#  theme_minimal() +
+#  theme(legend.position = "bottom") +
+#  theme(panel.grid.major = element_blank(),
+#        panel.grid.minor = element_blank(),
+#        axis.line = element_line(color = "black"),
+#        axis.text.x = element_blank(),
+#        axis.line.x = element_blank())
+#
+#
+## 60 d/s
+#pt60mean <- pt60 %>%
+#  #summarising means
+#  group_by(age_group, allocation, condition, time) %>%
+#  summarise(mean = mean(value, na.rm = TRUE),
+#            sd = sd(value, na.rm = TRUE),
+#            .groups = "drop" ) %>%
+#  
+#  #creating the plot
+#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+#  
+#  geom_line(linewidth = 1, position = position_dodge(.2)) +
+#  geom_point(size = 3, position = position_dodge(.2)) +
+#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+#  
+#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+#  
+#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+#                     name = "Training Volume") +
+#  
+#  labs(title = "",
+#       subtitle = "",
+#       x = "",
+#       y = "") +
+#  
+#  theme_minimal() +
+#  theme(legend.position = "bottom") +
+#  theme(panel.grid.major = element_blank(),
+#        panel.grid.minor = element_blank(),
+#        axis.line = element_line(color = "black"),
+#        axis.text.x = element_blank(),
+#        axis.line.x = element_blank())
+#
+#
+## 120 d/s
+#pt120mean <- pt120 %>%
+#  #summarising means
+#  group_by(age_group, allocation, condition, time) %>%
+#  summarise(mean = mean(value, na.rm = TRUE),
+#            sd = sd(value, na.rm = TRUE),
+#            .groups = "drop" ) %>%
+#  
+#  #creating the plot
+#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+#  
+#  geom_line(linewidth = 1, position = position_dodge(.2)) +
+#  geom_point(size = 3, position = position_dodge(.2)) +
+#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+#  
+#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+#  
+#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+#                     name = "Training Volume") +
+#  
+#  labs(title = "",
+#       subtitle = "",
+#       x = "Time",
+#       y = "Peak Torque (Nm)") +
+#  
+#  theme_minimal() +
+#  theme(legend.position = "bottom") +
+#  theme(panel.grid.major = element_blank(),
+#        panel.grid.minor = element_blank(),
+#        axis.line = element_line(color = "black"))
+#
+#
+## 120 d/s
+#pt240mean <- pt240 %>%
+#  #summarising means
+#  group_by(age_group, allocation, condition, time) %>%
+#  summarise(mean = mean(value, na.rm = TRUE),
+#            sd = sd(value, na.rm = TRUE),
+#            .groups = "drop" ) %>%
+#  
+#  #creating the plot
+#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+#  
+#  geom_line(linewidth = 1, position = position_dodge(.2)) +
+#  geom_point(size = 3, position = position_dodge(.2)) +
+#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+#  
+#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+#  
+#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+#                     name = "Training Volume") +
+#  
+#  labs(title = "",
+#       subtitle = "",
+#       x = "Time",
+#       y = "") +
+#  
+#  theme_minimal() +
+#  theme(legend.position = "bottom") +
+#  theme(panel.grid.major = element_blank(),
+#        panel.grid.minor = element_blank(),
+#        axis.line = element_line(color = "black"))
+#
+#
+## Combinding the plots
+#
+#ptmeanfig <- plot_grid(
+#  ptisommean + theme(legend.position = "none"),
+#  pt60mean + theme(legend.position = "none"),
+#  pt120mean,
+#  pt240mean,
+#  ncol = 2,
+#  nrow = 2,
+#  labels = c("A) Isometric", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
+#  rel_heights = c(0.8, 1) 
+#)
+#
+#
+#ptmeanfig
+#
+#
+
+```
+
+
+
+**Plot 3: Mean Change Peak Torque per Age Group - with raw data**
+
+```{r, Plot3}
+
+# Set seed for jitter
+
+set.seed(1)
+
+# Isometric 
+
+ptiisommean <- ptisom %>%
+  #summarising means
+  group_by(age_group, allocation, condition, time) %>%
+  summarise(mean = mean(value, na.rm = TRUE),
+            sd = sd(value, na.rm = TRUE),
+            .groups = "drop" ) %>%
+  
+  #creating the plot
+  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+  
+  geom_line(linewidth = 1, position = position_dodge(.5)) +
+  geom_point(shape = 21, aes(fill = condition), color = "black",
+             size = 3, stroke = 1, position = position_dodge(.5)) +
+#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+
+  # adding in the raw data
+  geom_point(data = ptisom,
+             aes(x = time, y = value,
+                 color = condition, group = condition),
+                 size = 1.5,
+                 alpha = 0.3,
+             position = position_jitter(width = 0.2)) +
+  
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +  # <-- hide the color legend
+  
+  scale_fill_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                    guide = "none") +  # <-- add fill scale
+  
+  labs(title = "",
+       subtitle = "",
+       x = "",
+       y = "Peak Torque (Nm)") +
+  
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_blank(),
+        axis.line.x = element_blank())
+
+
+# 60 d/s
+pti60mean <- pt60 %>%
+  #summarising means
+  group_by(age_group, allocation, condition, time) %>%
+  summarise(mean = mean(value, na.rm = TRUE),
+            sd = sd(value, na.rm = TRUE),
+            .groups = "drop" ) %>%
+  
+  #creating the plot
+  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+  
+  geom_line(linewidth = 1, position = position_dodge(.5)) +
+  geom_point(shape = 21, aes(fill = condition), color = "black",
+             size = 3, stroke = 1, position = position_dodge(.5)) +
+ # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  # adding in the raw data
+  geom_point(data = pt60,
+             aes(x = time, y = value,
+                 color = condition, group = condition),
+                 size = 1.5,
+                 alpha = 0.3,
+             position = position_jitter(width = 0.2)) +
+  
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +  # <-- hide the color legend
+  
+  scale_fill_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                    guide = "none") +  # <-- add fill scale
+  
+  labs(title = "",
+       subtitle = "",
+       x = "",
+       y = "") +
+  
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_blank(),
+        axis.line.x = element_blank())
+
+
+# 120 d/s
+pti120mean <- pt120 %>%
+  #summarising means
+  group_by(age_group, allocation, condition, time) %>%
+  summarise(mean = mean(value, na.rm = TRUE),
+            sd = sd(value, na.rm = TRUE),
+            .groups = "drop" ) %>%
+  
+  #creating the plot
+  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+  
+  geom_line(linewidth = 1, position = position_dodge(.5)) +
+  geom_point(shape = 21, aes(fill = condition), color = "black",
+             size = 3, stroke = 1, position = position_dodge(.5)) +
+ # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+  #              width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  # adding in the raw data
+  geom_point(data = pt120,
+             aes(x = time, y = value,
+                 color = condition, group = condition),
+                 size = 1.5,
+                 alpha = 0.3,
+             position = position_jitter(width = 0.2)) +
+  
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +  # <-- hide the color legend
+  
+  scale_fill_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                    guide = "none") +  # <-- add fill scale
+  
+  labs(title = "",
+       subtitle = "",
+       x = "Time",
+       y = "Peak Torque (Nm)") +
+  
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"))
+
+
+# 240 d/s
+pti240mean <- pt240 %>%
+  #summarising means
+  group_by(age_group, allocation, condition, time) %>%
+  summarise(mean = mean(value, na.rm = TRUE),
+            sd = sd(value, na.rm = TRUE),
+            .groups = "drop" ) %>%
+  
+  #creating the plot
+  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
+  
+  geom_line(linewidth = 1, position = position_dodge(.5)) +
+  geom_point(shape = 21, aes(fill = condition), color = "black",
+             size = 3, stroke = 1, position = position_dodge(.5)) +
+  #geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+   #             width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  # adding in the raw data
+  geom_point(data = pt240,
+             aes(x = time, y = value,
+                 color = condition, group = condition),
+                 size = 1.5,
+                 alpha = 0.3,
+             position = position_jitter(width = 0.2)) +
+  
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  
+  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                     name = "Training Volume") +  # <-- hide the color legend
+  
+  scale_fill_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
+                    guide = "none") +  # <-- add fill scale
+  
+  labs(title = "",
+       subtitle = "",
+       x = "Time",
+       y = "") +
+  
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black"))
+
+
+
+# Combinding the plots
+
+ptimeanfig <- plot_grid(
+  ptiisommean + theme(legend.position = "none"),
+  pti60mean + theme(legend.position = "none"),
+  pti120mean + theme(legend.position = "none"),
+  pti240mean + theme(legend.position = "none"),
+  ncol = 2,
+  nrow = 2,
+  labels = c("A) Isometric", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
+  label_size = 8
+)
+
+
+
+ptimeanfig
+
+```
+
+
+
+**Plot 4: Mean Peak Torque change in a Hill curve format**
+
+```{r, Plot4}
+
+# Calculating group means
+curve.sum <- long.dat %>%
+  filter(outcome == "pt_max") %>%
+  group_by(age_group, allocation, time, speed) %>%
+  summarise(mean_torque = mean(value, na.rm = TRUE),
+            se_torque = sd(value, na.rm = TRUE) / sqrt(n()),
+            .groups = "drop")
+
+# Creating a combined group variable for easier plotting
+curve.sum <- curve.sum %>%
+  mutate(group = paste(age_group, allocation, sep = "_"))
+
+
+# Plot 1: Comparing changes over time (baseline + halfway + post)
+# Separate panels for each group
+
+plot_time <- curve.sum %>%
+  ggplot(aes(x = speed, y = mean_torque, color = time, group = time)) +
+  geom_line(linewidth = 1) +
+  #geom_point(size = 3) +
+  #geom_errorbar(aes(ymin = mean_torque - se_torque, 
+  #                  ymax = mean_torque + se_torque), 
+  #              width = 10) +
+  facet_wrap(~ age_group + allocation, ncol = 3) +
+  labs(x = "Angular Velocity (d/s)",
+       y = "Peak Torque (Nm)",
+       color = "Time Point",
+       title = "Force-Velocity Curves Across Training") +
+  theme_classic() +
+  theme(legend.position = "bottom")
+
+
+# Plot 2: Single plot showing everything (might be busy)
+curve.plot <- curve.sum %>%
+  ggplot(aes(x = speed, y = mean_torque, color = group, linetype = time, 
+             group = interaction(group, time))) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  labs(x = "Angular Velocity (d/s)",
+       y = "Peak Torque (Nm)",
+       color = "Group",
+       linetype = "Time Point",
+       title = "") +
+  scale_color_manual(values = c("yng_int" = "#E69F00",
+                                  "old_int" = "#56B4E9",
+                                  "old_con" = "gray50"),
+                     labels = c("yng_int" = "Young Intervention", 
+                                "old_int" = "Old Intervention", 
+                                "old_con" = "Old Control")) +
+  theme_classic() +
+  theme(legend.position = "bottom")
+
+
+curve.plot
+
+
+
+
+```
+
+
+
+
+# Bibliography
