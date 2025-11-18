@@ -8,28 +8,32 @@ editor_options:
 
 # 5. Creating Visualizations from Data Packages
 
-As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of. 
+As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of.
 
 ### Prior to plotting
 
 Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. <!-- I'll be using my own data package here, since it would be contrary to progress to wait for the data package to be finished in section 4. -->
 
-The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier. 
+The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier.
 
 ```{r, data import and wrangling}
 library(tidyverse)
 #library(dplyr)
+library(writexl)
 
 ## Importing the data from the data package
 
 humac.dat <- reliefdata::relief_humac # this is the peak torque test data
+write_xlsx(humac.dat, "relief_humac.xlsx")
 
 condition <- reliefdata::relief_volume %>% # this is info about volume condition
   mutate(participant = as.character(participant))
+write_xlsx(condition, "relief_volume")
 
 participants <- reliefdata::relief_participants %>% # this is info about age group and allocation
   
   mutate(age_group = if_else(age < 40, "yng", "old"))
+write_xlsx(participants, "relief_participants")
 
 # It would probably be a good idea to make 1 dataset overall from relief_volum and relief_participants - as a note to self
 
@@ -153,10 +157,9 @@ long.dat <- max.dat %>%
 
 ```
 
-
 ### Plotting some figures
 
-Now that the data is imported and tidied up, it can be a good idea to start with a simple plot just to get an overview of the data. The backbone of all these plots will be the ggplot() function from ggplot2 (loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 can be considered a layered grammar of graphics, where we can use its tools to build a plot from data through mapping variables to aesthetics, geometric objects, facets, and adding themes and annotations [kursnotater, wilkinson10]. 
+Now that the data is imported and tidied up, it can be a good idea to start with a simple plot just to get an overview of the data. The backbone of all these plots will be the ggplot() function from ggplot2 (loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 can be considered a layered grammar of graphics, where we can use its tools to build a plot from data through mapping variables to aesthetics, geometric objects, facets, and adding themes and annotations \[kursnotater, wilkinson10\].
 
 Before trying to make "the one and only" plot, it may be a good idea to start simple just to have a look at what you're working with - this is also useful to do before any statistical analysis. Since we've aleardy wrangled the data into a tidy long format, and glimpsed (glimpse()) the variables we are interested in, we can go ahead and plot it.
 
@@ -190,7 +193,7 @@ facet.plot
 
 This is an alright start, we've got the angular velocity separated by facets, and data points colored by age group. However, what we are interested in is to visualize the change from baseline to post, and in addition the difference in this change between age group (young vs. old), condition (low vs. moderate volume) and allocation (intervention vs. control).
 
-This can be displayed in a couple different ways by using the package cowplot with simultaneous faceting, to make sure we get all the groups we want and also not totally flooding one single graph. 
+This can be displayed in a couple different ways by using the package cowplot with simultaneous faceting, to make sure we get all the groups we want and also not totally flooding one single graph.
 
 **Plot 2: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
 
@@ -302,8 +305,6 @@ ptfig
 
 
 ```
-
-
 
 **Plot 3: Mean Change Peak Torque per Age Group - with raw data**
 
@@ -518,8 +519,6 @@ ptimeanfig
 
 ```
 
-
-
 **Plot 4: Mean Peak Torque change in a Hill curve format**
 
 ```{r, Plot4}
@@ -583,5 +582,3 @@ curve.plot
 
 
 ```
-
-
