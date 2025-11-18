@@ -601,3 +601,4 @@ curve.plot
 
 ```
 
+These plots are just simple examples - how you visualize your data always should always aim at conveying the data in the best possible way to a reader who hasn't actually worked with it. Having a general workflow where you import data -> tidy it -> get an overview through simple plotting, and then narrow down and tweak your plot seems a good strategy. In addition, we can consider every plot having their own workflow, starting with your data, and building layers of aesthetics, geometric objects, facets, coordinates, with annotations (if applicable) and theme adjustments to wrap it up nicely (kursnotater, wilkinson10)
