@@ -550,6 +550,7 @@ ptimeanfig
 **Plot 4: Mean Peak Torque change in a Hill curve format**
 
 How about just combining everything into one graph? Of course its doable, but you may have to get a bit more creative and watch your step. 
+
 ```{r, Plot4}
 
 # Calculating group means
