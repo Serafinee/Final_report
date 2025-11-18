@@ -1,6 +1,8 @@
 ---
 title: "Manuscript"
 format: pdf
+header-includes:
+  - \usepackage{wrapfig}
 editor_options: 
   chunk_output_type: console
 bibliography: resources/bib.bib
@@ -760,15 +762,19 @@ The package from which we will import data is organized by test, meaning one xls
 ```{r, data import and wrangling}
 library(tidyverse)
 library(dplyr)
+library(readxl)
 
 ## Importing the data from the data package
 
-humac.dat <- reliefdata::relief_humac # this is the peak torque test data
+humac.dat <- read_excel("data/relief_humac.xlsx", 
+    na = "na") # this is the peak torque test data
 
-condition <- reliefdata::relief_volume %>% # this is info about volume condition
+condition <- read_excel("data/relief_volume.xlsx", 
+    na = "na") %>% # this is info about volume condition
   mutate(participant = as.character(participant))
 
-participants <- reliefdata::relief_participants %>% # this is info about age group and allocation
+participants <- read_excel("data/relief_participants.xlsx", 
+    na = "na") %>% # this is info about age group and allocation
   
   mutate(age_group = if_else(age < 40, "yng", "old"))
 
