@@ -8,11 +8,11 @@ editor_options:
 
 # 5. Creating Visualizations from Data Packages
 
-As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of.
+As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about how/why you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of.
 
 ### Prior to plotting
 
-Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Therefore it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier.
+Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Therefore it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting (and your life) quite a lot easier.
 
 ```{r, data import and wrangling}
 library(tidyverse)
@@ -125,7 +125,7 @@ long.dat <- max.dat %>%
 
 ### Plotting some figures
 
-Now that the data is imported and tidied up, it can be a good idea to start with a simple plot just to get an overview of the data. The backbone of all these plots will be the ggplot() function from ggplot2 (loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 may be considered a layered grammar of graphics, where we can use its tools to build a plot from data through mapping variables to aesthetics, geometric objects, facets, and adding themes and annotations [kursnotater, wilkinson10].
+Now that the data is imported and tidied up, it's a good idea to start with a simple plot just to get an overview of the data. The backbone of all these plots will be the ggplot() function from ggplot2 (loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 may be considered a layered grammar of graphics, where we can use its tools to build a plot from data through mapping variables to aesthetics, geometric objects, facets, and adding themes and annotations [kursnotater, wilkinson10].
 
 Before trying to make "the one and only" plot, it's a good idea to start simple just to have a look at what you're working with - this is also useful to do before any statistical analysis. Since we've already wrangled the data into a tidy long format, and glimpsed (glimpse()) the variables we are interested in, we can go ahead and plot it.
 
