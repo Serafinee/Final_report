@@ -35,66 +35,116 @@ Achieving computational reproducibility and transparency is further complicated 
 
 To address the challenges of collaboration in scientific projects, this assignment highlights tools and workflows designed to enhance organizational efficiency and ensure reproducibility. This assignment aims to (1) describe key components of robust, reproducible, and transparent scientific workflows, including setting up a collaborative work space, conduction simulations prior to data acquisition, including data packages for distribution, and creating visualizations from data packages, and (2) present collaborative framework for managing joint research and writing efforts, with a focus on version control systems, R, and GitHub, to streamline the creation of a transparent and reproducible framework for scientific workflows. While the primary outcome of this assignment is a PDF report, the accompanying GitHub repository provides a comprehensive view of the collaborative workflow and serves as an integral part of the project.
 
-# 2. Setting Up a Collaborative Workspace
+# 2. Setting Up a Collaborative Work space (Author:Sarah jasmin Klausen)
 
-In this toturial we assume that you will be working with RStudio and have already downloaded R and RSTudio. In addition you need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
+Alright! Now that we understand the importance of having a robust and reproducible scientific workflow that allows for collaboration we can start by setting up a collaborative workspace and understanding some key terms. In this tutorial we assume that you will be working with RStudio and have already downloaded R and RSTudio. In addition you need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
+
 
 ### What is a repository?
 
-A repository is basically like a project box where you collect all the files, data, graphs and code scripts from your project.\
-Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space its advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository what a local repository which allows us to work and make changes using our own computer and then we can upload it to the online repository.
+A repository is like a project box where you collect all the files, data, graphs and code scripts from your project.
+Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space it is advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository with a local repository which allows us to work and make changes using our own computer while still keeping the online repository up to date.
 
 ### What is Git?
 
-Git is a version control software that allows you to track the different version of your files. It basically allows you to keep a detailed history of changes you have done in your document and also what other people have added or removed in your collaborative documents. Having a version controls software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced in a document or code, you can track it back to see what and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
+Git is a version control software that allows you to track the different version of your files. It allows you to keep a detailed history of changes you have done in your document and also what other people have added or removed in your collaborative documents. Having a version controls software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced in a document or code, you can track it back to see what and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
 
 ### What is GitHub?
 
-GitHub is a collaborative online platform that allows you to host and join online repositories. its kinda like facebook for coding. gitHub allows us to share and collaborate with the people on the same code at the same time. It can also be used to host webpages and other stuff.
+GitHub is a collaborative online platform that allows you to host and join online repositories. It is kinda like facebook for coding. GitHub allows us to share and collaborate with other people on the same code at the same time. It can also be used to host webpages and other fun things.
 
-In this toturial we will only work with the RStudio interface and the online GitHub interface. however, if you want an expanded commandline and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See toturials here: [GitHub CLI](https://docs.github.com/en/github-cli/github-cli/quickstart) and [GitHub Desktop](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop).
+In this tutorial we will only work with the RStudio interface and the online GitHub interface. However, if you want an expanded command line and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See tutorials here: [GitHub CLI](https://docs.github.com/en/github-cli/github-cli/quickstart) and [GitHub Desktop](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop).
 
 ## 2.1 How to create a project that is connected between RStudio and GitHub?
 
-When creating a new project and you want to link your local project with an online repository, you can go about it to ways basicly.\
-a) You can create the online repository and then clone it down to you computer\
-b) You can create a local repository and then push it online to GitHub
+When creating a new project and you want to link your local project with an online repository, you can essentially go about it to ways.\
+a) You can create the online repository and then clone it down to your computer.\
+b) You can create a local repository and then push it online to GitHub.
 
-We´ll go through both options here, starting with the online repository.
+We´ll go through both options here.
 
-Image file path:
 
-resources/images/
-
-\newpage
 
 ### 2.1.1 Starting with an online repository
 
 #### Step 1. Create a new online repository in GitHub ([Video tutorial](https://www.youtube.com/watch?v=f26KI43FK58))
 
-Once you´ve logged into GitHub, navigate to the top right corner of your page and find the + tab. Drop it down to reveal the "New repository" option. Click on it.
 
-This will take you ta the repository creation page.\
-Here you give your repository a name, a description of what it will entail and wherever it is public or not.
+1. Log into your GitHub account.
 
-You also have the options of adding a README file and a .gitignore file upon creation, but it is possible to create these after the repository is made as well.
+2. Navigate to the top-right corner of the page and click the + dropdown menu.
+
+3. Select New repository from the dropdown options.
+
+4. On the repository creation page, do the following:
+  * Name your repository: Provide a name for your repository.
+  * Add a description (optional): Briefly explain what your repository will contain.
+  * Set visibility: Choose whether the repository will be Public (visible to everyone) or Private (only visible to you and collaborators).\
+
+  (Optional) You can also initialize your repository with:
+
+  * A README file: Useful for describing your project.
+  * A .gitignore file: Specify which files or directories Git should ignore.
+  * A license: Define the terms of use for your repository.
+
+  However its also possible to create these documents after creating the repository.
+
+5. Click Create repository to finalize.
+
 
 ##### README
 
-A README file is a descriptive file that should explain what the project/repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
+A README file is a descriptive file that should explain what the project or repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
 
 ##### .gitignore
 
-The .gitignore file is an information file that tells Git what types of files it should track, or specifically not track. This is useful when you for example don't want to track the generated images or graphs from your code, but just your code.
+The .gitignore file is an information file that tells Git what types of files it should track, or specifically not track. This is useful when you for example don't want to track the generated images or graphs from your code, but just your code. It´s content could look like this:
+```bash
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rproj
 
-So, now that you have created your first online repository you want to connect it to your local computer.\
-You can do this multiple ways, but in this tutorial we´ll use commands in the terminal to initialize
+*.docx
+*.pdf
+*.html
+*.png
+*.DS_Store
+
+/manuscript_files/
+```
+
+#### Licenses
+If you plan to share your scientific work, there are certain intellectual property rights that can go along with it. In terms of reproducibility and transparency in science we want our work to be shared and used, but we also want people to acknowledge the authors who did the original work. That´s where licenses come in. There are many complete  licences that you can add to your project and documents. For open-source scientific work the **Creative Commons (CC BY)** license is a good option. You can find it here ([Creative Commons license](https://creativecommons.org/)) or choose another license that fits your project at [choosealicense.com](https://choosealicense.com/).
+
+To add a license to your project you can either do it when creating the repository, or you can do it manually later. If you choose to do it manually you can follow these simple steps:
+
+1. Choose a license that fits your project and copy its entire text
+
+2. Create a new file in the root of your project directory and name it **license** or **license.txt**.
+
+3. Add the license text to your new file and save.
+
+Now your project has an associated license. If you also want to add the license info to you metadata in your documents you can include it in your YAML headings like this:
+```bash
+--- 
+title: "My quarto document"
+author: "your name"
+date: "2025-12-24"
+format: pdf
+license: CC BY 4.0
+---
+```
+
+So, now that you have created your first online repository you want to connect it to your local computer.
+You can do this multiple ways, but in this tutorial we´ll use the GitHub and RStudio interface to make our life easier.
 
 #### **Step 2: Copy the Repository URL**
 
 1.  Go to your GitHub repository page.
 
-2.  Click the green **Code** button.
+2.  Click the green **\textcolor{green}{Code}** button.
 
 3.  Copy the repository URL:
 
@@ -110,7 +160,7 @@ You can do this multiple ways, but in this tutorial we´ll use commands in the t
 
 4.  Choose a folder on your local computer where you want to clone the repository.
 
-5.  Click **Create Project**.when doing a commit on a file that has been staged, that version of the file goes into the version history. It is also tracked.
+5.  Click **Create Project**.
 
 And tada! You have now cloned the online repository to your computer! Great job!
 
@@ -132,7 +182,7 @@ Also, if Git has not yet been initiated in your RStudio project you can use the 
 git init
 ```
 
-To check whet ever Git is initialized in your project you can write:
+To check wherever Git is initialized in your project you can write:
 
 ``` bash
 git status
@@ -142,7 +192,7 @@ If git is not initialized an error message will show up. Then just run the `git 
 
 ### 2.1.2 Starting with a local project in RStudio
 
-Now, what if you wanted to do it the other way around, like if you already have a local project on your computer and want to create an online repository for it?
+Now, what if you wanted to do it the other way around, for example if you already have a local project on your computer and want to create an online repository for it?
 
 #### **Step 1. Create a New Local Project in RStudio**
 
@@ -163,6 +213,7 @@ This initializes a local Git repository in your project directory.
 If you already have made a project but it is not connected to a Git repository you can do it like this:
 
 1.  Navigate to **Tools \> Project Options \> Git/SVN**.
+
 2.  Select **Git** and click **Yes** when prompted to initialize a Git repository for your project.
 
 #### Step 2. Create a New Repository on GitHub
@@ -176,8 +227,11 @@ You now have a new, empty GitHub repository.
 #### Step 3. Link the Local project to the GitHub Repository
 
 1.  Copy the URL in the same way as previously in section 2.1.1 step 2.
+
 2.  Open the **Terminal** in RStudio (or use any terminal on your computer).
+
 3.  Navigate to your project folder, if you're not already there, by clicking on the dropdown menu in the top right corner of the RStudio interface and choose your project.
+
 4.  Add the GitHub repository as the remote origin using this command in the terminal:
 
 ``` bash
@@ -194,10 +248,11 @@ origin  https://github.com/yourusername/your-repo.git (push)
 ```
 
 That means you have now successfully established a connection between your local project and the online repository on GitHub. Congratulations!
+If you refresh the page of your online repository in GitHub you should see a copy of the local project in the repository you just created.
 
 ## 2.2 Workflow between local and online repositories
 
-Now that we have connected our local repository with the online one, we can start to pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
+Now that we have connected our local repository with the online one, we can start pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
 
 Take a look at the figure below:
 
@@ -214,23 +269,23 @@ knitr::include_graphics("resources/images/Local_vs_online_workflow.png")
 
 Your **working tree** (also called **working directory**) is the project folder you are currently working in on your local computer. This is where you do all your edits on your files and code.
 
-The **index/staging area** is a list is a list of files that Git is tracking for changes. When you "stage" files you tell Git to include these files in the next commit.
+The **index/staging area** is a list of files that Git is tracking for changes. When you "stage" files you tell Git to include these files in the next commit.
 
 The **local branch** is a version of your project that exists entirely on your local computer. When you "commit" changes, you create a permanent snapshot of the files currently staged in the index and save them to your local repository.
 
 The **remote tracking ref** is where you track the state of the online repository. When you "fetch" changes from the online repository, Git downloads the latest updates from the online repository but without merging it into your working directory. This allows you to see changes from collaborators or updates from the remote repository while keeping your working tree unaffected until you explicitly merge or rebase the changes.
 
-#### 2.2.1 Commands
+### 2.2.1 Commands
 
-Okay, now we can take a look at the commands we can use for this workflow.
+Okay, now we can take a look at the common commands we use in this workflow.
 
-Lets say you have edited some files in your working directory and want to add them to your **staging area** before committing them to your repository.  If you only want to "stage" some files, but not all, you can use the command in the terminal:
+Lets say you have edited some files in your working directory and want to add them to your **staging area** before committing them to your repository. If you only want to "stage" some files, but not all, you can use the command in the terminal:
 
 ``` bash
 git add file_name.txt
 ```
 
-Just replace the file_name.txt with the name of the file that you want to stage. Remember to also include the file extentions (like .txt or .pdf etc.)
+Just replace the file_name.txt with the name of the file that you want to stage. Remember to also include the file extensions (like .txt or .pdf etc.)
 
 If you want to stage **all files in your repository** that have had changes to them you can write:
 
@@ -246,7 +301,7 @@ Great! Now your edited files are ready to be committed! You can commit your file
 git commit -m "Commit message"
 ```
 
-When you run this commit command, all the files that you have staged are committed to your **local branch!** Its good to include a **descriptive commit message** that explains what your commit entails. That way its easier to track where changes or errors are introduced in your repository. Messages could be "Changed font headings" or "Added statistical ANOVA analysis to data processing".
+When you run this commit command, all the files that you have staged are committed to your **local branch!** Its good to include a **descriptive commit message** that explains what your commit entails. That way its easier to track where changes or errors are introduced in your repository. Messages could be "Changed font headings" or "Added statistical ANOVA analysis to data processing". 
 
 Now that you have committed the files you want to push them to your remote directory using:
 
@@ -256,13 +311,13 @@ git push
 
 This command uploads everything you have committed so far this session to your online repository and updates it based on your commits. Using this command you can push multiple commits at the same time.
 
-Now lets say your colleague, who you are collaborate with, has added a new file to the online repository on GitHub. You want to pull that document from the online directory down to your local repositopry and start editing it. The most straightforward way is to use:
+Now lets say your colleague, who you are collaborating with, has added a new file to the online repository on GitHub. You want to pull that document from the online directory down to your local repository and start editing it. The most straightforward way is to use:
 
 ``` bash
 git pull
 ```
 
-This command pulls the latest changes from your remote repository and merges them into your **current branch** in your local repository, so that they are exactly the same. Then you can just start editing and making changes.
+This command pulls the latest changes from your online repository and merges them into your **current branch** in your local repository, so that they are exactly the same. Then you can just start editing and making changes.
 
 If you don't want to fully copy the online repository yet, but take a look at it first before merging it ito your working directory you can use the command
 
@@ -280,11 +335,11 @@ git log HEAD..origin/main
 git diff HEAD..origin/main
 ```
 
-**git log** will give you a list of the commits that are not in your local branch (**HEAD**) together with their metadata (authors, date etc.). This is helpful if you want to quickly answer "What was changed?" and "Who changed it?".
+**`git log`** will give you a list of the commits that are not in your local branch (**HEAD**) together with their metadata (authors, date etc.). This is helpful if you want to quickly answer "What was changed?" and "Who changed it?".
 
-**git diff** will show you the actual changes that are between two points, ex. your local branch (**HEAD**) and your fetched branch (**origin/main**). git diff will show you the specific lines of code that were added modified or deleted in the fetched branch. This is helpful if you want to know exactly what was changed.
+**`git diff`** will show you the actual changes that are between two points, ex. your local branch (**HEAD**) and your fetched branch (**origin/main**). `git diff` will show you the specific lines of code that were added, modified or deleted in the fetched branch. This is helpful if you want to know exactly what was changed.
 
-If you then want to integrate the fetched branch with your current branch, you can use the command:
+Then, if you want to integrate the fetched branch with your current branch, you can use the command:
 
 ``` bash
 git merge
@@ -300,13 +355,7 @@ git rebase
 
 This command does **not create a merge commit**. Instead, it **rewrites the commit history** of your current branch by replaying its commits on top of the fetched branch, creating a **linear history**. Essentially, it re-aligns your current branch so that it starts from the latest commit of the fetched branch, as if your changes were made after the fetched branch's changes. This results in a cleaner, more linear commit history.
 
-Questions:
-
--   add sections about README files and .gitignore
-
--   should I add a section about the concole and the terminal andhow they are used? Or could this perhaps go into the Introduction?
-
--   Should we include stuff about creating branches?
+### 2.2.2 Branches
 
 **Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](https://sikt.no/tjenester/sikt-ki).
 
