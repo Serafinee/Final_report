@@ -125,7 +125,7 @@ long.dat <- max.dat %>%
 
 ### Plotting some figures
 
-Now that the data is imported and tidied up, it can be a good idea to start with a simple plot just to get an overview of the data. The backbone of all these plots will be the ggplot() function from ggplot2 (loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 may be considered a layered grammar of graphics, where we can use its tools to build a plot from data through mapping variables to aesthetics, geometric objects, facets, and adding themes and annotations \[kursnotater, wilkinson10\].
+Now that the data is imported and tidied up, it can be a good idea to start with a simple plot just to get an overview of the data. The backbone of all these plots will be the ggplot() function from ggplot2 (loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 may be considered a layered grammar of graphics, where we can use its tools to build a plot from data through mapping variables to aesthetics, geometric objects, facets, and adding themes and annotations [kursnotater, wilkinson10].
 
 Before trying to make "the one and only" plot, it's a good idea to start simple just to have a look at what you're working with - this is also useful to do before any statistical analysis. Since we've already wrangled the data into a tidy long format, and glimpsed (glimpse()) the variables we are interested in, we can go ahead and plot it.
 
@@ -161,7 +161,7 @@ This is an alright start, we've got the angular velocity separated by facets, an
 
 **Plot 2: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
 
-In this example plot, we create one plot per angular velocity, and facet by age group and allocation. This will give us a good overview of what happens in each of the groups from baseline to the half-way mark, and then to post. 
+In this example plot, we create one plot per angular velocity, and facet by age group and allocation. This will give us a good overview of what happens in each of the groups from baseline to the half-way mark, and then to post.
 
 ```{r, Plot2}
 
@@ -297,7 +297,7 @@ ptfig
 
 **Plot 3: Mean Change Peak Torque per Age Group - with raw data**
 
-While it may be fascinating to look at all the individual lines in these plots, it's not necessarily easy to discern what happens in the respective groups here. So, another option is to summarize the change in peak torque instead of having all the individual lines. In addition we can use either errorbars or map the individual data to display the variation in the data frame - technically you could do both, but that would be quite messy in our case. 
+While it may be fascinating to look at all the individual lines in these plots, it's not necessarily easy to discern what happens in the respective groups here. So, another option is to summarize the change in peak torque instead of having all the individual lines. In addition we can use either errorbars or map the individual data to display the variation in the data frame - technically you could do both, but that would be quite messy in our case.
 
 ```{r, Plot3}
 
@@ -549,59 +549,47 @@ ptimeanfig
 
 **Plot 4: Mean Peak Torque change in a Hill curve format**
 
-How about just combining everything into one graph? Of course its doable, but you may have to get a bit more creative and watch your step. 
+If we were interested in only comparing the age groups and intervention vs. control, we could combine all of that into one plot. A cool and illustrative plot with this type of data would be to make a force-velocity curve, first developed by A. V. Hill in 1938 [source], and compare the age groups across angular velocities. We do assume that force development is reduced when angular velocity is increased, so it lets visualize it!
 
 ```{r, Plot4}
 
 # Calculating group means
 curve.sum <- long.dat %>%
-  filter(outcome == "pt_max") %>%
+  filter(outcome == "pt_max") %>% # this time we're including all angular velocities, so we only filter the outcome
+  
   group_by(age_group, allocation, time, speed) %>%
-  summarise(mean_torque = mean(value, na.rm = TRUE),
-            #se_torque = sd(value, na.rm = TRUE) / sqrt(n()),
-            .groups = "drop")
-
-# Creating a combined group variable for easier plotting
-curve.sum <- curve.sum %>%
+  
+  summarise(mean = mean(value, na.rm = TRUE),
+            #sd = sd(value, na.rm = TRUE),
+            .groups = "drop") %>%
+  
+  # This time we combine age_group and allocation, since volume condition is not on the menu. 
   mutate(group = paste(age_group, allocation, sep = "_"))
-
-
-# Plot 1: Comparing changes over time (baseline + halfway + post)
-# Separate panels for each group
-
-plot_time <- curve.sum %>%
-  ggplot(aes(x = speed, y = mean_torque, color = time, group = time)) +
-  geom_line(linewidth = 1) +
-  #geom_point(size = 3) +
-  #geom_errorbar(aes(ymin = mean_torque - se_torque, 
-  #                  ymax = mean_torque + se_torque), 
-  #              width = 10) +
-  facet_wrap(~ age_group + allocation, ncol = 3) +
-  labs(x = "Angular Velocity (d/s)",
-       y = "Peak Torque (Nm)",
-       color = "Time Point",
-       title = "Force-Velocity Curves Across Training") +
-  theme_classic() +
-  theme(legend.position = "bottom")
+  
 
 
 # Plot 2: Single plot showing everything (might be busy)
 curve.plot <- curve.sum %>%
-  ggplot(aes(x = speed, y = mean_torque, color = group, linetype = time, 
+  
+  ggplot(aes(x = speed, y = mean, color = group, linetype = time, 
              group = interaction(group, time))) +
+  
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
+  
   labs(x = "Angular Velocity (d/s)",
        y = "Peak Torque (Nm)",
        color = "Group",
        linetype = "Time Point",
        title = "") +
+  
   scale_color_manual(values = c("yng_int" = "#E69F00",
                                   "old_int" = "#56B4E9",
                                   "old_con" = "gray50"),
                      labels = c("yng_int" = "Young Intervention", 
                                 "old_int" = "Old Intervention", 
                                 "old_con" = "Old Control")) +
+  
   theme_classic() +
   theme(legend.position = "bottom")
 
@@ -612,3 +600,4 @@ curve.plot
 
 
 ```
+
