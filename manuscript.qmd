@@ -1,9 +1,9 @@
 ---
-title: " Scientific Communication, Collaboration and Design in Quantitative Research Using R"
-subtitle: "R you serious, is R easy?"
+title: "Scientific Communication, Collaboration and Design in Quantitative Research Using R"
+subtitle: "Final report"
 logo: resources/logo-eng.png
-author: "Torkil Rogneflåten"
-affiliation: "Inland Norway University of Applied Sciences, Lillehammer, Norway"
+author: "Sarah Jasmin Klausen^1, Kristian Lian^2, Tomas Urianstad Odden^2, Torkil Rogneflåten^2"
+affiliation: "^1 University of Inland Norway, Campus Hamar, Department of Biotechnology, ^2 University of Inland Norway, Campus Lillehammer, Section for Health and Exercise Physiology"
 format: 
   pdf:
     documentclass: scrreprt
