@@ -1,8 +1,16 @@
 ---
 title: "Manuscript"
-format: pdf
-header-includes:
-  - \usepackage{wrapfig}
+format: 
+  pdf:
+    pdf-engine: lualatex
+    header-includes: |
+      \usepackage{hyperref}
+      \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        urlcolor=blue,
+        citecolor=blue
+      }
 editor_options: 
   chunk_output_type: console
 bibliography: resources/bib.bib
@@ -11,7 +19,6 @@ link-citations: true
 ---
 
 # 1. Introduction
-
 
 Disposition:
 
@@ -30,26 +37,22 @@ To address the challenges of collaboration in scientific projects, this assignme
 
 # 2. Setting Up a Collaborative Workspace
 
--   How to create a repository in Git Hub
--   How to link it to Rstudio
--   How to create a project in your local computer and export it to GitHub
--   Basic commands for Git and GitHub fromt he RStudio terminal
-In this tutorial we assume that you will be working with RStudio and have already downloaded R and Rstudio. In addition you are going to need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](1%20Setting%20up%20your%20software%20environment%20–%20A%20Crash%20Course%20in%20R).
+In this toturial we assume that you will be working with RStudio and have already downloaded R and RSTudio. In addition you need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
 
 ### What is a repository?
 
 A repository is basically like a project box where you collect all the files, data, graphs and code scripts from your project.\
 Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space its advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository what a local repository which allows us to work and make changes using our own computer and then we can upload it to the online repository.
 
-
 ### What is Git?
+
 Git is a version control software that allows you to track the different version of your files. It basically allows you to keep a detailed history of changes you have done in your document and also what other people have added or removed in your collaborative documents. Having a version controls software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced in a document or code, you can track it back to see what and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
 
 ### What is GitHub?
 
 GitHub is a collaborative online platform that allows you to host and join online repositories. its kinda like facebook for coding. gitHub allows us to share and collaborate with the people on the same code at the same time. It can also be used to host webpages and other stuff.
 
-In this toturial we will only work with the RStudio interface and the online GitHub interface. however, if you want an expanded commandline and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See toturials here: [GitHub CLI](GitHub%20CLI%20quickstart%20-%20GitHub%20Docs) and [GitHub Desktop](Getting%20started%20with%20GitHub%20Desktop%20-%20GitHub%20Docs).
+In this toturial we will only work with the RStudio interface and the online GitHub interface. however, if you want an expanded commandline and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See toturials here: [GitHub CLI](https://docs.github.com/en/github-cli/github-cli/quickstart) and [GitHub Desktop](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop).
 
 ## 2.1 How to create a project that is connected between RStudio and GitHub?
 
@@ -67,21 +70,7 @@ resources/images/
 
 ### 2.1.1 Starting with an online repository
 
-#### Step 1. Create a new online repository in GitHub ([Video tutorial](Creating%20Your%20First%20GitHub%20Repository%20and%20Pushing%20Code%20-%20YouTube))
-
-```{r}
-#| echo: false
-#| results: asis
-cat("
-\\begin{wrapfigure}{lt}{0.5\\textwidth}
-  \\centering
-  \\includegraphics[width=0.38\\textwidth]{resources/images/image_1.png}
-  \\caption{Creating a new online repository.}
-  \\vspace{-1.5cm} % Adjust vertical spacing below the figure
-\\end{wrapfigure}
-")
-
-```
+#### Step 1. Create a new online repository in GitHub ([Video tutorial](https://www.youtube.com/watch?v=f26KI43FK58))
 
 Once you´ve logged into GitHub, navigate to the top right corner of your page and find the + tab. Drop it down to reveal the "New repository" option. Click on it.
 
@@ -93,21 +82,6 @@ You also have the options of adding a README file and a .gitignore file upon cre
 ##### README
 
 A README file is a descriptive file that should explain what the project/repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
-
-```{r}
-#| echo: false
-#| results: asis
-cat("
-\\begin{wrapfigure}{r}{0.4\\textwidth}
-  \\vspace{-1cm} % Adjust vertical spacing to remove extra white space
-  \\centering
-  \\includegraphics[width=0.50\\textwidth]{resources/images/image_3.png}
-  \\caption{Repository setup-page.}
-  \\vspace{-2cm} % Adjust vertical spacing to remove extra white space
-\\end{wrapfigure}
-")
-
-```
 
 ##### .gitignore
 
@@ -334,12 +308,12 @@ Questions:
 
 -   Should we include stuff about creating branches?
 
-**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](Sikt%20KI).
+**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](https://sikt.no/tjenester/sikt-ki).
 
 \newpage
 
-
 # 3. Conducting Simulations Before Data Acquisition
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -351,36 +325,19 @@ library(tidyverse)
 library(ggdag)
 ```
 
+Conducting simulations prior to data acquisition is useful for several reasons, including:
 
-Conducting simulations prior to data acquisition is useful for several reasons, including: 
+1.  *Model design*. By sampling from the prior distributions, we can understand our expectations about potential outcomes. This pre-data exploration offers insights into the implications of the prior assumptions.
+2.  *Model checking*. Once a model is updated using real data, simulating implied data can help assess the success of the fit and explore the model's behavior.
+3.  *Software validation*. In order to ensure that our model fitting software is functioning correctly, it is helpful to simulate observations under a known model and then attempt to recover the parameter values from which the data were simulated.
+4.  *Research design*. Simulating observations based on our hypothesis allows for an evaluation of the research design's effectiveness. This is similar to conducting a *power analysis*, but the possibilities are broader.\
+5.  *Forecasting*. Estimates derived from simulations can be utilized to generate predictions for new cases and future observations [@McElreath_2018].
 
-1. *Model design*. By sampling from the prior distributions, we can understand our 
-expectations about potential outcomes. This pre-data exploration offers insights 
-into the implications of the prior assumptions.
-2. *Model checking*. Once a model is updated using real data, simulating implied 
-data can help assess the success of the fit and explore the model's behavior.
-3. *Software validation*. In order to ensure that our model fitting software is
-functioning correctly, it is helpful to simulate observations under a known model 
-and then attempt to recover the parameter values from which the data were simulated. 
-4. *Research design*. Simulating observations based on our hypothesis allows for 
-an evaluation of the research design's effectiveness. This is similar to conducting 
-a *power analysis*, but the possibilities are broader.   
-5. *Forecasting*. Estimates derived from simulations can be utilized to generate 
-predictions for new cases and future observations [@McElreath_2018].
+To illustrate some of the properties of conducting simulations, we will consider the following hypothesis: **Increasing daily exercise time is associated with lower blood pressure levels in adults**.
 
-To illustrate some of the properties of conducting simulations, we will consider 
-the following hypothesis: **Increasing daily exercise time is associated with lower 
-blood pressure levels in adults**. 
-
-
-To investigate this hypothesis, it is valuable to invest effort into finding methods 
-that distinguish causal inferences from associations. A helpful first step to do 
-this is to construct a causal model that is separate from the statistical model. 
-The simplest graphical representation of such a causal model is a *DIRECTED ACYCLIC GRAPH*, 
-commonly referred to as a *DAG* [@McElreath_2018; @digitale_tutorial_2022].
+To investigate this hypothesis, it is valuable to invest effort into finding methods that distinguish causal inferences from associations. A helpful first step to do this is to construct a causal model that is separate from the statistical model. The simplest graphical representation of such a causal model is a *DIRECTED ACYCLIC GRAPH*, commonly referred to as a *DAG* [@McElreath_2018; @digitale_tutorial_2022].
 
 A DAG primarily serves to represent our prior knowledge about biological and behavioral systems that may confound the specific causal research question. In our example, we aim to investigate the causal effect of increasing exercise time, denoted as "E", on blood pressure, "B". A basic DAG for this relationship might look like this (Figure 1):
-
 
 ```{r}
 #| echo: false
@@ -418,12 +375,7 @@ fig1
 
 ```
 
-
-This DAG assumes that the causal effect of increasing exercise time on blood pressure 
-is not confounded, which is arguably a naive assumption. For instance, both age and 
-diet could potentially confound this relationship. A more comprehensive DAG that 
-accounts for these confounders might appear as follows (Figure 2):
-
+This DAG assumes that the causal effect of increasing exercise time on blood pressure is not confounded, which is arguably a naive assumption. For instance, both age and diet could potentially confound this relationship. A more comprehensive DAG that accounts for these confounders might appear as follows (Figure 2):
 
 ```{r}
 #| echo: false
@@ -464,44 +416,22 @@ fig1
 
 ```
 
+In this adjusted DAG, we presume that age directly influences blood pressure— an assumption supported by the correlation between aging and increased blood pressures [@Miall_1967]. Additionally, age may indirectly influence exercise time since older individuals often engage in less physical activity. Diet is also included as a confounding factor affecting blood pressure, linked to dietary habits like high-fat intake [@Wilde_2000].
 
-In this adjusted DAG, we presume that age directly influences blood pressure— an 
-assumption supported by the correlation between aging and increased blood pressures 
-[@Miall_1967]. Additionally, age may indirectly influence exercise time since older 
-individuals often engage in less physical activity. Diet is also included as a confounding 
-factor affecting blood pressure, linked to dietary habits like high-fat intake [@Wilde_2000].
+Given that we believe our DAG to be accurate, we can construct our model with stronger scientific justifications regarding which confounding factors should be accounted for and how we will do so.
 
-Given that we believe our DAG to be accurate, we can construct our model with stronger 
-scientific justifications regarding which confounding factors should be accounted 
-for and how we will do so.
+**Model design**
 
-**Model design** 
+Having established the confounding factors of age and diet in the relationship between exercise time and blood pressure, we are now prepared to design our study. We plan to recruit 100 sedentary adults aged between 20 and 70 for a one-year training study, during which participants will adhere to the WHO guideline of 150 minutes of endurance exercise per week. Unfortunately, we will only be able to measure blood pressure after the intervention period due to logistical constraints. Therefore, we can only investigate whether there is an association between how many minutes of physical activity the participants complete and their blood pressure levels after the intervention. To control for age and diet, we will document participants' ages at the time of inclusion and assess their diets using a binomial scale, where 1 indicates a healthy diet and 0 indicates an unhealthy diet.
 
-Having established the confounding factors of age and diet in the relationship between 
-exercise time and blood pressure, we are now prepared to design our study. We plan 
-to recruit 100 sedentary adults aged between 20 and 70 for a one-year training study, 
-during which participants will adhere to the WHO guideline of 150 minutes of endurance 
-exercise per week. Unfortunately, we will only be able to measure blood pressure 
-after the intervention period due to logistical constraints. Therefore, we can only 
-investigate whether there is an association between how many minutes of physical 
-activity the participants complete and their blood pressure levels after the intervention. 
-To control for age and diet, we will document participants' ages at the time of inclusion 
-and assess their diets using a binomial scale, where 1 indicates a healthy diet and
-0 indicates an unhealthy diet. 
-
-The model can now be described mathematically, for example in terms of a simple 
-linear regression model:
-
+The model can now be described mathematically, for example in terms of a simple linear regression model:
 
 \begin{align}
 \operatorname{BloodPressure}_i &= \beta_0 + \beta_1 \cdot \operatorname{Exercise}_i 
 + \beta_2 \cdot \operatorname{Age}_i + \beta_3 \cdot \operatorname{Diet}_i + \epsilon_i \\
 \end{align}
 
-
-
-
-Where: 
+Where:
 
 \begin{align}
 \beta_0 &: \text{Intercept}\\
@@ -511,11 +441,7 @@ Where:
 \epsilon_i &: \text{Random error term}\\
 \end{align}
 
-
-
-
-
-The linear regression model can be implemented in R as follows: 
+The linear regression model can be implemented in R as follows:
 
 ```{r}
 #| results: false
@@ -538,9 +464,7 @@ summary(model)
 
 **Run simulations**
 
-We will now run simulations to evaluate our model design. First, we need to define 
-our parameter values:
-
+We will now run simulations to evaluate our model design. First, we need to define our parameter values:
 
 \begin{align}
 \operatorname{BP}_i & = \beta_0 + \beta_E \cdot \operatorname{E}_i + \beta_A \cdot \operatorname{A}_i + \beta_D \cdot \operatorname{D}_i + \epsilon_i \\
@@ -560,12 +484,7 @@ our parameter values:
 \sigma_\epsilon & = 5 \quad (\text{error term standard deviation}) \\
 \end{align}
 
-
-
-After defining our parameter values, we can simulate data using these parameters. 
-To do this, it is convenient to create a function where you specify information about 
-each parameter that can be manipulated later, thereby enabling experimentation with 
-different values to assess the model's robustness. Below is the code for this simulation:
+After defining our parameter values, we can simulate data using these parameters. To do this, it is convenient to create a function where you specify information about each parameter that can be manipulated later, thereby enabling experimentation with different values to assess the model's robustness. Below is the code for this simulation:
 
 ```{r}
 #| results: false
@@ -611,9 +530,7 @@ sim_data <- sim.fun()
 
 ```
 
-With our simulated dataset, we can now test our hypotheses using the linear model: 
-*lm(bloodpressure ~ exercise + age + diet, sim_data)*. The output will indicate whether
-there is an observed effect of exercise on blood pressure:
+With our simulated dataset, we can now test our hypotheses using the linear model: *lm(bloodpressure \~ exercise + age + diet, sim_data)*. The output will indicate whether there is an observed effect of exercise on blood pressure:
 
 ```{r}
 #| echo: false
@@ -629,8 +546,6 @@ summary.m1 <- summary(sim.m1)
 
 ```
 
-
-
 ```{r}
 #| echo: false
 #| label: Sim.m1.output 
@@ -642,16 +557,11 @@ exercise_effect <- sprintf("%.3f",summary(sim.m1)$coefficients["exercise", "Esti
 
 ```
 
-In this model, we can see that each minute of increased exercise time is associated 
-with a **`r exercise_effect`** mmHg lower blood pressure, when age and diet 
-are included as covariates.
+In this model, we can see that each minute of increased exercise time is associated with a **`r exercise_effect`** mmHg lower blood pressure, when age and diet are included as covariates.
 
-Now it is time to play with our simulation! Lets say we only manage to include 50 
-participents, what will happen whit our results?
+Now it is time to play with our simulation! Lets say we only manage to include 50 participents, what will happen whit our results?
 
-This can easily be tested by manipulating our function and then running the model, 
-like this:
-
+This can easily be tested by manipulating our function and then running the model, like this:
 
 ```{r}
 #| label: Manipulate function 
@@ -662,8 +572,6 @@ sim_data2 <- sim.fun(n = 50)
 
 
 ```
-
-
 
 ```{r}
 #| echo: false
@@ -679,16 +587,7 @@ summary.sim.m2
 exercise_effect2 <- sprintf("%.3f", summary(sim.m2)$coefficients["exercise", "Estimate"])
 ```
 
-
-The output for this model may reveal that the **`r exercise_effect2`** mmHg effect 
-of exercise is no longer significant, suggesting that 50 participants may not be 
-sufficient to detect the true effect of exercise which we know is **-0.1** mmHg. 
-However, this is just one simulation; results may vary due to random chance. It is 
-therefore prudent to conduct multiple simulations to evaluate the robustness of our 
-model, which can be executed in a loop as demonstrated below:
-
-
-
+The output for this model may reveal that the **`r exercise_effect2`** mmHg effect of exercise is no longer significant, suggesting that 50 participants may not be sufficient to detect the true effect of exercise which we know is **-0.1** mmHg. However, this is just one simulation; results may vary due to random chance. It is therefore prudent to conduct multiple simulations to evaluate the robustness of our model, which can be executed in a loop as demonstrated below:
 
 ```{r}
 #| label: Simulations loop
@@ -717,11 +616,7 @@ for(i in 1:1000) {
 
 ```
 
-
-
-To visualize the estimates of model 1 and model 2, it is convenient to create a 
-figure similar to Figure 3.
-
+To visualize the estimates of model 1 and model 2, it is convenient to create a figure similar to Figure 3.
 
 ```{r}
 #| label: Simulation figure 
@@ -738,26 +633,21 @@ bind_rows(results) |>
   theme_classic()
 ```
 
+In the simulated models shown in Figure 3, the estimate for model m1 clusters more tightly around -0.1, which represents the true effect of exercise on blood pressure as specified. In contrast, model m2 exhibits more variation, indicating that the effect is less reliably detected with only 50 participants.
 
-In the simulated models shown in Figure 3, the estimate for model m1 clusters more 
-tightly around -0.1, which represents the true effect of exercise on blood pressure
-as specified. In contrast, model m2 exhibits more variation, indicating that the 
-effect is less reliably detected with only 50 participants.
-
-This brief introduction illustrates how to conduct basic data simulations before 
-data acquisition, empowering you to enhance the robustness of your research! 
+This brief introduction illustrates how to conduct basic data simulations before data acquisition, empowering you to enhance the robustness of your research!
 
 # 4. Including Data Packages for Distribution
 
 # 5. Creating Visualizations from Data Packages
 
-As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of. 
+As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of.
 
 ### Prior to plotting
 
 Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. <!-- I'll be using my own data package here, since it would be contrary to progress to wait for the data package to be finished in section 4. -->
 
-The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier. 
+The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier.
 
 ```{r, data import and wrangling}
 library(tidyverse)
@@ -893,10 +783,9 @@ pt240 <- long.dat %>%
 
 ```
 
-
 ### Plotting some figures
 
-Now that the data is tidied up for our purpose, we can make some different plots. The backbone of these plots will be the ggplot() function from ggplot2 (also loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 
+Now that the data is tidied up for our purpose, we can make some different plots. The backbone of these plots will be the ggplot() function from ggplot2 (also loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2
 
 **Plot 1: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
 
@@ -1008,8 +897,6 @@ ptfig
 
 
 ```
-
-
 
 <!--**Plot 2: Mean Change Peak Torque per Age Group**-->
 
@@ -1172,8 +1059,6 @@ ptfig
 #
 
 ```
-
-
 
 **Plot 3: Mean Change Peak Torque per Age Group - with raw data**
 
@@ -1388,8 +1273,6 @@ ptimeanfig
 
 ```
 
-
-
 **Plot 4: Mean Peak Torque change in a Hill curve format**
 
 ```{r, Plot4}
@@ -1453,8 +1336,5 @@ curve.plot
 
 
 ```
-
-
-
 
 # Bibliography
