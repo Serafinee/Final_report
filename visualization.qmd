@@ -8,11 +8,11 @@ editor_options:
 
 # 5. Creating Visualizations from Data Packages
 
-As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about how/why you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of.
+The aim of this section is to demonstrate a workflow from data package to visualization of your data, with a focus on reproducibility and collaboration. The reproducibility is already established through the infrastructure provided by having a data package available - no spread sheets or CSV files floating around untracked in different states between collaborators. With a data package available the data remains stable, tracked, accessible and identical to all collaborators. This means that your scripts/qmds for data visualization can focus solely on that purpose, i.e., joining, wrangling and plotting data. On that note, clear and descriptive comments about how you wrangle and plot your data are essential - both for your future self and for collaborators. This practice makes it much easier to resume work and understand the reasoning behind decisions made in the visualization of your data. 
 
 ### Prior to plotting
 
-Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Therefore it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting (and your life) quite a lot easier.
+Since we already have a data package that cleans and prepares our data for visualization, we can simply import the data from this package. The package is organized by test, meaning one xlsx file per test containing only the measurements from that specific test. Therefore, additional wrangling is necessary to incorporate other information we want to visualize, such as age group, condition, and participant allocation. This data preparation process can be surprisingly time-consuming, but investing effort in creating tidy data makes the actual plotting (and your life) considerably easier.
 
 ```{r, data import and wrangling}
 library(tidyverse)
@@ -125,9 +125,9 @@ long.dat <- max.dat %>%
 
 ### Plotting some figures
 
-Now that the data is imported and tidied up, it's a good idea to start with a simple plot just to get an overview of the data. The backbone of all these plots will be the ggplot() function from ggplot2 (loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 may be considered a layered grammar of graphics, where we can use its tools to build a plot from data through mapping variables to aesthetics, geometric objects, facets, and adding themes and annotations [kursnotater, wilkinson10].
+Now that the data is imported and tidied up, lets start with a simple plot to get an overview. The backbone of all these plots is the ggplot() function from ggplot2 (loaded by tidyverse), supplemented by cowplot for additional functionality. Briefly, ggplot2 implements a layered grammar of graphics, providing tools to build plots by mapping variables to aesthetics, geometric objects, and facets, then adding themes and annotations [@wickham_2010].
 
-Before trying to make "the one and only" plot, it's a good idea to start simple just to have a look at what you're working with - this is also useful to do before any statistical analysis. Since we've already wrangled the data into a tidy long format, and glimpsed (glimpse()) the variables we are interested in, we can go ahead and plot it.
+Before attempting to create a polished final figure, explore your data with simple plots—this is valuable both for visualization and before statistical analysis. Since we've already wrangled the data into tidy long format and examined the variables of interest with glimpse(), we can proceed directly to plotting.
 
 **Plot 1: Simple Visualization**
 
@@ -157,7 +157,7 @@ facet.plot
 
 ```
 
-This is an alright start, we've got the angular velocity separated by facets, and data points colored by age group. However, if we are interested in visualizing the change from baseline to post, there is more to consider. We may assume that there is a difference depending on if the participant was young or old, exercised with a low or moderate volume, and/or if they were in the intervention or control group, so this must be accounted for in the plot. This can be displayed in a couple different ways by using the package cowplot with simultaneous faceting, to make sure we get all the groups we want and also not totally flooding one single graph.
+This is a reasonable start—we have angular velocity separated by facets and data points colored by age group. However, to visualize the change from baseline to post-intervention, additional considerations are needed. In general, the process onward will depend on your research question and design [@tufte_2001], but with the present data, we may expect differences based on age group (young vs. old), training volume (low vs. moderate), and participant allocation (intervention vs. control), so the plot must account for these factors. This can be accomplished using cowplot alongside faceting to display all relevant groups without overcrowding a single graph.
 
 **Plot 2: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
 
@@ -549,7 +549,7 @@ ptimeanfig
 
 **Plot 4: Mean Peak Torque change in a Hill curve format**
 
-If we were interested in only comparing the age groups and intervention vs. control, we could combine all of that into one plot. A cool and illustrative plot with this type of data would be to make a force-velocity curve, first developed by A. V. Hill in 1938 [source], and compare the age groups across angular velocities. We do assume that force development is reduced when angular velocity is increased, so it lets visualize it!
+If we were interested in comparing the age groups and intervention vs. control, we could combine all of that into one plot. A cool and illustrative plot with this type of data would be to make a force-velocity curve, first developed by A. V. Hill in 1938 [@hill_1938], and compare the age groups across angular velocities. We do assume that force development is reduced when angular velocity is increased, so it lets visualize it!
 
 ```{r, Plot4}
 
@@ -601,4 +601,4 @@ curve.plot
 
 ```
 
-These plots are just simple examples - how you visualize your data always should always aim at conveying the data in the best possible way to a reader who hasn't actually worked with it. Having a general workflow where you import data -> tidy it -> get an overview through simple plotting, and then narrow down and tweak your plot seems a good strategy. In addition, we can consider every plot having their own workflow, starting with your data, and building layers of aesthetics, geometric objects, facets, coordinates, with annotations (if applicable) and theme adjustments to wrap it up nicely (kursnotater, wilkinson10)
+The plots presented here are only examples, and you'll likely iterate through several versions to explore different perspectives of your data, as advised by Tufte [@tufte_2001]. Effective visualization should always aim to convey the data clearly to readers unfamiliar with it. A general workflow—importing data → tidying → creating exploratory plots → refining and tweaking—provides a solid strategy. Additionally, each plot can be thought of as having its own workflow: starting with your data and systematically building layers of aesthetics, geometric objects, facets, and coordinates, before adding annotations (if applicable) and theme adjustments to finalize the presentation [@wickham_2010].
