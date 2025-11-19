@@ -357,6 +357,102 @@ This command does **not create a merge commit**. Instead, it **rewrites the co
 
 ### 2.2.2 Branches
 
+Sometimes you need to make major changes to your project eg. update multiple documents and scrips. However, making large changes to your project could potentially cause errors in other scrips or documents in your repository. A good way to avoid this is by creating a branch from your main branch/project and testing your changes there first before updating your main branch. When you create a branch you create a copy of the branch you choose (normally the main branch, but you can also create multiple subbbranches on an exsisting branch). This allows you to make the changes as if you were on the main branch, but without affecting the main branch itself. Then once you have tested that your changes work well you can merge the new branch back into the main branch and overwrite the old version with the new changed version.
+
+Lets see how we do this.
+
+You can create a branch using the GitHUb interface, the RStudio interface or terminal commands. We´ll go through all three here.
+
+#### In GitHub
+
+1. Navigate to your repository in GitHub
+
+2. Above the list of files in your repository, on the left, you can see "Branches". Click on it.
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out.height: "50%"
+#| out.width: "90%"
+#| fig-cap: "Branch placement in GitHub."
+
+knitr::include_graphics("resources/images/branches.png")
+```
+
+3. Click on the green button \textcolor{green}{New branch}.
+
+4. Give it a name and choose from which source you want to branch it from.
+
+5. Click "Create new branch".
+
+Easy, right?\
+Now lets do the same thing using the RStudio interface.
+
+####  Rstudio interface
+
+1. Click on your Git tab (close to your environment tab)
+
+2. Navigate to the right of your Git tab
+
+3. Here you can see the name of the current branch and also an option to create a new branch. You can also navigate between branches using the drop-down menu.
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out.height: "40%"
+#| out.width: "100%"
+#| fig-cap: "Creating a branch with RStudio interface."
+
+knitr::include_graphics("resources/images/git_tab.png")
+```
+
+4. To create a new branch, click on "New Branch".
+
+5. Give it a name, decide what remote the branch is branching from and check off the box saying "Sync branch with remote".
+
+This will create the new branch and automatically sync it up to your online repository. Handy.
+
+#### Using terminal controls
+Okay, lets lastly use terminal controls to create a new branch.
+
+To create a new branch run: 
+```bash
+git branch <new banch name>
+```
+This creates a new branch in your local repository from the branch you are currently on, but it does not switch you over to it.
+Make sure you switch out "<new branch name>" witht the name that you want.
+
+To switch to a branch run:
+```bash
+git checkout <branc name>
+```
+
+If you want to check what branch you are on you run:
+```bash
+git branch
+```
+You should see an output with one or more branches and the one that has * before it is the one you are currently on.
+
+If you want to push your new local branch to the online repository you can run:
+```bash
+git push --set-upstream origin <branch name>
+```
+
+If you want to merge a branch with the main branch you can switch to the mainbranch (using `git checkout`) and then run:
+```bash
+git merge <branch name>
+```
+
+To delete a branch you can run:
+```bash
+git branch -d <branch name>
+```
+
+
+
+
 **Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](https://sikt.no/tjenester/sikt-ki).
 
 \newpage
