@@ -357,11 +357,14 @@ This command does **not create a merge commit**. Instead, it **rewrites the co
 
 ### 2.2.2 Branches
 
-Sometimes you need to make major changes to your project eg. update multiple documents and scrips. However, making large changes to your project could potentially cause errors in other scrips or documents in your repository. A good way to avoid this is by creating a branch from your main branch/project and testing your changes there first before updating your main branch. When you create a branch you create a copy of the branch you choose (normally the main branch, but you can also create multiple subbbranches on an exsisting branch). This allows you to make the changes as if you were on the main branch, but without affecting the main branch itself. Then once you have tested that your changes work well you can merge the new branch back into the main branch and overwrite the old version with the new changed version.
+Sometimes you need to make major changes to your project eg. update multiple documents and scripts. However, making large changes to your project could potentially cause errors in other scripts or documents in your repository. A good way to avoid this is by creating a branch from your main branch/project and test your changes there before updating your main branch. 
 
-Lets see how we do this.
+When you create a branch you create a copy of the branch you choose (normally the main branch, but you can also create a branch from other existing branch). This allows you to make the changes as if you were on the main branch, but without affecting the main branch itself. Then once you have tested that your changes work well you can merge the new branch back into the main branch and overwrite the old version with the new changed version. 
 
-You can create a branch using the GitHUb interface, the RStudio interface or terminal commands. We´ll go through all three here.
+Working with branches is also very helpful when collaborating with other people. If you all need to work on the same document, but on different sections, you can each create a branch from the main one and then merge all branches back into the main branch after finishing. Then you have better control over what is added to the main project and you can make sure any overlap does not collide.
+
+Lets take a look at how we do this. You can create a branch using the GitHUb interface, the RStudio interface or terminal commands. \
+We´ll go through all three here.
 
 #### In GitHub
 
@@ -386,7 +389,6 @@ knitr::include_graphics("resources/images/branches.png")
 
 5. Click "Create new branch".
 
-Easy, right?\
 Now lets do the same thing using the RStudio interface.
 
 ####  Rstudio interface
@@ -426,7 +428,7 @@ Make sure you switch out "<new branch name>" witht the name that you want.
 
 To switch to a branch run:
 ```bash
-git checkout <branc name>
+git checkout <branch name>
 ```
 
 If you want to check what branch you are on you run:
@@ -449,8 +451,6 @@ To delete a branch you can run:
 ```bash
 git branch -d <branch name>
 ```
-
-
 
 
 **Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](https://sikt.no/tjenester/sikt-ki).
