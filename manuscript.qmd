@@ -35,7 +35,7 @@ Achieving computational reproducibility and transparency is further complicated 
 
 To address the challenges of collaboration in scientific projects, this assignment highlights tools and workflows designed to enhance organizational efficiency and ensure reproducibility. This assignment aims to (1) describe key components of robust, reproducible, and transparent scientific workflows, including setting up a collaborative work space, conduction simulations prior to data acquisition, including data packages for distribution, and creating visualizations from data packages, and (2) present collaborative framework for managing joint research and writing efforts, with a focus on version control systems, R, and GitHub, to streamline the creation of a transparent and reproducible framework for scientific workflows. While the primary outcome of this assignment is a PDF report, the accompanying GitHub repository provides a comprehensive view of the collaborative workflow and serves as an integral part of the project.
 
-# 2. Setting Up a Collaborative Work space (Author:Sarah jasmin Klausen)
+# 2. Setting Up a Collaborative Work space
 
 Alright! Now that we understand the importance of having a robust and reproducible scientific workflow that allows for collaboration we can start by setting up a collaborative workspace and understanding some key terms. In this tutorial we assume that you will be working with RStudio and have already downloaded R and RSTudio. In addition you need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
 
