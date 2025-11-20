@@ -8,7 +8,7 @@ editor_options:
 
 # 5. Creating Visualizations from Data Packages
 
-The aim of this section is to demonstrate a workflow from data package to visualization of your data, with a focus on reproducibility and collaboration. The reproducibility is already established through the infrastructure provided by having a data package available - no spread sheets or CSV files floating around untracked in different states between collaborators. With a data package available the data remains stable, tracked, accessible and identical to all collaborators. This means that your scripts/qmds for data visualization can focus solely on that purpose, i.e., joining, wrangling and plotting data. On that note, clear and descriptive comments about how you wrangle and plot your data are essential - both for your future self and for collaborators. This practice makes it much easier to resume work and understand the reasoning behind decisions made in the visualization of your data. 
+The aim of this section is to demonstrate a workflow from data package to visualization of your data, with a focus on reproducibility and collaboration. The reproducibility is already established through the infrastructure provided by having a data package available - no spread sheets or CSV files floating around untracked in different states between collaborators. With a data package available the data remains stable, tracked, accessible and identical to all collaborators. This means that your scripts/qmds for data visualization can focus solely on that purpose, i.e., joining, wrangling and plotting data. On that note, clear and descriptive comments about how you wrangle and plot your data are essential - both for your future self and for collaborators. This practice makes it much easier to resume work and understand the reasoning behind decisions made in the visualization of your data.
 
 ### Prior to plotting
 
@@ -21,32 +21,27 @@ library(writexl)
 
 ## Importing the data from the data package
 
-humac.dat <- reliefdata::relief_humac # this is the peak torque test data
-write_xlsx(humac.dat, "relief_humac.xlsx") # used for data sharing until data package is up and running
+# Importing measurements from the humac dynamometer test
+humac.dat <- Final.reportData::humac.dat # this is the peak torque test data
 
-condition <- reliefdata::relief_volume %>% # this is info about volume condition
+# Importing information about each participants volume condition
+condition <- Final.reportData::condition %>%
   mutate(participant = as.character(participant))
-write_xlsx(condition, "relief_volume.xlsx") # used for data sharing until data package is up and running
 
-participants <- reliefdata::relief_participants %>% # this is info about age group and allocation
-  
+# Importing infromation about the participants age groups and allocation
+participants <- Final.reportData::participants %>%
   mutate(age_group = if_else(age < 40, "yng", "old"))
-write_xlsx(participants, "relief_participants.xlsx") # used for data sharing until data package is up and running
+
 
 
 ## Joining the data sets
-
-# Joining condition and participant info
+# Using left_join to add the info from condition and participants to humac.dat, we'll also remove the info about arm condition, since our data does not contain measurements of arm muscle peak torque. 
 humac.dat <- humac.dat %>%
-  # Using left_join to add the info from condition and participants to humac.dat
   left_join(condition) %>%
-  # There is no "arm" data from this test, so we exclude it
   select(-arm) %>% 
-  
   left_join(participants) %>%
-  
   mutate(age_group = factor(age_group, levels = c("yng", "old")),
-         # using factor() to sort the order of the respective variables, meaning they will always be displayed in this order in analyses and plots - unless manually overridden. I think this is a nice way to ensure consistency across multiple plots.
+# using factor() to sort the order of the respective variables, meaning they will always be displayed in this order in analyses and plots - unless manually overridden. I think this is a nice way to ensure consistency across multiple plots.
          
          condition = factor(condition, levels = c("low", "mod")),
          
@@ -55,18 +50,18 @@ humac.dat <- humac.dat %>%
          speed = factor(speed, levels = c("0", "60", "120", "240")),
          
          allocation = factor(allocation, levels = c("int", "con")),
-         # case_when makes sure that control participants are not grouped with a volum                condition
+# case_when makes sure that control participants are not grouped with a volume condition
          condition = case_when(participant %in% c("3071", "3075", "3076", 
                                                   "3083", "3084", "3085",
                                                   "3086", "3090", "3091",
                                                   "3094") ~ "none", TRUE ~ condition))
 
-# Now we have a complete data set with the measurements from the humac test, as well as information about what age group, allocation and condition all the participants had. At this point (or even before) you might want to use the glimpse() function to have a look at the data set and all the variables it contains - here you can also check that what we've joined in actually is there!
+# Now we have a complete data set with the measurements from the humac test, as well as information about what age group, allocation and condition all the participants had. At this point (or even before) you might want to use the glimpse() function to have a look at the data set and all the variables it contains - here you can also check that what we've joined in is actually there!
 
 glimpse(humac.dat)
 
 ## Further data wrangling
-# The data set contains 2x test per time point, therefore one could either make an average of the two measurements oer time point or take the highest value from each. I've decided to take the highest value observed at each time point for analysis. This can be done using the summarise() function alone, however, this produced a lot of "improper" NA's and corresponding errors. Therefore I've included the below code, which makes a functions that returns proper NA values where all values are NA for a group.
+# The data set contains 2x test per time point, so we could either average the two measurements per time point or select the highest value from each. We'll do the latter here. This can be done using the summarise() function alone, however, as we saw with glimpse(), there are multiple "improper" NA's and corresponding errors. Therefore I've included the below code, which makes a functions that returns proper NA values where all values are NA for a group.
 
 
 safe_max <- function(x) {
@@ -133,24 +128,23 @@ Before attempting to create a polished final figure, explore your data with simp
 
 ```{r, Plot1}
 
-
 ## Simple overview plot
 
 overview.plot <- long.dat %>%
   ggplot(aes(speed, value, group = age_group, color = age_group)) +
-  geom_point() + # mapps data to points in the plot
+  geom_point() + # maps data to points in the plot
   theme_minimal()
 
-# So, this simple plot does not really do much other than confirming that there is data and its being mapped to the aesthetics we call. Since this data set has multiple levels of grouping, it would be a good idea to add some facets via the facet_wrap() function. Further, this plot generated a warning message that 876 rows either contained missing values or values outside the scale range was being removed - this is presumably due to using not specifying what outcome we wanted to look at, thus including all outcomes with a wide difference in scale. 
-  
+# So, this simple plot does not really do much other than confirming that there is data and its being mapped to the aesthetics we call. Since this data has multiple levels of grouping, it would be a good idea to add some facets via the facet_wrap() function. Further, this plot generated a warning message that 876 rows either contained missing values or values outside the scale range was being removed - this occurs due because we didn't specify what outcome we wanted to look at, thus including all outcomes with a wide difference in scale. 
+
 ## Faceting by angular velocity  
+# Here we'll use filter() to grab exactly the outcome measure we want and nothing else to fix the scale range issue, and we'll use facet_wrap to divide the plot into lesser plots for each angular velocity.
 
 facet.plot <- long.dat %>%
-  filter(outcome == "pt_max") %>% # this filters out any other outcome than maximal peak torque, to deal with the scale range issue in the previous plot
+  filter(outcome == "pt_max") %>% 
   ggplot(aes(time, value, group = age_group, color = age_group)) +
   geom_point() +
-  facet_wrap(~speed) + #this creates facets in the plot, depending on angular velocity
-  
+  facet_wrap(~speed) + 
   theme_minimal()
 
 facet.plot
@@ -168,15 +162,16 @@ In this example plot, we create one plot per angular velocity, and facet by age 
 ## Peak torque Isometric
 
 plot.isom <- long.dat %>%
+  # First we specify what angular velocity and outcome data we want with filter()
   filter(speed == "0",
-         outcome == "pt_max") %>% # Here we specify what angular velocity and outcome data we want
+         outcome == "pt_max") %>% 
   
-  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) + # the interaction(participant/leg) creates a unique grouping variable combining participant and leg - so we can account for the fact that the participants exercised with a unilateral protocol
+  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +    # the interaction(participant/leg) creates a unique grouping variable combining participant and leg - so we can account for the fact that the participants exercised with a unilateral protocol
   
   geom_line(aes(color = condition), alpha = 0.3) +
-  geom_point(aes(color = condition), alpha = 0.3, size = 1) + # color = condition makes sure the points and lines are colored by condition
+  geom_point(aes(color = condition), alpha = 0.3, size = 1) +                  # color = condition makes sure the points and lines are colored by condition
   
-  facet_wrap(vars(age_group, allocation), scales = "fixed") + # vars() can be used like this when you would like to facet_wrap on multiple groupings. Scales are set to "fixed" to have the same scale for all the plots in our final cowplot
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +                  # vars() can be used like this when you would like to facet_wrap on multiple groupings. Scales are set to "fixed" to have the same scale for all the plots in our final cowplot
   
   scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
                      name = "Training Volume") + # this sets the color of geom_line and geom_point, ideally to something easily distinguishable 
