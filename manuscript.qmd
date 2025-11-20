@@ -39,7 +39,6 @@ To address the challenges of collaboration in scientific projects, this assignme
 
 Alright! Now that we understand the importance of having a robust and reproducible scientific workflow that allows for collaboration we can start by setting up a collaborative workspace and understanding some key terms. In this tutorial we assume that you will be working with RStudio and have already downloaded R and RSTudio. In addition you need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
 
-
 ### What is a repository?
 
 A repository is like a project box where you collect all the files, data, graphs and code scripts from your project.
@@ -62,8 +61,6 @@ a) You can create the online repository and then clone it down to your computer.
 b) You can create a local repository and then push it online to GitHub.
 
 We´ll go through both options here.
-
-
 
 ### 2.1.1 Starting with an online repository
 
@@ -90,7 +87,6 @@ We´ll go through both options here.
   However its also possible to create these documents after creating the repository.
 
 5. Click Create repository to finalize.
-
 
 ##### README
 
@@ -254,10 +250,11 @@ If you refresh the page of your online repository in GitHub you should see a cop
 
 Now that we have connected our local repository with the online one, we can start pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
 
-Take a look at the figure below:
+Take a look at the figure below (@fig-workflow):
 
 ```{r}
 #| echo: false
+#| label: fig-workflow
 #| warning: false
 #| fig-align: "center"
 #| out.height: "60%"
@@ -290,7 +287,7 @@ Just replace the file_name.txt with the name of the file that you want to stage.
 If you want to stage **all files in your repository** that have had changes to them you can write:
 
 ``` bash
-git add -A
+git add -A # or "git add ."
 ```
 
 This command stages **all changes** in the repository, including modified files, newly created files and deleted files.
@@ -319,7 +316,7 @@ git pull
 
 This command pulls the latest changes from your online repository and merges them into your **current branch** in your local repository, so that they are exactly the same. Then you can just start editing and making changes.
 
-If you don't want to fully copy the online repository yet, but take a look at it first before merging it ito your working directory you can use the command
+If you don't want to fully copy the online repository yet, but take a look at it first before merging it ito your working directory you can use the command:
 
 ``` bash
 git fetch
@@ -451,10 +448,9 @@ To delete a branch you can run:
 ```bash
 git branch -d <branch name>
 ```
-
-
-**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](https://sikt.no/tjenester/sikt-ki).
-
+  
+ And thats it!\
+ After reading though this section you should be able to set up and navigate a collaborative workspace in RStudio and GitHub. Now, lets take a look at some examples of how you can use R to you advantage in your scientifc workflow.
 \newpage
 
 # 3. Conducting Simulations Before Data Acquisition
@@ -472,26 +468,38 @@ library(ggdag)
 
 Conducting simulations prior to data acquisition is useful for several reasons, including:
 
-1.  *Model design*. By sampling from the prior distributions, we can understand our expectations about potential outcomes. This pre-data exploration offers insights into the implications of the prior assumptions.
-2.  *Model checking*. Once a model is updated using real data, simulating implied data can help assess the success of the fit and explore the model's behavior.
-3.  *Software validation*. In order to ensure that our model fitting software is functioning correctly, it is helpful to simulate observations under a known model and then attempt to recover the parameter values from which the data were simulated.
-4.  *Research design*. Simulating observations based on our hypothesis allows for an evaluation of the research design's effectiveness. This is similar to conducting a *power analysis*, but the possibilities are broader.\
-5.  *Forecasting*. Estimates derived from simulations can be utilized to generate predictions for new cases and future observations [@McElreath_2018].
+1. *Model design*. By sampling from the prior distributions, we can understand our 
+expectations about potential outcomes. This pre-data exploration offers insights 
+into the implications of the prior assumptions.
+2. *Model checking*. Once a model is updated using real data, simulating implied 
+data can help assess the success of the fit and explore the model's behavior.
+3. *Software validation*. In order to ensure that our model fitting software is
+functioning correctly, it is helpful to simulate observations under a known model 
+and then attempt to recover the parameter values from which the data were simulated. 
+4. *Research design*. Simulating observations based on our hypothesis allows for 
+an evaluation of the research design's effectiveness. This is similar to conducting 
+a *power analysis*, but the possibilities are broader.
+5. *Forecasting*. Estimates derived from simulations can be utilized to generate 
+predictions for new cases and future observations [@McElreath_2018]. \
 
 To illustrate some of the properties of conducting simulations, we will consider the following hypothesis: **Increasing daily exercise time is associated with lower blood pressure levels in adults**.
 
 To investigate this hypothesis, it is valuable to invest effort into finding methods that distinguish causal inferences from associations. A helpful first step to do this is to construct a causal model that is separate from the statistical model. The simplest graphical representation of such a causal model is a *DIRECTED ACYCLIC GRAPH*, commonly referred to as a *DAG* [@McElreath_2018; @digitale_tutorial_2022].
 
-A DAG primarily serves to represent our prior knowledge about biological and behavioral systems that may confound the specific causal research question. In our example, we aim to investigate the causal effect of increasing exercise time, denoted as "E", on blood pressure, "B". A basic DAG for this relationship might look like this (Figure 1):
+A DAG primarily serves to represent our prior knowledge about biological and behavioral 
+systems that may confound the specific causal research question. In our example, we 
+aim to investigate the causal effect of increasing exercise time, denoted as "E",
+on blood pressure, "B". A basic DAG for this relationship might look like this (@fig-dag1):
+
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
 #| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is not confounded."
-#| label: Fig-dag1
+#| label: fig-dag1
 #| fig-width: 6
-#| fig-height: 3
+#| fig-height: 1
 
 
 
@@ -520,14 +528,20 @@ fig1
 
 ```
 
-This DAG assumes that the causal effect of increasing exercise time on blood pressure is not confounded, which is arguably a naive assumption. For instance, both age and diet could potentially confound this relationship. A more comprehensive DAG that accounts for these confounders might appear as follows (Figure 2):
+\newpage
+
+This DAG assumes that the causal effect of increasing exercise time on blood pressure 
+is not confounded, which is arguably a naive assumption. For instance, both age and 
+diet could potentially confound this relationship. A more comprehensive DAG that 
+accounts for these confounders might appear as follows (@fig-dag2):
+
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
 #| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is confounded by both age (A) and diet (D)."
-#| label: Fig-dag2
+#| label: fig-dag2
 #| fig-width: 6
 #| fig-height: 3
 
@@ -571,20 +585,20 @@ Having established the confounding factors of age and diet in the relationship b
 
 The model can now be described mathematically, for example in terms of a simple linear regression model:
 
-\begin{align}
+\begin{align*}
 \operatorname{BloodPressure}_i &= \beta_0 + \beta_1 \cdot \operatorname{Exercise}_i 
 + \beta_2 \cdot \operatorname{Age}_i + \beta_3 \cdot \operatorname{Diet}_i + \epsilon_i \\
-\end{align}
+\end{align*}
 
 Where:
 
-\begin{align}
+\begin{align*}
 \beta_0 &: \text{Intercept}\\
 \beta_1 &: \text{Coefficient for exercise time}\\
 \beta_2 &: \text{Coefficient for age}\\
 \beta_3 &: \text{Coefficient for diet}\\
 \epsilon_i &: \text{Random error term}\\
-\end{align}
+\end{align*}
 
 The linear regression model can be implemented in R as follows:
 
@@ -609,9 +623,12 @@ summary(model)
 
 **Run simulations**
 
-We will now run simulations to evaluate our model design. First, we need to define our parameter values:
+We will now run simulations to evaluate our model design. First, we need to define 
+our parameter values, which are based on our prior knowledge and expectations from 
+the existing literature:
 
-\begin{align}
+
+\begin{align*}
 \operatorname{BP}_i & = \beta_0 + \beta_E \cdot \operatorname{E}_i + \beta_A \cdot \operatorname{A}_i + \beta_D \cdot \operatorname{D}_i + \epsilon_i \\
 \operatorname{E}_i & \sim \operatorname{Normal}(\mu_E, \sigma_E) \\
 \operatorname{A}_i & \sim \operatorname{Normal}(\mu_A, \sigma_A) \\
@@ -627,9 +644,11 @@ We will now run simulations to evaluate our model design. First, we need to defi
 \sigma_E & = 20 \quad (\text{exercise standard deviation}) \\
 \sigma_A & = 10 \quad (\text{age standard deviation}) \\
 \sigma_\epsilon & = 5 \quad (\text{error term standard deviation}) \\
-\end{align}
+\end{align*}
 
 After defining our parameter values, we can simulate data using these parameters. To do this, it is convenient to create a function where you specify information about each parameter that can be manipulated later, thereby enabling experimentation with different values to assess the model's robustness. Below is the code for this simulation:
+
+\newpage
 
 ```{r}
 #| results: false
@@ -675,7 +694,11 @@ sim_data <- sim.fun()
 
 ```
 
-With our simulated dataset, we can now test our hypotheses using the linear model: *lm(bloodpressure \~ exercise + age + diet, sim_data)*. The output will indicate whether there is an observed effect of exercise on blood pressure:
+\newpage
+
+With our simulated dataset, we can now test our hypotheses using the linear model: 
+*lm(bloodpressure ~ exercise + age + diet, sim_data)*. The output will indicate whether
+there is an observed effect of exercise on blood pressure:
 
 ```{r}
 #| echo: false
@@ -704,7 +727,13 @@ exercise_effect <- sprintf("%.3f",summary(sim.m1)$coefficients["exercise", "Esti
 
 In this model, we can see that each minute of increased exercise time is associated with a **`r exercise_effect`** mmHg lower blood pressure, when age and diet are included as covariates.
 
-Now it is time to play with our simulation! Lets say we only manage to include 50 participents, what will happen whit our results?
+\newpage
+
+Now it is time to play with our simulation! Lets say we only manage to include 50 
+participents, what will happen whit our results?
+
+This can easily be tested by manipulating our function and then running the model, 
+like this:
 
 This can easily be tested by manipulating our function and then running the model, like this:
 
@@ -732,7 +761,16 @@ summary.sim.m2
 exercise_effect2 <- sprintf("%.3f", summary(sim.m2)$coefficients["exercise", "Estimate"])
 ```
 
-The output for this model may reveal that the **`r exercise_effect2`** mmHg effect of exercise is no longer significant, suggesting that 50 participants may not be sufficient to detect the true effect of exercise which we know is **-0.1** mmHg. However, this is just one simulation; results may vary due to random chance. It is therefore prudent to conduct multiple simulations to evaluate the robustness of our model, which can be executed in a loop as demonstrated below:
+
+The output for this model may reveal that the **`r exercise_effect2`** mmHg effect 
+of exercise is no longer significant, suggesting that 50 participants may not be 
+sufficient to detect the true effect of exercise which we know is **-0.1** mmHg. 
+However, this is just one simulation; results may vary due to random chance. It is 
+therefore prudent to conduct multiple simulations to evaluate the robustness of our 
+model, which can be executed in a loop as demonstrated below:
+
+\newpage
+
 
 ```{r}
 #| label: Simulations loop
@@ -761,10 +799,14 @@ for(i in 1:1000) {
 
 ```
 
-To visualize the estimates of model 1 and model 2, it is convenient to create a figure similar to Figure 3.
+
+
+To visualize the estimates of model 1 and model 2, it is convenient to create a 
+figure similar to @fig-sim.
+
 
 ```{r}
-#| label: Simulation figure 
+#| label: fig-sim 
 #| echo: false
 #| fig-cap: "Demonstrating the variation in the estimated effect of exercise on blood pressure using 100 participants (m1) compared to 50 participants (m2) by simulating 1,000 different datasets."
 
@@ -776,13 +818,251 @@ bind_rows(results) |>
              shape = 21,
              color = "blue") + 
   theme_classic()
+
+
 ```
 
 In the simulated models shown in Figure 3, the estimate for model m1 clusters more tightly around -0.1, which represents the true effect of exercise on blood pressure as specified. In contrast, model m2 exhibits more variation, indicating that the effect is less reliably detected with only 50 participants.
 
-This brief introduction illustrates how to conduct basic data simulations before data acquisition, empowering you to enhance the robustness of your research!
+In the simulated models shown in @fig-sim, the estimate for model m1 clusters more 
+tightly around -0.1, which represents the true effect of exercise on blood pressure
+as specified. In contrast, model m2 exhibits more variation, indicating that the 
+effect is less reliably detected with only 50 participants.
+
+This brief introduction illustrates how to conduct basic data simulations before 
+data acquisition, empowering you to enhance the robustness of your research! 
+
+\newpage
 
 # 4. Including Data Packages for Distribution
+
+A fundamental principle of reproducible research is that both the data and the code 
+used to produce results should be publicly available. One convenient method for distributing 
+these materials is to combine the data, code, and documentation into a portable unit 
+called a package. For example, an R package can be shared via a code repository such 
+as GitHub. In addition to housing datasets and analysis scripts, an R package can 
+include initial data-cleaning and transformation steps that convert raw, unprocessed 
+data into a form suitable for statistical analysis. In this section we give a concise, 
+practical guide to setting up an R package that contains the data used in the next 
+section, “Creating Visualizations from Data Packages.” Our example package will be 
+called **Final_reportData** and will include cleaned datasets and simple documentation 
+so the data are ready to use in downstream visualizations and examples.
+
+We’ll create a package skeleton, add datasets (imported from Excel), document the 
+data, and prepare the package for GitHub.
+
+## Create the package skeleton 
+
+There are several ways to create a package skeleton; here we use the  **usethis** 
+functions. Choose an empty local folder (avoid cloud-synced folders like Dropbox 
+to prevent accidental conflicts).
+
+From an R session run:
+```bash
+usethis::create_package("C:/Final_reportData")
+```
+
+This creates the basic package structure and a "DESCRIPTION" file with metadata.
+
+
+
+## Initialize version control and push to GitHub
+
+From the package project folder, initialize git and create a GitHub repository. 
+You can use Git + GitHub CLI (gh). 
+
+Example commands (run in the Terminal):
+
+```bash
+git init
+gh repo create .   # follow prompts to set owner and visibility
+```
+Follow the prompts to set repository name/visibility. After this you can push the 
+initial commit.
+
+## Edit DESCRIPTION
+
+The "DESCRIPTION" file contains the package metadata. Edit it to include a clear Title, 
+a one-paragraph Description, author information, license, and other fields. 
+
+Some general formatting tips:
+
+Title: Title Case, keep it short (< 65 chars).\
+Description: One paragraph, wrap lines under ~80 chars. \
+Authors@R should include roles (aut, cre, etc.).\
+Example (illustrative — adjust for your project):  
+
+```bash 
+Package: Final.reportData
+Title: Data Package For Final.reportData
+Version: 0.0.0.9000
+Authors@R: c(person("Tomas Urianstad", "Odden", , "tomas.urianstad@inn.no", role = c("aut", "cre")),
+            person("Kristian", "Kristian Lian", , "kristian.lian@inn.no", role = "ctb"),
+            person("Torkil", "Rogneflåten", , "torkil.rogneflaten@inn.no", role = "ctb"),
+            person("Sarah Jasmin", "Klausen", , "sarah.klausen@inn.no", role = "ctb"))
+Description: This package contains Data
+License: CC BY 4.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends: 
+    R (>= 3.5)
+LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+```
+
+## Choose a license 
+A license clarifies how others may use, modify or redistribute your package/data. 
+For data-heavy packages, common choices are CC BY 4.0 (requires attribution) or CC0 
+(public domain). To add a license automatically::
+
+```bash
+usethis::use_ccby_license()
+```
+
+This updates DESCRIPTION and adds a LICENSE.md file.
+
+## Package structure basics
+
+After creating the package you will see a standard layout:
+
+R/ — functions and R code.\
+data/ — packaged datasets (saved as .rda). \
+man/ — generated documentation (when you document). \
+DESCRIPTION, NAMESPACE, LICENSE.md, .Rbuildignore, .gitignore, etc. 
+The NAMESPACE is usually generated by roxygen2 when documenting; you don’t normally 
+edit it by hand. Use .Rbuildignore and .gitignore to exclude build artifacts and 
+other files from package builds and version history.
+
+## Add data to the package
+
+In our example there is three Excel files (placed in a data-raw folder):
+
+```bash 
+data-raw/data/relief_humac.xlsx
+data-raw/data/relief_participants.xlsx
+data-raw/data/relief_volume.xlsx
+```
+
+A recommended workflow:
+
+Import and clean the raw data in data-raw/ scripts.
+Save the cleaned objects to the data/ directory with **usethis::use_data()**
+so they are available to package users.
+
+Example import-and-save workflow (run inside the package project):
+
+
+\newpage
+
+```bash
+
+
+
+# read Excel files (adjust sheet names / ranges as needed)
+humac_raw <- read_excel("data-raw/data/relief_humac.xlsx",
+                        na = "na") # this is the peak torque test data
+
+volume_raw <- read_excel("data-raw/data/relief_volume.xlsx",
+                        na = "na") %>% # this is info about volume condition
+  mutate(participant = as.character(participant))
+
+participants_raw <- read_excel("data-raw/data/relief_participants.xlsx",
+                           na = "na") %>% # this is info about age group and allocation
+
+  mutate(age_group = if_else(age < 40, "yng", "old"))
+
+
+# perform any cleaning / renaming here
+humac.dat <- humac_raw   # example: replace with actual cleaning steps
+condition <- volume_raw  # example
+participants <- participants_raw
+
+
+
+# using data datasets in this package
+usethis::use_data(humac.dat, overwrite = TRUE)
+usethis::use_data(condition, overwrite = TRUE)
+usethis::use_data(participants, overwrite = TRUE)
+
+
+```
+
+Notes:
+
+Keep raw import/cleaning code in data-raw/ so it’s reproducible but not shipped as 
+data objects.
+
+
+## Documenting the data
+
+Dataset documentation in man/ is typically written using roxygen2 syntax in an R script
+named data.R. The roxygen comments generate the .Rd files during documentation.
+
+Example data documentation (place in R/data.R):
+
+```bash
+#' Final_reportData
+#'
+#'
+#' condition.rda
+#'
+#' Description of data
+#'
+#'
+#' @format
+#' A data frame with 162 raws and 4 colums
+#' \describe{
+#'        \item{particioant}{ID identification}
+#'        \item{condition}{information of training volume}
+#'        \item{leg}{informatoion of which leg}
+#'        \item{arm}{information of which arm}
+#'        }
+#'
+"condition"
+
+```
+
+After you’ve added roxygen comments, generate documentation and NAMESPACE with: 
+
+```bash 
+# in the package root
+roxygen2::roxygenise()
+```
+This will create man/humac.dat.Rd and update NAMESPACE.
+
+## Build, check, and share
+Install and test your package locally:
+
+```bash 
+devtools::install()
+```
+
+Run package checks:
+
+```bash 
+devtools::check()
+```
+
+Address any issues reported by check (e.g., missing documentation, namespace problems).
+
+Commit changes, push to GitHub, and optionally create releases/tags.
+Example git workflow:
+
+```bash  
+git add .
+git commit -m "Add cleaned data and documentation for Final_reportData"
+git push origin main
+```
+
+That’s it — your data are now included in an R package, documented, and ready for 
+others to install and use. For this project the package is available at: 
+
+**https://github.com/TomasUrianstad/Final_reportData**
+
+\newpage
 
 # 5. Creating Visualizations from Data Packages
 
@@ -798,6 +1078,7 @@ The package from which we will import data is organized by test, meaning one xls
 library(tidyverse)
 library(dplyr)
 library(readxl)
+#library(Final.reportData)
 
 ## Importing the data from the data package
 
@@ -1481,5 +1762,29 @@ curve.plot
 
 
 ```
+
+\newpage 
+
+# AUTHOR CONTRIBUTIONS
+T.R. wrote the first draft of the Introduction. S.J.K. wrote the first draft of Section 2, 
+“Setting Up a Collaborative Workspace.” T.U.O. wrote the first drafts of Sections 
+3 and 4, “Conducting Simulations Before Data Acquisition” and “Including Data Packages 
+for Distribution,” and created the final_reportData package. K.L. wrote the first 
+draft of Section 5, “Creating Visualizations from Data Packages.” T.R., S.J.K., T.U.O., 
+and K.L. edited and revised the manuscript and code, and they approved the final 
+version of the manuscript.
+
+
+# ACKNOWLEDGEMENT 
+The authors would like to thank Daniel Hammarström for an excellent course that broadened 
+our perspectives and inspired new ways of thinking. Thank you!
+
+# DISCLAIMERS
+
+**Disclaimer:** This manuscript was written with the help of SIKT KI chat using the 
+gpt-4o model and GPT UIO using ChatGPT (GPT-4.1). The AI was used to verify code chunks, 
+summarize steps in an organized format and rewrite original text for better grammar 
+and flow. The authors takes full responsibility for the resulting output. Link to [Sikt KI](https://sikt.no/tjenester/sikt-ki) and [GPT UiO](https://gpt.uio.no).
+
 
 # Bibliography
