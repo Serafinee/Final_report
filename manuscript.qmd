@@ -1074,7 +1074,6 @@ Since we already have a data package that cleans and prepares our data for visua
 
 ```{r, data import and wrangling}
 library(tidyverse)
-#library(dplyr)
 library(writexl)
 
 ## Importing the data from the data package
