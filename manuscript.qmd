@@ -1066,51 +1066,41 @@ others to install and use. For this project the package is available at:
 
 # 5. Creating Visualizations from Data Packages
 
-As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of.
+The aim of this section is to demonstrate a workflow from data package to visualization of your data, with a focus on reproducibility and collaboration. The reproducibility is already established through the infrastructure provided by having a data package available - no spread sheets or CSV files floating around untracked in different states between collaborators. With a data package available the data remains stable, tracked, accessible and identical to all collaborators. This means that your scripts/qmds for data visualization can focus solely on that purpose, i.e., joining, wrangling and plotting data. On that note, clear and descriptive comments about how you wrangle and plot your data are essential - both for your future self and for collaborators. This practice makes it much easier to resume work and understand the reasoning behind decisions made in the visualization of your data.
 
 ### Prior to plotting
 
-Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. <!-- I'll be using my own data package here, since it would be contrary to progress to wait for the data package to be finished in section 4. -->
-
-The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier.
+Since we already have a data package that cleans and prepares our data for visualization, we can simply import the data from this package. The package is organized by test, meaning one xlsx file per test containing only the measurements from that specific test. Therefore, additional wrangling is necessary to incorporate other information we want to visualize, such as age group, condition, and participant allocation. This data preparation process can be surprisingly time-consuming, but investing effort in creating tidy data makes the actual plotting (and your life) considerably easier.
 
 ```{r, data import and wrangling}
 library(tidyverse)
-library(dplyr)
-library(readxl)
-#library(Final.reportData)
+#library(dplyr)
+library(writexl)
 
 ## Importing the data from the data package
 
-humac.dat <- read_excel("data/relief_humac.xlsx", 
-    na = "na") # this is the peak torque test data
+# Importing measurements from the humac dynamometer test
+humac.dat <- Final.reportData::humac.dat # this is the peak torque test data
 
-condition <- read_excel("data/relief_volume.xlsx", 
-    na = "na") %>% # this is info about volume condition
+# Importing information about each participants volume condition
+condition <- Final.reportData::condition %>%
   mutate(participant = as.character(participant))
 
-participants <- read_excel("data/relief_participants.xlsx", 
-    na = "na") %>% # this is info about age group and allocation
-  
+# Importing infromation about the participants age groups and allocation
+participants <- Final.reportData::participants %>%
   mutate(age_group = if_else(age < 40, "yng", "old"))
-
-# It would probably be a good idea to make 1 dataset overall from relief_volum and relief_participants - as a note to self
 
 
 
 ## Joining the data sets
-
-# Joining condition and participant info
+# Using left_join to add the info from condition and participants to humac.dat, we'll also remove the info about arm condition, since our data does not contain measurements of arm muscle peak torque. 
 humac.dat <- humac.dat %>%
-  # Using left_join to add the info from condition and participants to humac.dat
   left_join(condition) %>%
-  # There is no "arm" data from this test, so we exclude it
   select(-arm) %>% 
-  
   left_join(participants) %>%
-  
   mutate(age_group = factor(age_group, levels = c("yng", "old")),
-         # using factor() to sort the order of the respective variables
+# using factor() to sort the order of the respective variables, meaning they will always be displayed in this order in analyses and plots - unless manually overridden. I think this is a nice way to ensure consistency across multiple plots.
+         
          condition = factor(condition, levels = c("low", "mod")),
          
          time = factor(time, levels = c("pre", "mid",  "post")),
@@ -1118,14 +1108,18 @@ humac.dat <- humac.dat %>%
          speed = factor(speed, levels = c("0", "60", "120", "240")),
          
          allocation = factor(allocation, levels = c("int", "con")),
-         # case_when makes sure that control participants are not grouped with a volum                condition
+# case_when makes sure that control participants are not grouped with a volume condition
          condition = case_when(participant %in% c("3071", "3075", "3076", 
                                                   "3083", "3084", "3085",
                                                   "3086", "3090", "3091",
                                                   "3094") ~ "none", TRUE ~ condition))
 
+# Now we have a complete data set with the measurements from the humac test, as well as information about what age group, allocation and condition all the participants had. At this point (or even before) you might want to use the glimpse() function to have a look at the data set and all the variables it contains - here you can also check that what we've joined in is actually there!
+
+glimpse(humac.dat)
+
 ## Further data wrangling
-# The data set contains 2x test per time point, so I've decided to take the highest value observed at each time point for analysis. Another option would be to take the average from each time point. Getting the highest observed measurement from each time point could be done using the summarise() function alone, however, this produced alot of NA's and corresponding errors. Therefore I've included the below code, which makes a functions that returns proper NA values where all values are NA for a group.
+# The data set contains 2x test per time point, so we could either average the two measurements per time point or select the highest value from each. We'll do the latter here. This can be done using the summarise() function alone, however, as we saw with glimpse(), there are multiple "improper" NA's and corresponding errors. Therefore I've included the below code, which makes a functions that returns proper NA values where all values are NA for a group.
 
 
 safe_max <- function(x) {
@@ -1171,79 +1165,97 @@ max.dat <- humac.dat %>%
             .groups = "drop")
 
 
-## Reshape the data to long format for faceting
-# This simply formats the data to where each observation is stored in its own row, with variables spread
-# across columns - thus minimizing redundancy. 
+## Reshape the data to long format
+# This simply formats the data to where each observation is stored in its own row, with variables spread across columns - thus minimizing redundancy. This typically makes the data frame more tidy, and is quite practical for selecting variables, faceting etc, and will remain the go-to data frame for all the plots here. 
 
 long.dat <- max.dat %>%
   pivot_longer(names_to = "outcome",
                values_to = "value",
                cols = c(pt_max, power_max, work_max, tt_min, angle))
 
-## Filter by speed and parameter
-# Below separate data sets for the different velocities are created with the filter() function, also filtering to only the peak torque measurement, since thats what Im interested in here. This could also be done in the plot itself, but I prefer it this way to minimize the amount of code that goes into the actual plot. This might be a personal preference, and there's probably better ways to do it. 
-
-# Isometric/ 0 d/s
-
-ptisom <- long.dat %>%
-  filter(speed == "0", outcome == "pt_max")
-
-
-# 60 d/s
-
-pt60 <- long.dat %>%
-  filter(speed == "60", outcome == "pt_max")
-
-  
-# 120 d/s
-
-pt120 <- long.dat %>%
-  filter(speed == "120", outcome == "pt_max")
-
-
-# 240 d/s
-
-pt240 <- long.dat %>%
-  filter(speed == "240", outcome == "pt_max")
-
 
 ```
 
 ### Plotting some figures
 
-Now that the data is tidied up for our purpose, we can make some different plots. The backbone of these plots will be the ggplot() function from ggplot2 (also loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2
+Now that the data is imported and tidied up, lets start with a simple plot to get an overview. The backbone of all these plots is the ggplot() function from ggplot2 (loaded by tidyverse), supplemented by cowplot for additional functionality. Briefly, ggplot2 implements a layered grammar of graphics, providing tools to build plots by mapping variables to aesthetics, geometric objects, and facets, then adding themes and annotations [@wickham_2010].
 
-**Plot 1: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
+Before attempting to create a polished final figure, explore your data with simple plots—this is valuable both for visualization and before statistical analysis. Since we've already wrangled the data into tidy long format and examined the variables of interest with glimpse(), we can proceed directly to plotting.
+
+**Plot 1: Simple Visualization**
 
 ```{r, Plot1}
 
-library(cowplot)
+## Simple overview plot
+
+overview.plot <- long.dat %>%
+  ggplot(aes(speed, value, group = age_group, color = age_group)) +
+  geom_point() + # maps data to points in the plot
+  theme_minimal()
+
+# So, this simple plot does not really do much other than confirming that there is data and its being mapped to the aesthetics we call. Since this data has multiple levels of grouping, it would be a good idea to add some facets via the facet_wrap() function. Further, this plot generated a warning message that 876 rows either contained missing values or values outside the scale range was being removed - this occurs due because we didn't specify what outcome we wanted to look at, thus including all outcomes with a wide difference in scale. 
+
+## Faceting by angular velocity  
+# Here we'll use filter() to grab exactly the outcome measure we want and nothing else to fix the scale range issue, and we'll use facet_wrap to divide the plot into lesser plots for each angular velocity.
+
+facet.plot <- long.dat %>%
+  filter(outcome == "pt_max") %>% 
+  ggplot(aes(time, value, group = age_group, color = age_group)) +
+  geom_point() +
+  facet_wrap(~speed) + 
+  theme_minimal()
+
+facet.plot
+
+```
+
+This is a reasonable start—we have angular velocity separated by facets and data points colored by age group. However, to visualize the change from baseline to post-intervention, additional considerations are needed. In general, the process onward will depend on your research question and design [@tufte_2001], but with the present data, we may expect differences based on age group (young vs. old), training volume (low vs. moderate), and participant allocation (intervention vs. control), so the plot must account for these factors. This can be accomplished using cowplot alongside faceting to display all relevant groups without overcrowding a single graph.
+
+**Plot 2: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
+
+In this example plot, we create one plot per angular velocity, and facet by age group and allocation. This will give us a good overview of what happens in each of the groups from baseline to the half-way mark, and then to post.
+
+```{r, Plot2}
 
 ## Peak torque Isometric
 
-ptisom.plot <- ptisom %>%
-  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
+plot.isom <- long.dat %>%
+  # First we specify what angular velocity and outcome data we want with filter()
+  filter(speed == "0",
+         outcome == "pt_max") %>% 
+  
+  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +    # the interaction(participant/leg) creates a unique grouping variable combining participant and leg - so we can account for the fact that the participants exercised with a unilateral protocol
+  
   geom_line(aes(color = condition), alpha = 0.3) +
-  geom_point(aes(color = condition), alpha = 0.3, size = 1) +
-  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  geom_point(aes(color = condition), alpha = 0.3, size = 1) +                  # color = condition makes sure the points and lines are colored by condition
+  
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +                  # vars() can be used like this when you would like to facet_wrap on multiple groupings. Scales are set to "fixed" to have the same scale for all the plots in our final cowplot
+  
   scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-                     name = "Training Volume") +
+                     name = "Training Volume") + # this sets the color of geom_line and geom_point, ideally to something easily distinguishable 
+  
   labs(title = "",
        subtitle = "",
        x = "",
-       y = "Peak Torque (Nm)") +
+       y = "Peak Torque (Nm)") + # this can be changed to any suitable title, subtitle etc. when using cowplot to grid multiple plots, you might want to remove these ("") for most of or all your plots, since a common title etc. can be made in the cowplot. 
+  
   theme_minimal() +
   theme(legend.position = "bottom",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(color = "black"),
         axis.line.x = element_blank(),
-        axis.text.x = element_blank(),
-        strip.text = element_blank())
+        axis.text.x = element_blank())#,
+       # strip.text = element_blank()) # these theme() changes are part of the final cosmetic adjustment of each plot. For instance strip.text = element_blank() removes facet labels, and this could be useful to apply in some of the plots as long as they follow the same pattern. 
+
+# The following three plots will be copies of the above one, with slight differences in theme/labs to fit together in the cowplot. 
 
 ## Peak torque 60
 
-pt60.plot <- pt60 %>%
+plot.60 <- long.dat %>%
+  filter(speed == "60",
+         outcome == "pt_max") %>%
+  
   ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
   geom_line(aes(color = condition), alpha = 0.3) +
   geom_point(aes(color = condition), alpha = 0.3, size = 1) +
@@ -1255,16 +1267,19 @@ pt60.plot <- pt60 %>%
        x = "",
        y = "") +
   theme_minimal() +
-  theme(legend.position = "bottom") +
-  theme(panel.grid.major = element_blank(),
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(color = "black"),
         axis.line.x = element_blank(),
-        axis.text.x = element_blank())
+        axis.text.x = element_blank())#,
+        #strip.text = element_blank())
 
 ## Peak torque 120
 
-pt120.plot <- pt120 %>%
+plot.120 <- long.dat %>%
+  filter(speed == "120",
+         outcome == "pt_max") %>%
   ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
   geom_line(aes(color = condition), alpha = 0.3) +
   geom_point(aes(color = condition), alpha = 0.3, size = 1) +
@@ -1276,14 +1291,18 @@ pt120.plot <- pt120 %>%
        x = "Time",
        y = "Peak Torque (Nm)") +
   theme_minimal() +
-  theme(legend.position = "bottom") +
-  theme(panel.grid.major = element_blank(),
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_blank(),
+        strip.text = element_blank())
 
 ## Peak torque 240
 
-pt240.plot <- pt240 %>%
+plot.240 <- long.dat %>%
+  filter(speed == "240",
+         outcome == "pt_max") %>%
   ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
   geom_line(aes(color = condition), alpha = 0.3) +
   geom_point(aes(color = condition), alpha = 0.3, size = 1) +
@@ -1296,24 +1315,29 @@ pt240.plot <- pt240 %>%
        y = "") +
   theme_minimal() +
   theme(legend.position = "bottom",
-        legend.box.margin = margin(0, 0, 0, 0)) +
-  theme(panel.grid.major = element_blank(),
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_blank(),
+        strip.text = element_blank())
 
 
+library(cowplot)
 
+## Combining the plots
+# This is where we can use cowplot to combine all the four plots above into one plot - and yes, you can combine different cowplots into an even bigger plot if you wanted to. 
 
-# Combinding the plots
+# This one is quite basic, but suits our current needs quite well. The plots will appear in the order they are called, and you can define how many columns and rows you want with ncol and nrow. Since we use theme() to hide the legend of two of the plots here, we can adjust the relative hight of the upper row vs. the lower with rel_heights. 
 
 ptfig <- plot_grid(
-  ptisom.plot + theme(legend.position = "none"),
-  pt60.plot + theme(legend.position = "none"),
-  pt120.plot,
-  pt240.plot,
+  plot.isom + theme(legend.position = "none"),
+  plot.60 + theme(legend.position = "none"),
+  plot.120,
+  plot.240,
   ncol = 2,
   nrow = 2,
   labels = c("A) 0 d/s", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
+  label_size = 10,
   rel_heights = c(0.8, 1) 
 )
 
@@ -1324,180 +1348,29 @@ ptfig
 
 ```
 
-<!--**Plot 2: Mean Change Peak Torque per Age Group**-->
-
-```{r, Plot2}
-
-
-## Isometric 
-#
-#ptisommean <- ptisom %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "",
-#       y = "Peak Torque (Nm)") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"),
-#        axis.text.x = element_blank(),
-#        axis.line.x = element_blank())
-#
-#
-## 60 d/s
-#pt60mean <- pt60 %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "",
-#       y = "") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"),
-#        axis.text.x = element_blank(),
-#        axis.line.x = element_blank())
-#
-#
-## 120 d/s
-#pt120mean <- pt120 %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "Time",
-#       y = "Peak Torque (Nm)") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"))
-#
-#
-## 120 d/s
-#pt240mean <- pt240 %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "Time",
-#       y = "") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"))
-#
-#
-## Combinding the plots
-#
-#ptmeanfig <- plot_grid(
-#  ptisommean + theme(legend.position = "none"),
-#  pt60mean + theme(legend.position = "none"),
-#  pt120mean,
-#  pt240mean,
-#  ncol = 2,
-#  nrow = 2,
-#  labels = c("A) Isometric", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
-#  rel_heights = c(0.8, 1) 
-#)
-#
-#
-#ptmeanfig
-#
-#
-
-```
-
 **Plot 3: Mean Change Peak Torque per Age Group - with raw data**
+
+While it may be fascinating to look at all the individual lines in these plots, it's not necessarily easy to discern what happens in the respective groups here. So, another option is to summarize the change in peak torque instead of having all the individual lines. In addition we can use either errorbars or map the individual data to display the variation in the data frame - technically you could do both, but that would be quite messy in our case.
 
 ```{r, Plot3}
 
 # Set seed for jitter
 
-set.seed(1)
+set.seed(1) # further down we will use position_jitter to spread out our data points a bit more, set.seed(1) simply makes this spread reproducible instead of randomly changing every time you run the code. Notably the (1) doesnt really matter, it could be (22), as long as its the same every time for reproducibility. 
+
+# The setup here will be quite similar to the previous plot, but we do need to perform some statistical transformation using summarise() to get the mean change instead of all the individual changes. 
 
 # Isometric 
 
-ptiisommean <- ptisom %>%
-  #summarising means
+# First we create a data frame containing only the isometric angular velocity and the outcome peak torque. The reason for this, is that we would like to use this specific data frame for our geom_points further down, after we have summarised the data. Thus we need a separate data frame. 
+isom.dat <- long.dat %>%
+  filter(speed == "0",
+         outcome == "pt_max")
+
+  
+plot.isommean <- isom.dat %>%
+  
+#summarising means - before summarising we select what we would like to group our data by with group_by(), and we then use .groups = "drop" when the summarizing is completed.
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
             sd = sd(value, na.rm = TRUE),
@@ -1506,19 +1379,24 @@ ptiisommean <- ptisom %>%
   #creating the plot
   ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
   
+  # Here we can use two instances of geom_point to map out both the mean data and the indivdual data. For the mean data, we also add geom_line to connect the dots depending on condition, and we make sure they dont overlap too much by using position_dodge with identical coordinates. 
+  # Mean data
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
+  # Individual data
+  geom_point(data = isom.dat, # Here we add the isom.dat with all the individual values intact
+             aes(x = time, y = value,
+                 color = condition, group = condition),
+                 size = 1.5, # adjusts the size of these data points
+                 alpha = 0.3, # adjusts the alpha, might be a good idea to have a lower alpha and size compared to the mean data points
+             position = position_jitter(width = 0.2)) +
+  
+# Here's an example of how to implement errorbars instead, if thats your jam
 #  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
 #                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
 
-  # adding in the raw data
-  geom_point(data = ptisom,
-             aes(x = time, y = value,
-                 color = condition, group = condition),
-                 size = 1.5,
-                 alpha = 0.3,
-             position = position_jitter(width = 0.2)) +
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1542,8 +1420,15 @@ ptiisommean <- ptisom %>%
         axis.line.x = element_blank())
 
 
+# The following three plots will be copies of the above one, with slight differences in theme/labs to fit together in the cowplot. 
+
 # 60 d/s
-pti60mean <- pt60 %>%
+
+dat.60 <- long.dat %>%
+  filter(speed == "60",
+         outcome == "pt_max")
+
+plot.60mean <- dat.60 %>%
   #summarising means
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
@@ -1556,16 +1441,16 @@ pti60mean <- pt60 %>%
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
- # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-  
-  # adding in the raw data
-  geom_point(data = pt60,
+  geom_point(data = dat.60,
              aes(x = time, y = value,
                  color = condition, group = condition),
                  size = 1.5,
                  alpha = 0.3,
              position = position_jitter(width = 0.2)) +
+ # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1590,7 +1475,12 @@ pti60mean <- pt60 %>%
 
 
 # 120 d/s
-pti120mean <- pt120 %>%
+
+dat.120 <- long.dat %>%
+  filter(speed == "120",
+         outcome == "pt_max")
+
+plot.120mean <- dat.120 %>%
   #summarising means
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
@@ -1603,16 +1493,18 @@ pti120mean <- pt120 %>%
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
- # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-  #              width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-  
-  # adding in the raw data
-  geom_point(data = pt120,
+  geom_point(data = dat.120,
              aes(x = time, y = value,
                  color = condition, group = condition),
                  size = 1.5,
                  alpha = 0.3,
              position = position_jitter(width = 0.2)) +
+  
+ # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+  #              width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  # adding in the raw data
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1631,11 +1523,17 @@ pti120mean <- pt120 %>%
   theme(legend.position = "bottom") +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
+        axis.line = element_line(color = "black"),
+        strip.text = element_blank())
 
 
 # 240 d/s
-pti240mean <- pt240 %>%
+
+dat.240 <- long.dat %>%
+  filter(speed == "240",
+         outcome == "pt_max")
+
+plot.240mean <- dat.240 %>%
   #summarising means
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
@@ -1648,16 +1546,18 @@ pti240mean <- pt240 %>%
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
-  #geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-   #             width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-  
-  # adding in the raw data
-  geom_point(data = pt240,
+  geom_point(data = dat.240,
              aes(x = time, y = value,
                  color = condition, group = condition),
                  size = 1.5,
                  alpha = 0.3,
              position = position_jitter(width = 0.2)) +
+  
+  #geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+   #             width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  # adding in the raw data
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1676,21 +1576,22 @@ pti240mean <- pt240 %>%
   theme(legend.position = "bottom") +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
-
+        axis.line = element_line(color = "black"),
+        strip.text = element_blank())
 
 
 # Combinding the plots
 
 ptimeanfig <- plot_grid(
-  ptiisommean + theme(legend.position = "none"),
-  pti60mean + theme(legend.position = "none"),
-  pti120mean + theme(legend.position = "none"),
-  pti240mean + theme(legend.position = "none"),
+  plot.isommean + theme(legend.position = "none"),
+  plot.60mean + theme(legend.position = "none"),
+  plot.120mean,
+  plot.240mean,
   ncol = 2,
   nrow = 2,
   labels = c("A) Isometric", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
-  label_size = 8
+  label_size = 10,
+  rel_heights = c(0.8, 1)
 )
 
 
@@ -1701,57 +1602,47 @@ ptimeanfig
 
 **Plot 4: Mean Peak Torque change in a Hill curve format**
 
+If we were interested in comparing the age groups and intervention vs. control, we could combine all of that into one plot. A cool and illustrative plot with this type of data would be to make a force-velocity curve, first developed by A. V. Hill in 1938 [@hill_1938], and compare the age groups across angular velocities. We do assume that force development is reduced when angular velocity is increased, so it lets visualize it!
+
 ```{r, Plot4}
 
 # Calculating group means
 curve.sum <- long.dat %>%
-  filter(outcome == "pt_max") %>%
+  filter(outcome == "pt_max") %>% # this time we're including all angular velocities, so we only filter the outcome
+  
   group_by(age_group, allocation, time, speed) %>%
-  summarise(mean_torque = mean(value, na.rm = TRUE),
-            se_torque = sd(value, na.rm = TRUE) / sqrt(n()),
-            .groups = "drop")
-
-# Creating a combined group variable for easier plotting
-curve.sum <- curve.sum %>%
+  
+  summarise(mean = mean(value, na.rm = TRUE),
+            #sd = sd(value, na.rm = TRUE),
+            .groups = "drop") %>%
+  
+  # This time we combine age_group and allocation, since volume condition is not on the menu. 
   mutate(group = paste(age_group, allocation, sep = "_"))
-
-
-# Plot 1: Comparing changes over time (baseline + halfway + post)
-# Separate panels for each group
-
-plot_time <- curve.sum %>%
-  ggplot(aes(x = speed, y = mean_torque, color = time, group = time)) +
-  geom_line(linewidth = 1) +
-  #geom_point(size = 3) +
-  #geom_errorbar(aes(ymin = mean_torque - se_torque, 
-  #                  ymax = mean_torque + se_torque), 
-  #              width = 10) +
-  facet_wrap(~ age_group + allocation, ncol = 3) +
-  labs(x = "Angular Velocity (d/s)",
-       y = "Peak Torque (Nm)",
-       color = "Time Point",
-       title = "Force-Velocity Curves Across Training") +
-  theme_classic() +
-  theme(legend.position = "bottom")
+  
 
 
 # Plot 2: Single plot showing everything (might be busy)
 curve.plot <- curve.sum %>%
-  ggplot(aes(x = speed, y = mean_torque, color = group, linetype = time, 
+  
+  ggplot(aes(x = speed, y = mean, color = group, linetype = time, 
              group = interaction(group, time))) +
+  
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
+  
   labs(x = "Angular Velocity (d/s)",
        y = "Peak Torque (Nm)",
        color = "Group",
        linetype = "Time Point",
        title = "") +
+  
   scale_color_manual(values = c("yng_int" = "#E69F00",
                                   "old_int" = "#56B4E9",
                                   "old_con" = "gray50"),
                      labels = c("yng_int" = "Young Intervention", 
                                 "old_int" = "Old Intervention", 
                                 "old_con" = "Old Control")) +
+  
   theme_classic() +
   theme(legend.position = "bottom")
 
@@ -1763,6 +1654,8 @@ curve.plot
 
 ```
 
+The plots presented here are only examples, and you'll likely iterate through several versions to explore different perspectives of your data, as advised by Tufte [@tufte_2001]. Effective visualization should always aim to convey the data clearly to readers unfamiliar with it. A general workflow—importing data → tidying → creating exploratory plots → refining and tweaking—provides a solid strategy. Additionally, each plot can be thought of as having its own workflow: starting with your data and systematically building layers of aesthetics, geometric objects, facets, and coordinates, before adding annotations (if applicable) and theme adjustments to finalize the presentation [@wickham_2010].
+ 
 \newpage 
 
 # AUTHOR CONTRIBUTIONS
