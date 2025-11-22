@@ -10,4 +10,4 @@ Stores xlsx files used for creating data packages and creating ggplots
 Stores images, license, bibliography and citation styles.
 
 ### License
-You are free to use the content of this project elsewhere as long as you cite the original authors as stated by CC BY 4.0 licence
+You are free to use the content of this project elsewhere as long as you cite the original authors as stated by CC BY 4.0 license
