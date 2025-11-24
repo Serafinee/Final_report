@@ -1663,7 +1663,7 @@ The plots presented here are only examples, and you'll likely iterate through se
 T.R. wrote the first draft of the Introduction. S.J.K. wrote the first draft of Section 2, 
 “Setting Up a Collaborative Workspace.” T.U.O. wrote the first drafts of Sections 
 3 and 4, “Conducting Simulations Before Data Acquisition” and “Including Data Packages 
-for Distribution,” and created the final_reportData package. K.L. wrote the first 
+for Distribution,” and created the Final_reportData package. K.L. wrote the first 
 draft of Section 5, “Creating Visualizations from Data Packages.” T.R., S.J.K., T.U.O., 
 and K.L. edited and revised the manuscript and code, and they approved the final 
 version of the manuscript.
