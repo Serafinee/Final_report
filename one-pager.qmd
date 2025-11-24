@@ -1,0 +1,17 @@
+---
+title: "Final Report - Resources"
+format: pdf
+---
+
+# Authers
+
+- Sarah Jasmin Klausen
+- Kristian Lian 
+- Tomas Urianstad Odden
+- Torkil Rogneflåten
+
+# Github Repositories
+
+Final report: collaboration, text and code. - (https://github.com/Serafinee/Final_report)
+
+Accompanying data package. - (https://github.com/TomasUrianstad/Final_reportData)
