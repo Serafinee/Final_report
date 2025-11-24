@@ -1,7 +1,18 @@
 ---
-title: "Manuscript"
+title: "Scientific Communication, Collaboration and Design in Quantitative Research Using R"
+subtitle: "Final report"
+logo: resources/logo-eng.png
+author: "Sarah Jasmin Klausen^1, Kristian Lian^2, Tomas Urianstad Odden^2, Torkil Rogneflåten^2"
+affiliation: "^1 University of Inland Norway, Campus Hamar, Department of Biotechnology, ^2 University of Inland Norway, Campus Lillehammer, Section for Health and Exercise Physiology"
 format: 
   pdf:
+    documentclass: scrreprt
+    template-partials: 
+      - before-body.tex
+    number-sections: true
+    linestretch: 1.5
+    mainfont: "Times New Roman"
+    fontsize: 12p
     pdf-engine: lualatex
     header-includes: |
       \usepackage{hyperref}
@@ -10,7 +21,7 @@ format:
         linkcolor=blue,
         urlcolor=blue,
         citecolor=blue
-      }
+        }
 editor_options: 
   chunk_output_type: console
 bibliography: resources/bib.bib
