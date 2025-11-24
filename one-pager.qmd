@@ -12,6 +12,6 @@ format: pdf
 
 # Github Repositories
 
-Final report: collaboration, text and code. - (https://github.com/Serafinee/Final_report)
+Final report: collaboration, text and code (https://github.com/Serafinee/Final_report).
 
-Accompanying data package. - (https://github.com/TomasUrianstad/Final_reportData)
+Accompanying data package (https://github.com/TomasUrianstad/Final_reportData). This data package is required to render the final report.
