@@ -13,6 +13,15 @@ format:
     linestretch: 1.5
     mainfont: "Times New Roman"
     fontsize: 12p
+    pdf-engine: lualatex
+    header-includes: |
+      \usepackage{hyperref}
+      \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        urlcolor=blue,
+        citecolor=blue
+        }
 editor_options: 
   chunk_output_type: console
 bibliography: resources/bib.bib
