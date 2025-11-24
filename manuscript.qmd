@@ -10,6 +10,7 @@ format:
     template-partials: 
       - before-body.tex
     number-sections: true
+    number-depth: 2
     linestretch: 1.5
     mainfont: "Times New Roman"
     fontsize: 12p
@@ -29,34 +30,34 @@ csl: resources/citation-style.csl
 link-citations: true
 ---
 
-# 1. Introduction
+# Introduction
 
-Computational reproducibility and transparency are core principles of scientific research, essential for ensuring the validity, reliability, and credibility of scientific results [@landis_call_2012]. These principles promotes independent verification and critical evaluation, and improves the accumulation of robust scientific knowledge. By adhering to these principles, researchers enhance methodological rigor, accountability and trust in scientific results [@iqbal_reproducible_2016]. As such, computational reproducibility and transparency are not only key for scientific progress but also represent ethical imperatives in the advancement of scientific understanding. However, many researchers fail in achieving computational reproducibility and transparency due to knowledge barriers about how to archive data and code, concerns about its reuse, and misaligned career incentives and the absence of guidelines for scientific workflows that facilitate these practices [@gomes_why_2022].
+Computational reproducibility and transparency are core principles of scientific research, essential for ensuring the validity, reliability, and credibility of scientific results [@landis_call_2012]. These principles promote independent verification and critical evaluation, and improve the accumulation of robust scientific knowledge. By adhering to these principles, researchers enhance methodological rigor, accountability and trust in scientific results [@iqbal_reproducible_2016]. As such, computational reproducibility and transparency are not only key for scientific progress but also represent ethical imperatives in the advancement of scientific understanding. However, many researchers fail in achieving computational reproducibility and transparency due to knowledge barriers about how to archive data and code, concerns about its reuse, and misaligned career incentives and the absence of guidelines for scientific workflows that facilitate these practices [@gomes_why_2022].
 
 Achieving computational reproducibility and transparency is further complicated when researchers collaborate on scientific projects due to the complexity and often unstructured nature of scientific workflow. For example, multiple versions of files may coexist, with changes made in parallel, increasing the risk of inconsistencies and loss of critical information. Although a more structured approach to tasks such as project planning, data analysis, and scientific writing could significantly improve collaboration, the lack of standardized workflows and shared frameworks often hinders the implementation of such practices [@sheth_report_1996].
 
 To address the challenges of collaboration in scientific projects, this assignment highlights tools and workflows designed to enhance organizational efficiency and ensure reproducibility. This assignment aims to (1) describe key components of robust, reproducible, and transparent scientific workflows, including setting up a collaborative work space, conduction simulations prior to data acquisition, including data packages for distribution, and creating visualizations from data packages, and (2) present collaborative framework for managing joint research and writing efforts, with a focus on version control systems, R, and GitHub, to streamline the creation of a transparent and reproducible framework for scientific workflows [@blischak_quick_2016; @chen_github_2025]. While the primary outcome of this assignment is a PDF report, the accompanying GitHub repository provides a comprehensive view of the collaborative workflow and serves as an integral part of the project.
 
-# 2. Setting Up a Collaborative Work space
+# Setting Up a Collaborative Work Space
 
-Alright! Now that we understand the importance of having a robust and reproducible scientific workflow that allows for collaboration we can start by setting up a collaborative workspace and understanding some key terms. In this tutorial we assume that you will be working with RStudio and have already downloaded R and RSTudio. In addition you need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
+Alright! Now that we understand the importance of having a robust and reproducible scientific workflow that allows for collaboration we can start by setting up a collaborative workspace and understanding some key terms. In this tutorial we assume that you will be working with RStudio and have already downloaded R and RStudio. In addition you need to have the version control software Git installed and have an account on GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
 
 ### What is a repository?
 
 A repository is like a project box where you collect all the files, data, graphs and code scripts from your project.
-Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space it is advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository with a local repository which allows us to work and make changes using our own computer while still keeping the online repository up to date.
+Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space it is advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository. In addition we can connect the online repository with a local repository which allows us to work and make changes using our own computer while still keeping the online repository up to date.
 
 ### What is Git?
 
-Git is a version control software that allows you to track the different version of your files. It allows you to keep a detailed history of changes you have done in your document and also what other people have added or removed in your collaborative documents. Having a version controls software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced in a document or code, you can track it back to see what and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
+Git is a version control software that allows you to track the different version of your files. It allows you to keep a detailed history of the changes in your document and also what other people have added or removed in your collaborative documents. Having a version control software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced you can track it back to see what happened and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
 
 ### What is GitHub?
 
 GitHub is a collaborative online platform that allows you to host and join online repositories. It is kinda like facebook for coding. GitHub allows us to share and collaborate with other people on the same code at the same time. It can also be used to host webpages and other fun things.
 
-In this tutorial we will only work with the RStudio interface and the online GitHub interface. However, if you want an expanded command line and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See tutorials here: [GitHub CLI](https://docs.github.com/en/github-cli/github-cli/quickstart) and [GitHub Desktop](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop).
+In this tutorial we will only work with the RStudio interface and the online GitHub interface. However, if you want an expanded command line and interface for GitHub you can use GitHub CLI and/or GitHub Desktop. See tutorials here: [GitHub CLI](https://docs.github.com/en/github-cli/github-cli/quickstart) and [GitHub Desktop](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop).
 
-## 2.1 How to create a project that is connected between RStudio and GitHub?
+## How to create a project that is connected between RStudio and GitHub?
 
 When creating a new project and you want to link your local project with an online repository, you can essentially go about it to ways.\
 a) You can create the online repository and then clone it down to your computer.\
@@ -64,7 +65,7 @@ b) You can create a local repository and then push it online to GitHub.
 
 We´ll go through both options here.
 
-### 2.1.1 Starting with an online repository
+### Starting with an online repository
 
 #### Step 1. Create a new online repository in GitHub ([Video tutorial](https://www.youtube.com/watch?v=f26KI43FK58))
 
@@ -73,7 +74,7 @@ We´ll go through both options here.
 
 2. Navigate to the top-right corner of the page and click the + dropdown menu.
 
-3. Select New repository from the dropdown options.
+3. Select "New repository" from the dropdown options.
 
 4. On the repository creation page, do the following:
   * Name your repository: Provide a name for your repository.
@@ -88,11 +89,11 @@ We´ll go through both options here.
 
   However its also possible to create these documents after creating the repository.
 
-5. Click Create repository to finalize.
+5. Click "Create repository" to finalize.
 
 ##### README
 
-A README file is a descriptive file that should explain what the project or repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
+A README file is a descriptive file that should explain what the project or repository is about, how it is organized and what the data in it means. Any additional information you want people to know when using your repository should go into the README.
 
 ##### .gitignore
 
@@ -113,7 +114,7 @@ The .gitignore file is an information file that tells Git what types of files it
 /manuscript_files/
 ```
 
-#### Licenses
+##### Licenses
 If you plan to share your scientific work, there are certain intellectual property rights that can go along with it. In terms of reproducibility and transparency in science we want our work to be shared and used, but we also want people to acknowledge the authors who did the original work. That´s where licenses come in. There are many complete  licences that you can add to your project and documents. For open-source scientific work the **Creative Commons (CC BY)** license is a good option. You can find it here ([Creative Commons license](https://creativecommons.org/)) or choose another license that fits your project at [choosealicense.com](https://choosealicense.com/).
 
 To add a license to your project you can either do it when creating the repository, or you can do it manually later. If you choose to do it manually you can follow these simple steps:
@@ -188,7 +189,7 @@ git status
 
 If git is not initialized an error message will show up. Then just run the `git init` command and follow the instructions.
 
-### 2.1.2 Starting with a local project in RStudio
+### Starting with a local project in RStudio
 
 Now, what if you wanted to do it the other way around, for example if you already have a local project on your computer and want to create an online repository for it?
 
@@ -248,11 +249,9 @@ origin  https://github.com/yourusername/your-repo.git (push)
 That means you have now successfully established a connection between your local project and the online repository on GitHub. Congratulations!
 If you refresh the page of your online repository in GitHub you should see a copy of the local project in the repository you just created.
 
-## 2.2 Workflow between local and online repositories
+## Workflow between local and online repositories
 
-Now that we have connected our local repository with the online one, we can start pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
-
-Take a look at the figure below (@fig-workflow):
+Now that we have connected our local repository with the online one, we can start pushing some code. But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work. Take a look at the figure below (@fig-workflow).
 
 ```{r}
 #| echo: false
@@ -274,7 +273,7 @@ The **local branch** is a version of your project that exists entirely on your l
 
 The **remote tracking ref** is where you track the state of the online repository. When you "fetch" changes from the online repository, Git downloads the latest updates from the online repository but without merging it into your working directory. This allows you to see changes from collaborators or updates from the remote repository while keeping your working tree unaffected until you explicitly merge or rebase the changes.
 
-### 2.2.1 Commands
+### Commands
 
 Okay, now we can take a look at the common commands we use in this workflow.
 
@@ -289,9 +288,10 @@ Just replace the file_name.txt with the name of the file that you want to stage.
 If you want to stage **all files in your repository** that have had changes to them you can write:
 
 ``` bash
-git add -A # or "git add ."
+git add -A 
+# or
+git add .
 ```
-
 This command stages **all changes** in the repository, including modified files, newly created files and deleted files.
 
 Great! Now your edited files are ready to be committed! You can commit your files using this command:
@@ -354,7 +354,7 @@ git rebase
 
 This command does **not create a merge commit**. Instead, it **rewrites the commit history** of your current branch by replaying its commits on top of the fetched branch, creating a **linear history**. Essentially, it re-aligns your current branch so that it starts from the latest commit of the fetched branch, as if your changes were made after the fetched branch's changes. This results in a cleaner, more linear commit history.
 
-### 2.2.2 Branches
+### Branches
 
 Sometimes you need to make major changes to your project eg. update multiple documents and scripts. However, making large changes to your project could potentially cause errors in other scripts or documents in your repository. A good way to avoid this is by creating a branch from your main branch/project and test your changes there before updating your main branch. 
 
@@ -362,8 +362,7 @@ When you create a branch you create a copy of the branch you choose (normally th
 
 Working with branches is also very helpful when collaborating with other people. If you all need to work on the same document, but on different sections, you can each create a branch from the main one and then merge all branches back into the main branch after finishing. Then you have better control over what is added to the main project and you can make sure any overlap does not collide.
 
-Lets take a look at how we do this. You can create a branch using the GitHUb interface, the RStudio interface or terminal commands. \
-We´ll go through all three here.
+Lets take a look at how we do this. You can create a branch using the GitHUb interface, the RStudio interface or terminal commands. We´ll go through all three here.
 
 #### In GitHub
 
@@ -455,7 +454,7 @@ git branch -d <branch name>
  After reading though this section you should be able to set up and navigate a collaborative workspace in RStudio and GitHub. Now, lets take a look at some examples of how you can use R to you advantage in your scientifc workflow.
 \newpage
 
-# 3. Conducting Simulations Before Data Acquisition
+# Conducting Simulations Before Data Acquisition
 
 ```{r}
 #| echo: false
@@ -836,7 +835,7 @@ data acquisition, empowering you to enhance the robustness of your research!
 
 \newpage
 
-# 4. Including Data Packages for Distribution
+# Including Data Packages for Distribution
 
 A fundamental principle of reproducible research is that both the data and the code 
 used to produce results should be publicly available. One convenient method for distributing 
@@ -1066,7 +1065,7 @@ others to install and use. For this project the package is available at:
 
 \newpage
 
-# 5. Creating Visualizations from Data Packages
+# Creating Visualizations from Data Packages
 
 The aim of this section is to demonstrate a workflow from data package to visualization of your data, with a focus on reproducibility and collaboration. The reproducibility is already established through the infrastructure provided by having a data package available - no spread sheets or CSV files floating around untracked in different states between collaborators. With a data package available the data remains stable, tracked, accessible and identical to all collaborators. This means that your scripts/qmds for data visualization can focus solely on that purpose, i.e., joining, wrangling and plotting data. On that note, clear and descriptive comments about how you wrangle and plot your data are essential - both for your future self and for collaborators. This practice makes it much easier to resume work and understand the reasoning behind decisions made in the visualization of your data.
 
