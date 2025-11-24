@@ -31,115 +31,118 @@ link-citations: true
 
 # 1. Introduction
 
+Computational reproducibility and transparency are core principles of scientific research, essential for ensuring the validity, reliability, and credibility of scientific results [@landis_call_2012]. These principles promotes independent verification and critical evaluation, and improves the accumulation of robust scientific knowledge. By adhering to these principles, researchers enhance methodological rigor, accountability trust in scientific results [@iqbal_reproducible_2016]. As such, computational reproducibility and transparency are not only key for scientific progress but also represent ethical imperatives in the advancement of scientific understanding. However, many researchers fail in achieving computational reproducibility and transparency due to knowledge barriers about how to archive data and code, concerns about its reuse, and misaligned career incentives and the absence of guidelines for scientific workflows that facilitate these practices [@gomes_why_2022].
 
-Disposition:
+Achieving computational reproducibility and transparency is further complicated when researchers collaborate on scientific projects due to the complexity and often unstructured nature of scientific workflow. For example, multiple versions of files may coexist, with changes made in parallel, increasing the risk of inconsistencies and loss of critical information. Although a more structured approach to tasks such as project planning, data analysis, and scientific writing could significantly improve collaboration, the lack of standardized workflows and shared frameworks often hinders the implementation of such practices [@sheth_report_1996].
 
--   Recent focus on reproducibility and transparency
--   Implications for scientific workflow, collaboration, transparency\
--   Lack of guidelines and examples of scientific workflows collaborative infrastructure which ensures this
--   Aim of this assignment...
+To address the challenges of collaboration in scientific projects, this assignment highlights tools and workflows designed to enhance organizational efficiency and ensure reproducibility. This assignment aims to (1) describe key components of robust, reproducible, and transparent scientific workflows, including setting up a collaborative work space, conduction simulations prior to data acquisition, including data packages for distribution, and creating visualizations from data packages, and (2) present collaborative framework for managing joint research and writing efforts, with a focus on version control systems, R, and GitHub, to streamline the creation of a transparent and reproducible framework for scientific workflows [@blischak_quick_2016; @chen_github_2025]. While the primary outcome of this assignment is a PDF report, the accompanying GitHub repository provides a comprehensive view of the collaborative workflow and serves as an integral part of the project.
 
-\textcolor{red}{The text below is a first draft of the introduciotn. The text itself needs alot of work to convey the scientific aims and background more understanble and precise. However, i feel that my overreaching "red line" and idea for the introducion is covered in this draft, and I want your thoughts in the logic of the text before revisiting it further. In addition, References are kept outside of the document due to possible conflicts when merging branches.}
+# 2. Setting Up a Collaborative Work space
 
-Computational reproducibility and transparency are core principles of scientific research, essential for ensuring the validity, reliability, and credibility of scientific results. These principles facilitate independent verification, foster critical evaluation, and enable the accumulation of robust scientific knowledge. By adhering to these principles, researchers enhance methodological rigor, promote accountability, and strengthen trust in scientific results. As such, computational reproducibility and transparency are not only key for scientific progress but also represent ethical imperatives in the advancement of scientific understanding. However, researchers often face challenges in achieving this due to the requirement for specialized computational frameworks and the absence of guidelines for scientific workflows that facilitate these practices.
-
-Achieving computational reproducibility and transparency is further complicated when researchers collaborate on scientific projects due to the complexity and often unstructured nature of scientific workflow. For example, multiple versions of files may coexist, with changes made in parallel, increasing the risk of inconsistencies and loss of critical information. Although a more structured approach to tasks such as project planning, data analysis, and scientific writing could significantly improve collaboration, the lack of standardized workflows and shared frameworks often hinders the implementation of such practices.
-
-To address the challenges of collaboration in scientific projects, this assignment highlights tools and workflows designed to enhance organizational efficiency and ensure reproducibility. This assignment aims to (1) describe key components of robust, reproducible, and transparent scientific workflows, including setting up a collaborative work space, conduction simulations prior to data acquisition, including data packages for distribution, and creating visualizations from data packages, and (2) present collaborative framework for managing joint research and writing efforts, with a focus on version control systems, R, and GitHub, to streamline the creation of a transparent and reproducible framework for scientific workflows. While the primary outcome of this assignment is a PDF report, the accompanying GitHub repository provides a comprehensive view of the collaborative workflow and serves as an integral part of the project.
-
-# 2. Setting Up a Collaborative Workspace
-
--   How to create a repository in Git Hub
--   How to link it to Rstudio
--   How to create a project in your local computer and export it to GitHub
--   Basic commands for Git and GitHub fromt he RStudio terminal
-In this tutorial we assume that you will be working with RStudio and have already downloaded R and Rstudio. In addition you are going to need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](1%20Setting%20up%20your%20software%20environment%20–%20A%20Crash%20Course%20in%20R).
+Alright! Now that we understand the importance of having a robust and reproducible scientific workflow that allows for collaboration we can start by setting up a collaborative workspace and understanding some key terms. In this tutorial we assume that you will be working with RStudio and have already downloaded R and RSTudio. In addition you need to have the version control software Git installed and have an account in GitHub. If you need guidance for this you can find a helpful tutorial [here](https://dhammarstrom.github.io/r-crash-course/01-software.html).
 
 ### What is a repository?
 
-A repository is basically like a project box where you collect all the files, data, graphs and code scripts from your project.\
-Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space its advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository what a local repository which allows us to work and make changes using our own computer and then we can upload it to the online repository.
-
+A repository is like a project box where you collect all the files, data, graphs and code scripts from your project.
+Online repositories can be accessed from the internet and from any computer, while a local repository is only stored in a specific computer and cannot be accessed elsewhere. When setting up a collaborative work space it is advantageous to have an online repository so that multiple people can contribute from their own computer to a shared repository, without having to send files by mail etc. In addition we can connect the online repository with a local repository which allows us to work and make changes using our own computer while still keeping the online repository up to date.
 
 ### What is Git?
-Git is a version control software that allows you to track the different version of your files. It basically allows you to keep a detailed history of changes you have done in your document and also what other people have added or removed in your collaborative documents. Having a version controls software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced in a document or code, you can track it back to see what and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
+
+Git is a version control software that allows you to track the different version of your files. It allows you to keep a detailed history of changes you have done in your document and also what other people have added or removed in your collaborative documents. Having a version controls software set up for your workflow is very handy as it prevents major losses of documents and changes, and if any error is introduced in a document or code, you can track it back to see what and who submitted it. This fosters reproducibility, transparency, collaboration and robustness for your project.
 
 ### What is GitHub?
 
-GitHub is a collaborative online platform that allows you to host and join online repositories. its kinda like facebook for coding. gitHub allows us to share and collaborate with the people on the same code at the same time. It can also be used to host webpages and other stuff.
+GitHub is a collaborative online platform that allows you to host and join online repositories. It is kinda like facebook for coding. GitHub allows us to share and collaborate with other people on the same code at the same time. It can also be used to host webpages and other fun things.
 
-In this toturial we will only work with the RStudio interface and the online GitHub interface. however, if you want an expanded commandline and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See toturials here: [GitHub CLI](GitHub%20CLI%20quickstart%20-%20GitHub%20Docs) and [GitHub Desktop](Getting%20started%20with%20GitHub%20Desktop%20-%20GitHub%20Docs).
+In this tutorial we will only work with the RStudio interface and the online GitHub interface. However, if you want an expanded command line and interface for GitHub you can use GitHUb CLI and/or GitHub Desktop. See tutorials here: [GitHub CLI](https://docs.github.com/en/github-cli/github-cli/quickstart) and [GitHub Desktop](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop).
 
 ## 2.1 How to create a project that is connected between RStudio and GitHub?
 
-When creating a new project and you want to link your local project with an online repository, you can go about it to ways basicly.\
-a) You can create the online repository and then clone it down to you computer\
-b) You can create a local repository and then push it online to GitHub
+When creating a new project and you want to link your local project with an online repository, you can essentially go about it to ways.\
+a) You can create the online repository and then clone it down to your computer.\
+b) You can create a local repository and then push it online to GitHub.
 
-We´ll go through both options here, starting with the online repository.
-
-Image file path:
-
-resources/images/
-
-\newpage
+We´ll go through both options here.
 
 ### 2.1.1 Starting with an online repository
 
-#### Step 1. Create a new online repository in GitHub ([Video tutorial](Creating%20Your%20First%20GitHub%20Repository%20and%20Pushing%20Code%20-%20YouTube))
+#### Step 1. Create a new online repository in GitHub ([Video tutorial](https://www.youtube.com/watch?v=f26KI43FK58))
 
-```{r}
-#| echo: false
-#| results: asis
-cat("
-\\begin{wrapfigure}{lt}{0.5\\textwidth}
-  \\centering
-  \\includegraphics[width=0.38\\textwidth]{resources/images/image_1.png}
-  \\caption{Creating a new online repository.}
-  \\vspace{-1.5cm} % Adjust vertical spacing below the figure
-\\end{wrapfigure}
-")
 
-```
+1. Log into your GitHub account.
 
-Once you´ve logged into GitHub, navigate to the top right corner of your page and find the + tab. Drop it down to reveal the "New repository" option. Click on it.
+2. Navigate to the top-right corner of the page and click the + dropdown menu.
 
-This will take you ta the repository creation page.\
-Here you give your repository a name, a description of what it will entail and wherever it is public or not.
+3. Select New repository from the dropdown options.
 
-You also have the options of adding a README file and a .gitignore file upon creation, but it is possible to create these after the repository is made as well.
+4. On the repository creation page, do the following:
+  * Name your repository: Provide a name for your repository.
+  * Add a description (optional): Briefly explain what your repository will contain.
+  * Set visibility: Choose whether the repository will be Public (visible to everyone) or Private (only visible to you and collaborators).\
+
+  (Optional) You can also initialize your repository with:
+
+  * A README file: Useful for describing your project.
+  * A .gitignore file: Specify which files or directories Git should ignore.
+  * A license: Define the terms of use for your repository.
+
+  However its also possible to create these documents after creating the repository.
+
+5. Click Create repository to finalize.
 
 ##### README
 
-A README file is a descriptive file that should explain what the project/repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
-
-```{r}
-#| echo: false
-#| results: asis
-cat("
-\\begin{wrapfigure}{r}{0.4\\textwidth}
-  \\vspace{-1cm} % Adjust vertical spacing to remove extra white space
-  \\centering
-  \\includegraphics[width=0.50\\textwidth]{resources/images/image_3.png}
-  \\caption{Repository setup-page.}
-  \\vspace{-2cm} % Adjust vertical spacing to remove extra white space
-\\end{wrapfigure}
-")
-
-```
+A README file is a descriptive file that should explain what the project or repository is about, how it is organized and what the data in it means etc. Any additional information you want people to know when using your repository should go into the README.
 
 ##### .gitignore
 
-The .gitignore file is an information file that tells Git what types of files it should track, or specifically not track. This is useful when you for example don't want to track the generated images or graphs from your code, but just your code.
+The .gitignore file is an information file that tells Git what types of files it should track, or specifically not track. This is useful when you for example don't want to track the generated images or graphs from your code, but just your code. It´s content could look like this:
+```bash
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rproj
 
-So, now that you have created your first online repository you want to connect it to your local computer.\
-You can do this multiple ways, but in this tutorial we´ll use commands in the terminal to initialize
+*.docx
+*.pdf
+*.html
+*.png
+*.DS_Store
+
+/manuscript_files/
+```
+
+#### Licenses
+If you plan to share your scientific work, there are certain intellectual property rights that can go along with it. In terms of reproducibility and transparency in science we want our work to be shared and used, but we also want people to acknowledge the authors who did the original work. That´s where licenses come in. There are many complete  licences that you can add to your project and documents. For open-source scientific work the **Creative Commons (CC BY)** license is a good option. You can find it here ([Creative Commons license](https://creativecommons.org/)) or choose another license that fits your project at [choosealicense.com](https://choosealicense.com/).
+
+To add a license to your project you can either do it when creating the repository, or you can do it manually later. If you choose to do it manually you can follow these simple steps:
+
+1. Choose a license that fits your project and copy its entire text
+
+2. Create a new file in the root of your project directory and name it **license** or **license.txt**.
+
+3. Add the license text to your new file and save.
+
+Now your project has an associated license. If you also want to add the license info to you metadata in your documents you can include it in your YAML headings like this:
+```bash
+--- 
+title: "My quarto document"
+author: "your name"
+date: "2025-12-24"
+format: pdf
+license: CC BY 4.0
+---
+```
+
+So, now that you have created your first online repository you want to connect it to your local computer.
+You can do this multiple ways, but in this tutorial we´ll use the GitHub and RStudio interface to make our life easier.
 
 #### **Step 2: Copy the Repository URL**
 
 1.  Go to your GitHub repository page.
 
-2.  Click the green **Code** button.
+2.  Click the green **\textcolor{green}{Code}** button.
 
 3.  Copy the repository URL:
 
@@ -155,7 +158,7 @@ You can do this multiple ways, but in this tutorial we´ll use commands in the t
 
 4.  Choose a folder on your local computer where you want to clone the repository.
 
-5.  Click **Create Project**.when doing a commit on a file that has been staged, that version of the file goes into the version history. It is also tracked.
+5.  Click **Create Project**.
 
 And tada! You have now cloned the online repository to your computer! Great job!
 
@@ -177,7 +180,7 @@ Also, if Git has not yet been initiated in your RStudio project you can use the 
 git init
 ```
 
-To check whet ever Git is initialized in your project you can write:
+To check wherever Git is initialized in your project you can write:
 
 ``` bash
 git status
@@ -187,7 +190,7 @@ If git is not initialized an error message will show up. Then just run the `git 
 
 ### 2.1.2 Starting with a local project in RStudio
 
-Now, what if you wanted to do it the other way around, like if you already have a local project on your computer and want to create an online repository for it?
+Now, what if you wanted to do it the other way around, for example if you already have a local project on your computer and want to create an online repository for it?
 
 #### **Step 1. Create a New Local Project in RStudio**
 
@@ -208,6 +211,7 @@ This initializes a local Git repository in your project directory.
 If you already have made a project but it is not connected to a Git repository you can do it like this:
 
 1.  Navigate to **Tools \> Project Options \> Git/SVN**.
+
 2.  Select **Git** and click **Yes** when prompted to initialize a Git repository for your project.
 
 #### Step 2. Create a New Repository on GitHub
@@ -221,8 +225,11 @@ You now have a new, empty GitHub repository.
 #### Step 3. Link the Local project to the GitHub Repository
 
 1.  Copy the URL in the same way as previously in section 2.1.1 step 2.
+
 2.  Open the **Terminal** in RStudio (or use any terminal on your computer).
+
 3.  Navigate to your project folder, if you're not already there, by clicking on the dropdown menu in the top right corner of the RStudio interface and choose your project.
+
 4.  Add the GitHub repository as the remote origin using this command in the terminal:
 
 ``` bash
@@ -239,15 +246,17 @@ origin  https://github.com/yourusername/your-repo.git (push)
 ```
 
 That means you have now successfully established a connection between your local project and the online repository on GitHub. Congratulations!
+If you refresh the page of your online repository in GitHub you should see a copy of the local project in the repository you just created.
 
 ## 2.2 Workflow between local and online repositories
 
-Now that we have connected our local repository with the online one, we can start to pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
+Now that we have connected our local repository with the online one, we can start pushing some code! But before we jump into the commands for transferring files between our local and online repository, we should better understand how these processes work.
 
-Take a look at the figure below:
+Take a look at the figure below (@fig-workflow):
 
 ```{r}
 #| echo: false
+#| label: fig-workflow
 #| warning: false
 #| fig-align: "center"
 #| out.height: "60%"
@@ -259,28 +268,28 @@ knitr::include_graphics("resources/images/Local_vs_online_workflow.png")
 
 Your **working tree** (also called **working directory**) is the project folder you are currently working in on your local computer. This is where you do all your edits on your files and code.
 
-The **index/staging area** is a list is a list of files that Git is tracking for changes. When you "stage" files you tell Git to include these files in the next commit.
+The **index/staging area** is a list of files that Git is tracking for changes. When you "stage" files you tell Git to include these files in the next commit.
 
 The **local branch** is a version of your project that exists entirely on your local computer. When you "commit" changes, you create a permanent snapshot of the files currently staged in the index and save them to your local repository.
 
 The **remote tracking ref** is where you track the state of the online repository. When you "fetch" changes from the online repository, Git downloads the latest updates from the online repository but without merging it into your working directory. This allows you to see changes from collaborators or updates from the remote repository while keeping your working tree unaffected until you explicitly merge or rebase the changes.
 
-#### 2.2.1 Commands
+### 2.2.1 Commands
 
-Okay, now we can take a look at the commands we can use for this workflow.
+Okay, now we can take a look at the common commands we use in this workflow.
 
-Lets say you have edited some files in your working directory and want to add them to your **staging area** before committing them to your repository.  If you only want to "stage" some files, but not all, you can use the command in the terminal:
+Lets say you have edited some files in your working directory and want to add them to your **staging area** before committing them to your repository. If you only want to "stage" some files, but not all, you can use the command in the terminal:
 
 ``` bash
 git add file_name.txt
 ```
 
-Just replace the file_name.txt with the name of the file that you want to stage. Remember to also include the file extentions (like .txt or .pdf etc.)
+Just replace the file_name.txt with the name of the file that you want to stage. Remember to also include the file extensions (like .txt or .pdf etc.)
 
 If you want to stage **all files in your repository** that have had changes to them you can write:
 
 ``` bash
-git add -A
+git add -A # or "git add ."
 ```
 
 This command stages **all changes** in the repository, including modified files, newly created files and deleted files.
@@ -291,7 +300,7 @@ Great! Now your edited files are ready to be committed! You can commit your file
 git commit -m "Commit message"
 ```
 
-When you run this commit command, all the files that you have staged are committed to your **local branch!** Its good to include a **descriptive commit message** that explains what your commit entails. That way its easier to track where changes or errors are introduced in your repository. Messages could be "Changed font headings" or "Added statistical ANOVA analysis to data processing".
+When you run this commit command, all the files that you have staged are committed to your **local branch!** Its good to include a **descriptive commit message** that explains what your commit entails. That way its easier to track where changes or errors are introduced in your repository. Messages could be "Changed font headings" or "Added statistical ANOVA analysis to data processing". 
 
 Now that you have committed the files you want to push them to your remote directory using:
 
@@ -301,15 +310,15 @@ git push
 
 This command uploads everything you have committed so far this session to your online repository and updates it based on your commits. Using this command you can push multiple commits at the same time.
 
-Now lets say your colleague, who you are collaborate with, has added a new file to the online repository on GitHub. You want to pull that document from the online directory down to your local repositopry and start editing it. The most straightforward way is to use:
+Now lets say your colleague, who you are collaborating with, has added a new file to the online repository on GitHub. You want to pull that document from the online directory down to your local repository and start editing it. The most straightforward way is to use:
 
 ``` bash
 git pull
 ```
 
-This command pulls the latest changes from your remote repository and merges them into your **current branch** in your local repository, so that they are exactly the same. Then you can just start editing and making changes.
+This command pulls the latest changes from your online repository and merges them into your **current branch** in your local repository, so that they are exactly the same. Then you can just start editing and making changes.
 
-If you don't want to fully copy the online repository yet, but take a look at it first before merging it ito your working directory you can use the command
+If you don't want to fully copy the online repository yet, but take a look at it first before merging it ito your working directory you can use the command:
 
 ``` bash
 git fetch
@@ -325,11 +334,11 @@ git log HEAD..origin/main
 git diff HEAD..origin/main
 ```
 
-**git log** will give you a list of the commits that are not in your local branch (**HEAD**) together with their metadata (authors, date etc.). This is helpful if you want to quickly answer "What was changed?" and "Who changed it?".
+**`git log`** will give you a list of the commits that are not in your local branch (**HEAD**) together with their metadata (authors, date etc.). This is helpful if you want to quickly answer "What was changed?" and "Who changed it?".
 
-**git diff** will show you the actual changes that are between two points, ex. your local branch (**HEAD**) and your fetched branch (**origin/main**). git diff will show you the specific lines of code that were added modified or deleted in the fetched branch. This is helpful if you want to know exactly what was changed.
+**`git diff`** will show you the actual changes that are between two points, ex. your local branch (**HEAD**) and your fetched branch (**origin/main**). `git diff` will show you the specific lines of code that were added, modified or deleted in the fetched branch. This is helpful if you want to know exactly what was changed.
 
-If you then want to integrate the fetched branch with your current branch, you can use the command:
+Then, if you want to integrate the fetched branch with your current branch, you can use the command:
 
 ``` bash
 git merge
@@ -345,20 +354,109 @@ git rebase
 
 This command does **not create a merge commit**. Instead, it **rewrites the commit history** of your current branch by replaying its commits on top of the fetched branch, creating a **linear history**. Essentially, it re-aligns your current branch so that it starts from the latest commit of the fetched branch, as if your changes were made after the fetched branch's changes. This results in a cleaner, more linear commit history.
 
-Questions:
+### 2.2.2 Branches
 
--   add sections about README files and .gitignore
+Sometimes you need to make major changes to your project eg. update multiple documents and scripts. However, making large changes to your project could potentially cause errors in other scripts or documents in your repository. A good way to avoid this is by creating a branch from your main branch/project and test your changes there before updating your main branch. 
 
--   should I add a section about the concole and the terminal andhow they are used? Or could this perhaps go into the Introduction?
+When you create a branch you create a copy of the branch you choose (normally the main branch, but you can also create a branch from other existing branch). This allows you to make the changes as if you were on the main branch, but without affecting the main branch itself. Then once you have tested that your changes work well you can merge the new branch back into the main branch and overwrite the old version with the new changed version. 
 
--   Should we include stuff about creating branches?
+Working with branches is also very helpful when collaborating with other people. If you all need to work on the same document, but on different sections, you can each create a branch from the main one and then merge all branches back into the main branch after finishing. Then you have better control over what is added to the main project and you can make sure any overlap does not collide.
 
-**Disclaimer:** This section was written with the help of SIKT KI chat using the gpt-4o model. The AI was used to verify code chunks, summarize steps in an organized format and rewrite original text for better grammar and flow. The author takes full responsibility for the resulting output. [Link to AI model](Sikt%20KI).
+Lets take a look at how we do this. You can create a branch using the GitHUb interface, the RStudio interface or terminal commands. \
+We´ll go through all three here.
 
+#### In GitHub
+
+1. Navigate to your repository in GitHub
+
+2. Above the list of files in your repository, on the left, you can see "Branches". Click on it.
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out.height: "50%"
+#| out.width: "90%"
+#| fig-cap: "Branch placement in GitHub."
+
+knitr::include_graphics("resources/images/branches.png")
+```
+
+3. Click on the green button \textcolor{green}{New branch}.
+
+4. Give it a name and choose from which source you want to branch it from.
+
+5. Click "Create new branch".
+
+Now lets do the same thing using the RStudio interface.
+
+####  Rstudio interface
+
+1. Click on your Git tab (close to your environment tab)
+
+2. Navigate to the right of your Git tab
+
+3. Here you can see the name of the current branch and also an option to create a new branch. You can also navigate between branches using the drop-down menu.
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out.height: "40%"
+#| out.width: "100%"
+#| fig-cap: "Creating a branch with RStudio interface."
+
+knitr::include_graphics("resources/images/git_tab.png")
+```
+
+4. To create a new branch, click on "New Branch".
+
+5. Give it a name, decide what remote the branch is branching from and check off the box saying "Sync branch with remote".
+
+This will create the new branch and automatically sync it up to your online repository. Handy.
+
+#### Using terminal controls
+Okay, lets lastly use terminal controls to create a new branch.
+
+To create a new branch run: 
+```bash
+git branch <new banch name>
+```
+This creates a new branch in your local repository from the branch you are currently on, but it does not switch you over to it.
+Make sure you switch out "<new branch name>" witht the name that you want.
+
+To switch to a branch run:
+```bash
+git checkout <branch name>
+```
+
+If you want to check what branch you are on you run:
+```bash
+git branch
+```
+You should see an output with one or more branches and the one that has * before it is the one you are currently on.
+
+If you want to push your new local branch to the online repository you can run:
+```bash
+git push --set-upstream origin <branch name>
+```
+
+If you want to merge a branch with the main branch you can switch to the mainbranch (using `git checkout`) and then run:
+```bash
+git merge <branch name>
+```
+
+To delete a branch you can run:
+```bash
+git branch -d <branch name>
+```
+  
+ And thats it!\
+ After reading though this section you should be able to set up and navigate a collaborative workspace in RStudio and GitHub. Now, lets take a look at some examples of how you can use R to you advantage in your scientifc workflow.
 \newpage
 
-
 # 3. Conducting Simulations Before Data Acquisition
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -370,8 +468,7 @@ library(tidyverse)
 library(ggdag)
 ```
 
-
-Conducting simulations prior to data acquisition is useful for several reasons, including: 
+Conducting simulations prior to data acquisition is useful for several reasons, including:
 
 1. *Model design*. By sampling from the prior distributions, we can understand our 
 expectations about potential outcomes. This pre-data exploration offers insights 
@@ -383,22 +480,18 @@ functioning correctly, it is helpful to simulate observations under a known mode
 and then attempt to recover the parameter values from which the data were simulated. 
 4. *Research design*. Simulating observations based on our hypothesis allows for 
 an evaluation of the research design's effectiveness. This is similar to conducting 
-a *power analysis*, but the possibilities are broader.   
+a *power analysis*, but the possibilities are broader.
 5. *Forecasting*. Estimates derived from simulations can be utilized to generate 
-predictions for new cases and future observations [@McElreath_2018].
+predictions for new cases and future observations [@McElreath_2018]. \
 
-To illustrate some of the properties of conducting simulations, we will consider 
-the following hypothesis: **Increasing daily exercise time is associated with lower 
-blood pressure levels in adults**. 
+To illustrate some of the properties of conducting simulations, we will consider the following hypothesis: **Increasing daily exercise time is associated with lower blood pressure levels in adults**.
 
+To investigate this hypothesis, it is valuable to invest effort into finding methods that distinguish causal inferences from associations. A helpful first step to do this is to construct a causal model that is separate from the statistical model. The simplest graphical representation of such a causal model is a *DIRECTED ACYCLIC GRAPH*, commonly referred to as a *DAG* [@McElreath_2018; @digitale_tutorial_2022].
 
-To investigate this hypothesis, it is valuable to invest effort into finding methods 
-that distinguish causal inferences from associations. A helpful first step to do 
-this is to construct a causal model that is separate from the statistical model. 
-The simplest graphical representation of such a causal model is a *DIRECTED ACYCLIC GRAPH*, 
-commonly referred to as a *DAG* [@McElreath_2018; @digitale_tutorial_2022].
-
-A DAG primarily serves to represent our prior knowledge about biological and behavioral systems that may confound the specific causal research question. In our example, we aim to investigate the causal effect of increasing exercise time, denoted as "E", on blood pressure, "B". A basic DAG for this relationship might look like this (Figure 1):
+A DAG primarily serves to represent our prior knowledge about biological and behavioral 
+systems that may confound the specific causal research question. In our example, we 
+aim to investigate the causal effect of increasing exercise time, denoted as "E",
+on blood pressure, "B". A basic DAG for this relationship might look like this (@fig-dag1):
 
 
 ```{r}
@@ -406,9 +499,9 @@ A DAG primarily serves to represent our prior knowledge about biological and beh
 #| warning: false
 #| message: false
 #| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is not confounded."
-#| label: Fig-dag1
+#| label: fig-dag1
 #| fig-width: 6
-#| fig-height: 3
+#| fig-height: 1
 
 
 
@@ -437,11 +530,12 @@ fig1
 
 ```
 
+\newpage
 
 This DAG assumes that the causal effect of increasing exercise time on blood pressure 
 is not confounded, which is arguably a naive assumption. For instance, both age and 
 diet could potentially confound this relationship. A more comprehensive DAG that 
-accounts for these confounders might appear as follows (Figure 2):
+accounts for these confounders might appear as follows (@fig-dag2):
 
 
 ```{r}
@@ -449,7 +543,7 @@ accounts for these confounders might appear as follows (Figure 2):
 #| warning: false
 #| message: false
 #| fig-cap: "A DAG, assuming that the causal effect of increasing exercise time (E) on blood pressure (B) is confounded by both age (A) and diet (D)."
-#| label: Fig-dag2
+#| label: fig-dag2
 #| fig-width: 6
 #| fig-height: 3
 
@@ -483,58 +577,32 @@ fig1
 
 ```
 
+In this adjusted DAG, we presume that age directly influences blood pressure— an assumption supported by the correlation between aging and increased blood pressures [@Miall_1967]. Additionally, age may indirectly influence exercise time since older individuals often engage in less physical activity. Diet is also included as a confounding factor affecting blood pressure, linked to dietary habits like high-fat intake [@Wilde_2000].
 
-In this adjusted DAG, we presume that age directly influences blood pressure— an 
-assumption supported by the correlation between aging and increased blood pressures 
-[@Miall_1967]. Additionally, age may indirectly influence exercise time since older 
-individuals often engage in less physical activity. Diet is also included as a confounding 
-factor affecting blood pressure, linked to dietary habits like high-fat intake [@Wilde_2000].
+Given that we believe our DAG to be accurate, we can construct our model with stronger scientific justifications regarding which confounding factors should be accounted for and how we will do so.
 
-Given that we believe our DAG to be accurate, we can construct our model with stronger 
-scientific justifications regarding which confounding factors should be accounted 
-for and how we will do so.
+**Model design**
 
-**Model design** 
+Having established the confounding factors of age and diet in the relationship between exercise time and blood pressure, we are now prepared to design our study. We plan to recruit 100 sedentary adults aged between 20 and 70 for a one-year training study, during which participants will adhere to the WHO guideline of 150 minutes of endurance exercise per week. Unfortunately, we will only be able to measure blood pressure after the intervention period due to logistical constraints. Therefore, we can only investigate whether there is an association between how many minutes of physical activity the participants complete and their blood pressure levels after the intervention. To control for age and diet, we will document participants' ages at the time of inclusion and assess their diets using a binomial scale, where 1 indicates a healthy diet and 0 indicates an unhealthy diet.
 
-Having established the confounding factors of age and diet in the relationship between 
-exercise time and blood pressure, we are now prepared to design our study. We plan 
-to recruit 100 sedentary adults aged between 20 and 70 for a one-year training study, 
-during which participants will adhere to the WHO guideline of 150 minutes of endurance 
-exercise per week. Unfortunately, we will only be able to measure blood pressure 
-after the intervention period due to logistical constraints. Therefore, we can only 
-investigate whether there is an association between how many minutes of physical 
-activity the participants complete and their blood pressure levels after the intervention. 
-To control for age and diet, we will document participants' ages at the time of inclusion 
-and assess their diets using a binomial scale, where 1 indicates a healthy diet and
-0 indicates an unhealthy diet. 
+The model can now be described mathematically, for example in terms of a simple linear regression model:
 
-The model can now be described mathematically, for example in terms of a simple 
-linear regression model:
-
-
-\begin{align}
+\begin{align*}
 \operatorname{BloodPressure}_i &= \beta_0 + \beta_1 \cdot \operatorname{Exercise}_i 
 + \beta_2 \cdot \operatorname{Age}_i + \beta_3 \cdot \operatorname{Diet}_i + \epsilon_i \\
-\end{align}
+\end{align*}
 
+Where:
 
-
-
-Where: 
-
-\begin{align}
+\begin{align*}
 \beta_0 &: \text{Intercept}\\
 \beta_1 &: \text{Coefficient for exercise time}\\
 \beta_2 &: \text{Coefficient for age}\\
 \beta_3 &: \text{Coefficient for diet}\\
 \epsilon_i &: \text{Random error term}\\
-\end{align}
+\end{align*}
 
-
-
-
-
-The linear regression model can be implemented in R as follows: 
+The linear regression model can be implemented in R as follows:
 
 ```{r}
 #| results: false
@@ -558,10 +626,11 @@ summary(model)
 **Run simulations**
 
 We will now run simulations to evaluate our model design. First, we need to define 
-our parameter values:
+our parameter values, which are based on our prior knowledge and expectations from 
+the existing literature:
 
 
-\begin{align}
+\begin{align*}
 \operatorname{BP}_i & = \beta_0 + \beta_E \cdot \operatorname{E}_i + \beta_A \cdot \operatorname{A}_i + \beta_D \cdot \operatorname{D}_i + \epsilon_i \\
 \operatorname{E}_i & \sim \operatorname{Normal}(\mu_E, \sigma_E) \\
 \operatorname{A}_i & \sim \operatorname{Normal}(\mu_A, \sigma_A) \\
@@ -577,14 +646,11 @@ our parameter values:
 \sigma_E & = 20 \quad (\text{exercise standard deviation}) \\
 \sigma_A & = 10 \quad (\text{age standard deviation}) \\
 \sigma_\epsilon & = 5 \quad (\text{error term standard deviation}) \\
-\end{align}
+\end{align*}
 
+After defining our parameter values, we can simulate data using these parameters. To do this, it is convenient to create a function where you specify information about each parameter that can be manipulated later, thereby enabling experimentation with different values to assess the model's robustness. Below is the code for this simulation:
 
-
-After defining our parameter values, we can simulate data using these parameters. 
-To do this, it is convenient to create a function where you specify information about 
-each parameter that can be manipulated later, thereby enabling experimentation with 
-different values to assess the model's robustness. Below is the code for this simulation:
+\newpage
 
 ```{r}
 #| results: false
@@ -630,6 +696,8 @@ sim_data <- sim.fun()
 
 ```
 
+\newpage
+
 With our simulated dataset, we can now test our hypotheses using the linear model: 
 *lm(bloodpressure ~ exercise + age + diet, sim_data)*. The output will indicate whether
 there is an observed effect of exercise on blood pressure:
@@ -648,8 +716,6 @@ summary.m1 <- summary(sim.m1)
 
 ```
 
-
-
 ```{r}
 #| echo: false
 #| label: Sim.m1.output 
@@ -661,9 +727,9 @@ exercise_effect <- sprintf("%.3f",summary(sim.m1)$coefficients["exercise", "Esti
 
 ```
 
-In this model, we can see that each minute of increased exercise time is associated 
-with a **`r exercise_effect`** mmHg lower blood pressure, when age and diet 
-are included as covariates.
+In this model, we can see that each minute of increased exercise time is associated with a **`r exercise_effect`** mmHg lower blood pressure, when age and diet are included as covariates.
+
+\newpage
 
 Now it is time to play with our simulation! Lets say we only manage to include 50 
 participents, what will happen whit our results?
@@ -671,6 +737,7 @@ participents, what will happen whit our results?
 This can easily be tested by manipulating our function and then running the model, 
 like this:
 
+This can easily be tested by manipulating our function and then running the model, like this:
 
 ```{r}
 #| label: Manipulate function 
@@ -681,8 +748,6 @@ sim_data2 <- sim.fun(n = 50)
 
 
 ```
-
-
 
 ```{r}
 #| echo: false
@@ -706,7 +771,7 @@ However, this is just one simulation; results may vary due to random chance. It 
 therefore prudent to conduct multiple simulations to evaluate the robustness of our 
 model, which can be executed in a loop as demonstrated below:
 
-
+\newpage
 
 
 ```{r}
@@ -739,11 +804,11 @@ for(i in 1:1000) {
 
 
 To visualize the estimates of model 1 and model 2, it is convenient to create a 
-figure similar to Figure 3.
+figure similar to @fig-sim.
 
 
 ```{r}
-#| label: Simulation figure 
+#| label: fig-sim 
 #| echo: false
 #| fig-cap: "Demonstrating the variation in the estimated effect of exercise on blood pressure using 100 participants (m1) compared to 50 participants (m2) by simulating 1,000 different datasets."
 
@@ -755,10 +820,13 @@ bind_rows(results) |>
              shape = 21,
              color = "blue") + 
   theme_classic()
+
+
 ```
 
+In the simulated models shown in Figure 3, the estimate for model m1 clusters more tightly around -0.1, which represents the true effect of exercise on blood pressure as specified. In contrast, model m2 exhibits more variation, indicating that the effect is less reliably detected with only 50 participants.
 
-In the simulated models shown in Figure 3, the estimate for model m1 clusters more 
+In the simulated models shown in @fig-sim, the estimate for model m1 clusters more 
 tightly around -0.1, which represents the true effect of exercise on blood pressure
 as specified. In contrast, model m2 exhibits more variation, indicating that the 
 effect is less reliably detected with only 50 participants.
@@ -766,50 +834,274 @@ effect is less reliably detected with only 50 participants.
 This brief introduction illustrates how to conduct basic data simulations before 
 data acquisition, empowering you to enhance the robustness of your research! 
 
+\newpage
+
 # 4. Including Data Packages for Distribution
+
+A fundamental principle of reproducible research is that both the data and the code 
+used to produce results should be publicly available. One convenient method for distributing 
+these materials is to combine the data, code, and documentation into a portable unit 
+called a package. For example, an R package can be shared via a code repository such 
+as GitHub. In addition to housing datasets and analysis scripts, an R package can 
+include initial data-cleaning and transformation steps that convert raw, unprocessed 
+data into a form suitable for statistical analysis. In this section we give a concise, 
+practical guide to setting up an R package that contains the data used in the next 
+section, “Creating Visualizations from Data Packages.” Our example package will be 
+called **Final_reportData** and will include cleaned datasets and simple documentation 
+so the data are ready to use in downstream visualizations and examples.
+
+We’ll create a package skeleton, add datasets (imported from Excel), document the 
+data, and prepare the package for GitHub.
+
+## Create the package skeleton 
+
+There are several ways to create a package skeleton; here we use the  **usethis** 
+functions. Choose an empty local folder (avoid cloud-synced folders like Dropbox 
+to prevent accidental conflicts).
+
+From an R session run:
+```bash
+usethis::create_package("C:/Final_reportData")
+```
+
+This creates the basic package structure and a "DESCRIPTION" file with metadata.
+
+
+
+## Initialize version control and push to GitHub
+
+From the package project folder, initialize git and create a GitHub repository. 
+You can use Git + GitHub CLI (gh). 
+
+Example commands (run in the Terminal):
+
+```bash
+git init
+gh repo create .   # follow prompts to set owner and visibility
+```
+Follow the prompts to set repository name/visibility. After this you can push the 
+initial commit.
+
+## Edit DESCRIPTION
+
+The "DESCRIPTION" file contains the package metadata. Edit it to include a clear Title, 
+a one-paragraph Description, author information, license, and other fields. 
+
+Some general formatting tips:
+
+Title: Title Case, keep it short (< 65 chars).\
+Description: One paragraph, wrap lines under ~80 chars. \
+Authors@R should include roles (aut, cre, etc.).\
+Example (illustrative — adjust for your project):  
+
+```bash 
+Package: Final.reportData
+Title: Data Package For Final.reportData
+Version: 0.0.0.9000
+Authors@R: c(person("Tomas Urianstad", "Odden", , "tomas.urianstad@inn.no", role = c("aut", "cre")),
+            person("Kristian", "Kristian Lian", , "kristian.lian@inn.no", role = "ctb"),
+            person("Torkil", "Rogneflåten", , "torkil.rogneflaten@inn.no", role = "ctb"),
+            person("Sarah Jasmin", "Klausen", , "sarah.klausen@inn.no", role = "ctb"))
+Description: This package contains Data
+License: CC BY 4.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends: 
+    R (>= 3.5)
+LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+```
+
+## Choose a license 
+A license clarifies how others may use, modify or redistribute your package/data. 
+For data-heavy packages, common choices are CC BY 4.0 (requires attribution) or CC0 
+(public domain). To add a license automatically::
+
+```bash
+usethis::use_ccby_license()
+```
+
+This updates DESCRIPTION and adds a LICENSE.md file.
+
+## Package structure basics
+
+After creating the package you will see a standard layout:
+
+R/ — functions and R code.\
+data/ — packaged datasets (saved as .rda). \
+man/ — generated documentation (when you document). \
+DESCRIPTION, NAMESPACE, LICENSE.md, .Rbuildignore, .gitignore, etc. 
+The NAMESPACE is usually generated by roxygen2 when documenting; you don’t normally 
+edit it by hand. Use .Rbuildignore and .gitignore to exclude build artifacts and 
+other files from package builds and version history.
+
+## Add data to the package
+
+In our example there is three Excel files (placed in a data-raw folder):
+
+```bash 
+data-raw/data/relief_humac.xlsx
+data-raw/data/relief_participants.xlsx
+data-raw/data/relief_volume.xlsx
+```
+
+A recommended workflow:
+
+Import and clean the raw data in data-raw/ scripts.
+Save the cleaned objects to the data/ directory with **usethis::use_data()**
+so they are available to package users.
+
+Example import-and-save workflow (run inside the package project):
+
+
+\newpage
+
+```bash
+
+
+
+# read Excel files (adjust sheet names / ranges as needed)
+humac_raw <- read_excel("data-raw/data/relief_humac.xlsx",
+                        na = "na") # this is the peak torque test data
+
+volume_raw <- read_excel("data-raw/data/relief_volume.xlsx",
+                        na = "na") %>% # this is info about volume condition
+  mutate(participant = as.character(participant))
+
+participants_raw <- read_excel("data-raw/data/relief_participants.xlsx",
+                           na = "na") %>% # this is info about age group and allocation
+
+  mutate(age_group = if_else(age < 40, "yng", "old"))
+
+
+# perform any cleaning / renaming here
+humac.dat <- humac_raw   # example: replace with actual cleaning steps
+condition <- volume_raw  # example
+participants <- participants_raw
+
+
+
+# using data datasets in this package
+usethis::use_data(humac.dat, overwrite = TRUE)
+usethis::use_data(condition, overwrite = TRUE)
+usethis::use_data(participants, overwrite = TRUE)
+
+
+```
+
+Notes:
+
+Keep raw import/cleaning code in data-raw/ so it’s reproducible but not shipped as 
+data objects.
+
+
+## Documenting the data
+
+Dataset documentation in man/ is typically written using roxygen2 syntax in an R script
+named data.R. The roxygen comments generate the .Rd files during documentation.
+
+Example data documentation (place in R/data.R):
+
+```bash
+#' Final_reportData
+#'
+#'
+#' condition.rda
+#'
+#' Description of data
+#'
+#'
+#' @format
+#' A data frame with 162 raws and 4 colums
+#' \describe{
+#'        \item{particioant}{ID identification}
+#'        \item{condition}{information of training volume}
+#'        \item{leg}{informatoion of which leg}
+#'        \item{arm}{information of which arm}
+#'        }
+#'
+"condition"
+
+```
+
+After you’ve added roxygen comments, generate documentation and NAMESPACE with: 
+
+```bash 
+# in the package root
+roxygen2::roxygenise()
+```
+This will create man/humac.dat.Rd and update NAMESPACE.
+
+## Build, check, and share
+Install and test your package locally:
+
+```bash 
+devtools::install()
+```
+
+Run package checks:
+
+```bash 
+devtools::check()
+```
+
+Address any issues reported by check (e.g., missing documentation, namespace problems).
+
+Commit changes, push to GitHub, and optionally create releases/tags.
+Example git workflow:
+
+```bash  
+git add .
+git commit -m "Add cleaned data and documentation for Final_reportData"
+git push origin main
+```
+
+That’s it — your data are now included in an R package, documented, and ready for 
+others to install and use. For this project the package is available at: 
+
+**https://github.com/TomasUrianstad/Final_reportData**
+
+\newpage
 
 # 5. Creating Visualizations from Data Packages
 
-As the title suggests, this section will aim to describe how to create plots in different ways with a focus on reproducibility and collaboration. In this perspective, I believe making descriptive comments about you wrangle and plot your data is key, especially with collaboration in mind - both for your own and others sake. Doing this should make it much easier for yourself and others to pick up the work where you left of. 
+The aim of this section is to demonstrate a workflow from data package to visualization of your data, with a focus on reproducibility and collaboration. The reproducibility is already established through the infrastructure provided by having a data package available - no spread sheets or CSV files floating around untracked in different states between collaborators. With a data package available the data remains stable, tracked, accessible and identical to all collaborators. This means that your scripts/qmds for data visualization can focus solely on that purpose, i.e., joining, wrangling and plotting data. On that note, clear and descriptive comments about how you wrangle and plot your data are essential - both for your future self and for collaborators. This practice makes it much easier to resume work and understand the reasoning behind decisions made in the visualization of your data.
 
 ### Prior to plotting
 
-Since we already have a data package that should cleanup and ready our data (or at least close to ready) for visualization, we can simply import the data from this package. <!-- I'll be using my own data package here, since it would be contrary to progress to wait for the data package to be finished in section 4. -->
-
-The package from which we will import data is organized by test, meaning one xlsx file per test with no other info than what was measured in each specific test. Thus, it is necessary to wrangle and tidy the data a bit further, to get all the information we would like to visualize (such as what age group, condition and allocation each participant had). An almost surprising amount of time can go into this process before you even start plotting, but tidy data will make plotting quite a lot easier. 
+Since we already have a data package that cleans and prepares our data for visualization, we can simply import the data from this package. The package is organized by test, meaning one xlsx file per test containing only the measurements from that specific test. Therefore, additional wrangling is necessary to incorporate other information we want to visualize, such as age group, condition, and participant allocation. This data preparation process can be surprisingly time-consuming, but investing effort in creating tidy data makes the actual plotting (and your life) considerably easier.
 
 ```{r, data import and wrangling}
 library(tidyverse)
-library(dplyr)
+library(writexl)
 
 ## Importing the data from the data package
 
-humac.dat <- reliefdata::relief_humac # this is the peak torque test data
+# Importing measurements from the humac dynamometer test
+humac.dat <- Final.reportData::humac.dat # this is the peak torque test data
 
-condition <- reliefdata::relief_volume %>% # this is info about volume condition
+# Importing information about each participants volume condition
+condition <- Final.reportData::condition %>%
   mutate(participant = as.character(participant))
 
-participants <- reliefdata::relief_participants %>% # this is info about age group and allocation
-  
+# Importing infromation about the participants age groups and allocation
+participants <- Final.reportData::participants %>%
   mutate(age_group = if_else(age < 40, "yng", "old"))
-
-# It would probably be a good idea to make 1 dataset overall from relief_volum and relief_participants - as a note to self
 
 
 
 ## Joining the data sets
-
-# Joining condition and participant info
+# Using left_join to add the info from condition and participants to humac.dat, we'll also remove the info about arm condition, since our data does not contain measurements of arm muscle peak torque. 
 humac.dat <- humac.dat %>%
-  # Using left_join to add the info from condition and participants to humac.dat
   left_join(condition) %>%
-  # There is no "arm" data from this test, so we exclude it
   select(-arm) %>% 
-  
   left_join(participants) %>%
-  
   mutate(age_group = factor(age_group, levels = c("yng", "old")),
-         # using factor() to sort the order of the respective variables
+# using factor() to sort the order of the respective variables, meaning they will always be displayed in this order in analyses and plots - unless manually overridden. I think this is a nice way to ensure consistency across multiple plots.
+         
          condition = factor(condition, levels = c("low", "mod")),
          
          time = factor(time, levels = c("pre", "mid",  "post")),
@@ -817,14 +1109,18 @@ humac.dat <- humac.dat %>%
          speed = factor(speed, levels = c("0", "60", "120", "240")),
          
          allocation = factor(allocation, levels = c("int", "con")),
-         # case_when makes sure that control participants are not grouped with a volum                condition
+# case_when makes sure that control participants are not grouped with a volume condition
          condition = case_when(participant %in% c("3071", "3075", "3076", 
                                                   "3083", "3084", "3085",
                                                   "3086", "3090", "3091",
                                                   "3094") ~ "none", TRUE ~ condition))
 
+# Now we have a complete data set with the measurements from the humac test, as well as information about what age group, allocation and condition all the participants had. At this point (or even before) you might want to use the glimpse() function to have a look at the data set and all the variables it contains - here you can also check that what we've joined in is actually there!
+
+glimpse(humac.dat)
+
 ## Further data wrangling
-# The data set contains 2x test per time point, so I've decided to take the highest value observed at each time point for analysis. Another option would be to take the average from each time point. Getting the highest observed measurement from each time point could be done using the summarise() function alone, however, this produced alot of NA's and corresponding errors. Therefore I've included the below code, which makes a functions that returns proper NA values where all values are NA for a group.
+# The data set contains 2x test per time point, so we could either average the two measurements per time point or select the highest value from each. We'll do the latter here. This can be done using the summarise() function alone, however, as we saw with glimpse(), there are multiple "improper" NA's and corresponding errors. Therefore I've included the below code, which makes a functions that returns proper NA values where all values are NA for a group.
 
 
 safe_max <- function(x) {
@@ -870,80 +1166,97 @@ max.dat <- humac.dat %>%
             .groups = "drop")
 
 
-## Reshape the data to long format for faceting
-# This simply formats the data to where each observation is stored in its own row, with variables spread
-# across columns - thus minimizing redundancy. 
+## Reshape the data to long format
+# This simply formats the data to where each observation is stored in its own row, with variables spread across columns - thus minimizing redundancy. This typically makes the data frame more tidy, and is quite practical for selecting variables, faceting etc, and will remain the go-to data frame for all the plots here. 
 
 long.dat <- max.dat %>%
   pivot_longer(names_to = "outcome",
                values_to = "value",
                cols = c(pt_max, power_max, work_max, tt_min, angle))
 
-## Filter by speed and parameter
-# Below separate data sets for the different velocities are created with the filter() function, also filtering to only the peak torque measurement, since thats what Im interested in here. This could also be done in the plot itself, but I prefer it this way to minimize the amount of code that goes into the actual plot. This might be a personal preference, and there's probably better ways to do it. 
-
-# Isometric/ 0 d/s
-
-ptisom <- long.dat %>%
-  filter(speed == "0", outcome == "pt_max")
-
-
-# 60 d/s
-
-pt60 <- long.dat %>%
-  filter(speed == "60", outcome == "pt_max")
-
-  
-# 120 d/s
-
-pt120 <- long.dat %>%
-  filter(speed == "120", outcome == "pt_max")
-
-
-# 240 d/s
-
-pt240 <- long.dat %>%
-  filter(speed == "240", outcome == "pt_max")
-
 
 ```
 
-
 ### Plotting some figures
 
-Now that the data is tidied up for our purpose, we can make some different plots. The backbone of these plots will be the ggplot() function from ggplot2 (also loaded by tidyverse), and in addition we will also use cowplot for some more toys. Briefly, ggplot2 
+Now that the data is imported and tidied up, lets start with a simple plot to get an overview. The backbone of all these plots is the ggplot() function from ggplot2 (loaded by tidyverse), supplemented by cowplot for additional functionality. Briefly, ggplot2 implements a layered grammar of graphics, providing tools to build plots by mapping variables to aesthetics, geometric objects, and facets, then adding themes and annotations [@wickham_2010].
 
-**Plot 1: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
+Before attempting to create a polished final figure, explore your data with simple plots—this is valuable both for visualization and before statistical analysis. Since we've already wrangled the data into tidy long format and examined the variables of interest with glimpse(), we can proceed directly to plotting.
+
+**Plot 1: Simple Visualization**
 
 ```{r, Plot1}
 
-library(cowplot)
+## Simple overview plot
+
+overview.plot <- long.dat %>%
+  ggplot(aes(speed, value, group = age_group, color = age_group)) +
+  geom_point() + # maps data to points in the plot
+  theme_minimal()
+
+# So, this simple plot does not really do much other than confirming that there is data and its being mapped to the aesthetics we call. Since this data has multiple levels of grouping, it would be a good idea to add some facets via the facet_wrap() function. Further, this plot generated a warning message that 876 rows either contained missing values or values outside the scale range was being removed - this occurs due because we didn't specify what outcome we wanted to look at, thus including all outcomes with a wide difference in scale. 
+
+## Faceting by angular velocity  
+# Here we'll use filter() to grab exactly the outcome measure we want and nothing else to fix the scale range issue, and we'll use facet_wrap to divide the plot into lesser plots for each angular velocity.
+
+facet.plot <- long.dat %>%
+  filter(outcome == "pt_max") %>% 
+  ggplot(aes(time, value, group = age_group, color = age_group)) +
+  geom_point() +
+  facet_wrap(~speed) + 
+  theme_minimal()
+
+facet.plot
+
+```
+
+This is a reasonable start—we have angular velocity separated by facets and data points colored by age group. However, to visualize the change from baseline to post-intervention, additional considerations are needed. In general, the process onward will depend on your research question and design [@tufte_2001], but with the present data, we may expect differences based on age group (young vs. old), training volume (low vs. moderate), and participant allocation (intervention vs. control), so the plot must account for these factors. This can be accomplished using cowplot alongside faceting to display all relevant groups without overcrowding a single graph.
+
+**Plot 2: Individual Changes in Peak Torque at 0 (isometric), 60, 120 and 240 d/S**
+
+In this example plot, we create one plot per angular velocity, and facet by age group and allocation. This will give us a good overview of what happens in each of the groups from baseline to the half-way mark, and then to post.
+
+```{r, Plot2}
 
 ## Peak torque Isometric
 
-ptisom.plot <- ptisom %>%
-  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
+plot.isom <- long.dat %>%
+  # First we specify what angular velocity and outcome data we want with filter()
+  filter(speed == "0",
+         outcome == "pt_max") %>% 
+  
+  ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +    # the interaction(participant/leg) creates a unique grouping variable combining participant and leg - so we can account for the fact that the participants exercised with a unilateral protocol
+  
   geom_line(aes(color = condition), alpha = 0.3) +
-  geom_point(aes(color = condition), alpha = 0.3, size = 1) +
-  facet_wrap(vars(age_group, allocation), scales = "fixed") +
+  geom_point(aes(color = condition), alpha = 0.3, size = 1) +                  # color = condition makes sure the points and lines are colored by condition
+  
+  facet_wrap(vars(age_group, allocation), scales = "fixed") +                  # vars() can be used like this when you would like to facet_wrap on multiple groupings. Scales are set to "fixed" to have the same scale for all the plots in our final cowplot
+  
   scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-                     name = "Training Volume") +
+                     name = "Training Volume") + # this sets the color of geom_line and geom_point, ideally to something easily distinguishable 
+  
   labs(title = "",
        subtitle = "",
        x = "",
-       y = "Peak Torque (Nm)") +
+       y = "Peak Torque (Nm)") + # this can be changed to any suitable title, subtitle etc. when using cowplot to grid multiple plots, you might want to remove these ("") for most of or all your plots, since a common title etc. can be made in the cowplot. 
+  
   theme_minimal() +
   theme(legend.position = "bottom",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(color = "black"),
         axis.line.x = element_blank(),
-        axis.text.x = element_blank(),
-        strip.text = element_blank())
+        axis.text.x = element_blank())#,
+       # strip.text = element_blank()) # these theme() changes are part of the final cosmetic adjustment of each plot. For instance strip.text = element_blank() removes facet labels, and this could be useful to apply in some of the plots as long as they follow the same pattern. 
+
+# The following three plots will be copies of the above one, with slight differences in theme/labs to fit together in the cowplot. 
 
 ## Peak torque 60
 
-pt60.plot <- pt60 %>%
+plot.60 <- long.dat %>%
+  filter(speed == "60",
+         outcome == "pt_max") %>%
+  
   ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
   geom_line(aes(color = condition), alpha = 0.3) +
   geom_point(aes(color = condition), alpha = 0.3, size = 1) +
@@ -955,16 +1268,19 @@ pt60.plot <- pt60 %>%
        x = "",
        y = "") +
   theme_minimal() +
-  theme(legend.position = "bottom") +
-  theme(panel.grid.major = element_blank(),
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(color = "black"),
         axis.line.x = element_blank(),
-        axis.text.x = element_blank())
+        axis.text.x = element_blank())#,
+        #strip.text = element_blank())
 
 ## Peak torque 120
 
-pt120.plot <- pt120 %>%
+plot.120 <- long.dat %>%
+  filter(speed == "120",
+         outcome == "pt_max") %>%
   ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
   geom_line(aes(color = condition), alpha = 0.3) +
   geom_point(aes(color = condition), alpha = 0.3, size = 1) +
@@ -976,14 +1292,18 @@ pt120.plot <- pt120 %>%
        x = "Time",
        y = "Peak Torque (Nm)") +
   theme_minimal() +
-  theme(legend.position = "bottom") +
-  theme(panel.grid.major = element_blank(),
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_blank(),
+        strip.text = element_blank())
 
 ## Peak torque 240
 
-pt240.plot <- pt240 %>%
+plot.240 <- long.dat %>%
+  filter(speed == "240",
+         outcome == "pt_max") %>%
   ggplot(aes(x = time, y = value, group = interaction(participant, leg))) +
   geom_line(aes(color = condition), alpha = 0.3) +
   geom_point(aes(color = condition), alpha = 0.3, size = 1) +
@@ -996,24 +1316,29 @@ pt240.plot <- pt240 %>%
        y = "") +
   theme_minimal() +
   theme(legend.position = "bottom",
-        legend.box.margin = margin(0, 0, 0, 0)) +
-  theme(panel.grid.major = element_blank(),
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
+        axis.line = element_line(color = "black"),
+        axis.text.x = element_blank(),
+        strip.text = element_blank())
 
 
+library(cowplot)
 
+## Combining the plots
+# This is where we can use cowplot to combine all the four plots above into one plot - and yes, you can combine different cowplots into an even bigger plot if you wanted to. 
 
-# Combinding the plots
+# This one is quite basic, but suits our current needs quite well. The plots will appear in the order they are called, and you can define how many columns and rows you want with ncol and nrow. Since we use theme() to hide the legend of two of the plots here, we can adjust the relative hight of the upper row vs. the lower with rel_heights. 
 
 ptfig <- plot_grid(
-  ptisom.plot + theme(legend.position = "none"),
-  pt60.plot + theme(legend.position = "none"),
-  pt120.plot,
-  pt240.plot,
+  plot.isom + theme(legend.position = "none"),
+  plot.60 + theme(legend.position = "none"),
+  plot.120,
+  plot.240,
   ncol = 2,
   nrow = 2,
   labels = c("A) 0 d/s", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
+  label_size = 10,
   rel_heights = c(0.8, 1) 
 )
 
@@ -1024,184 +1349,29 @@ ptfig
 
 ```
 
-
-
-<!--**Plot 2: Mean Change Peak Torque per Age Group**-->
-
-```{r, Plot2}
-
-
-## Isometric 
-#
-#ptisommean <- ptisom %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "",
-#       y = "Peak Torque (Nm)") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"),
-#        axis.text.x = element_blank(),
-#        axis.line.x = element_blank())
-#
-#
-## 60 d/s
-#pt60mean <- pt60 %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "",
-#       y = "") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"),
-#        axis.text.x = element_blank(),
-#        axis.line.x = element_blank())
-#
-#
-## 120 d/s
-#pt120mean <- pt120 %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "Time",
-#       y = "Peak Torque (Nm)") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"))
-#
-#
-## 120 d/s
-#pt240mean <- pt240 %>%
-#  #summarising means
-#  group_by(age_group, allocation, condition, time) %>%
-#  summarise(mean = mean(value, na.rm = TRUE),
-#            sd = sd(value, na.rm = TRUE),
-#            .groups = "drop" ) %>%
-#  
-#  #creating the plot
-#  ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
-#  
-#  geom_line(linewidth = 1, position = position_dodge(.2)) +
-#  geom_point(size = 3, position = position_dodge(.2)) +
-#  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-#  
-#  facet_wrap(vars(age_group, allocation), scales = "fixed") +
-#  
-#  scale_color_manual(values = c("low" = "#E69F00", "mod" = "#56B4E9", "none" = "gray50"),
-#                     name = "Training Volume") +
-#  
-#  labs(title = "",
-#       subtitle = "",
-#       x = "Time",
-#       y = "") +
-#  
-#  theme_minimal() +
-#  theme(legend.position = "bottom") +
-#  theme(panel.grid.major = element_blank(),
-#        panel.grid.minor = element_blank(),
-#        axis.line = element_line(color = "black"))
-#
-#
-## Combinding the plots
-#
-#ptmeanfig <- plot_grid(
-#  ptisommean + theme(legend.position = "none"),
-#  pt60mean + theme(legend.position = "none"),
-#  pt120mean,
-#  pt240mean,
-#  ncol = 2,
-#  nrow = 2,
-#  labels = c("A) Isometric", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
-#  rel_heights = c(0.8, 1) 
-#)
-#
-#
-#ptmeanfig
-#
-#
-
-```
-
-
-
 **Plot 3: Mean Change Peak Torque per Age Group - with raw data**
+
+While it may be fascinating to look at all the individual lines in these plots, it's not necessarily easy to discern what happens in the respective groups here. So, another option is to summarize the change in peak torque instead of having all the individual lines. In addition we can use either errorbars or map the individual data to display the variation in the data frame - technically you could do both, but that would be quite messy in our case.
 
 ```{r, Plot3}
 
 # Set seed for jitter
 
-set.seed(1)
+set.seed(1) # further down we will use position_jitter to spread out our data points a bit more, set.seed(1) simply makes this spread reproducible instead of randomly changing every time you run the code. Notably the (1) doesnt really matter, it could be (22), as long as its the same every time for reproducibility. 
+
+# The setup here will be quite similar to the previous plot, but we do need to perform some statistical transformation using summarise() to get the mean change instead of all the individual changes. 
 
 # Isometric 
 
-ptiisommean <- ptisom %>%
-  #summarising means
+# First we create a data frame containing only the isometric angular velocity and the outcome peak torque. The reason for this, is that we would like to use this specific data frame for our geom_points further down, after we have summarised the data. Thus we need a separate data frame. 
+isom.dat <- long.dat %>%
+  filter(speed == "0",
+         outcome == "pt_max")
+
+  
+plot.isommean <- isom.dat %>%
+  
+#summarising means - before summarising we select what we would like to group our data by with group_by(), and we then use .groups = "drop" when the summarizing is completed.
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
             sd = sd(value, na.rm = TRUE),
@@ -1210,19 +1380,24 @@ ptiisommean <- ptisom %>%
   #creating the plot
   ggplot(aes(x = time, y = mean, color = condition, group = condition)) +
   
+  # Here we can use two instances of geom_point to map out both the mean data and the indivdual data. For the mean data, we also add geom_line to connect the dots depending on condition, and we make sure they dont overlap too much by using position_dodge with identical coordinates. 
+  # Mean data
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
+  # Individual data
+  geom_point(data = isom.dat, # Here we add the isom.dat with all the individual values intact
+             aes(x = time, y = value,
+                 color = condition, group = condition),
+                 size = 1.5, # adjusts the size of these data points
+                 alpha = 0.3, # adjusts the alpha, might be a good idea to have a lower alpha and size compared to the mean data points
+             position = position_jitter(width = 0.2)) +
+  
+# Here's an example of how to implement errorbars instead, if thats your jam
 #  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
 #                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
 
-  # adding in the raw data
-  geom_point(data = ptisom,
-             aes(x = time, y = value,
-                 color = condition, group = condition),
-                 size = 1.5,
-                 alpha = 0.3,
-             position = position_jitter(width = 0.2)) +
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1246,8 +1421,15 @@ ptiisommean <- ptisom %>%
         axis.line.x = element_blank())
 
 
+# The following three plots will be copies of the above one, with slight differences in theme/labs to fit together in the cowplot. 
+
 # 60 d/s
-pti60mean <- pt60 %>%
+
+dat.60 <- long.dat %>%
+  filter(speed == "60",
+         outcome == "pt_max")
+
+plot.60mean <- dat.60 %>%
   #summarising means
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
@@ -1260,16 +1442,16 @@ pti60mean <- pt60 %>%
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
- # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-  
-  # adding in the raw data
-  geom_point(data = pt60,
+  geom_point(data = dat.60,
              aes(x = time, y = value,
                  color = condition, group = condition),
                  size = 1.5,
                  alpha = 0.3,
              position = position_jitter(width = 0.2)) +
+ # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+#                width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1294,7 +1476,12 @@ pti60mean <- pt60 %>%
 
 
 # 120 d/s
-pti120mean <- pt120 %>%
+
+dat.120 <- long.dat %>%
+  filter(speed == "120",
+         outcome == "pt_max")
+
+plot.120mean <- dat.120 %>%
   #summarising means
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
@@ -1307,16 +1494,18 @@ pti120mean <- pt120 %>%
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
- # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-  #              width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-  
-  # adding in the raw data
-  geom_point(data = pt120,
+  geom_point(data = dat.120,
              aes(x = time, y = value,
                  color = condition, group = condition),
                  size = 1.5,
                  alpha = 0.3,
              position = position_jitter(width = 0.2)) +
+  
+ # geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+  #              width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  # adding in the raw data
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1335,11 +1524,17 @@ pti120mean <- pt120 %>%
   theme(legend.position = "bottom") +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
+        axis.line = element_line(color = "black"),
+        strip.text = element_blank())
 
 
 # 240 d/s
-pti240mean <- pt240 %>%
+
+dat.240 <- long.dat %>%
+  filter(speed == "240",
+         outcome == "pt_max")
+
+plot.240mean <- dat.240 %>%
   #summarising means
   group_by(age_group, allocation, condition, time) %>%
   summarise(mean = mean(value, na.rm = TRUE),
@@ -1352,16 +1547,18 @@ pti240mean <- pt240 %>%
   geom_line(linewidth = 1, position = position_dodge(.5)) +
   geom_point(shape = 21, aes(fill = condition), color = "black",
              size = 3, stroke = 1, position = position_dodge(.5)) +
-  #geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
-   #             width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
-  
-  # adding in the raw data
-  geom_point(data = pt240,
+  geom_point(data = dat.240,
              aes(x = time, y = value,
                  color = condition, group = condition),
                  size = 1.5,
                  alpha = 0.3,
              position = position_jitter(width = 0.2)) +
+  
+  #geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+   #             width = 0.1, linewidth = 0.8, position = position_dodge(.2)) +
+  
+  # adding in the raw data
+  
   
   facet_wrap(vars(age_group, allocation), scales = "fixed") +
   
@@ -1380,21 +1577,22 @@ pti240mean <- pt240 %>%
   theme(legend.position = "bottom") +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "black"))
-
+        axis.line = element_line(color = "black"),
+        strip.text = element_blank())
 
 
 # Combinding the plots
 
 ptimeanfig <- plot_grid(
-  ptiisommean + theme(legend.position = "none"),
-  pti60mean + theme(legend.position = "none"),
-  pti120mean + theme(legend.position = "none"),
-  pti240mean + theme(legend.position = "none"),
+  plot.isommean + theme(legend.position = "none"),
+  plot.60mean + theme(legend.position = "none"),
+  plot.120mean,
+  plot.240mean,
   ncol = 2,
   nrow = 2,
   labels = c("A) Isometric", "B) 60 d/s", "C) 120 d/s", "D) 240 d/s"),
-  label_size = 8
+  label_size = 10,
+  rel_heights = c(0.8, 1)
 )
 
 
@@ -1403,61 +1601,49 @@ ptimeanfig
 
 ```
 
-
-
 **Plot 4: Mean Peak Torque change in a Hill curve format**
+
+If we were interested in comparing the age groups and intervention vs. control, we could combine all of that into one plot. A cool and illustrative plot with this type of data would be to make a force-velocity curve, first developed by A. V. Hill in 1938 [@hill_1938], and compare the age groups across angular velocities. We do assume that force development is reduced when angular velocity is increased, so it lets visualize it!
 
 ```{r, Plot4}
 
 # Calculating group means
 curve.sum <- long.dat %>%
-  filter(outcome == "pt_max") %>%
+  filter(outcome == "pt_max") %>% # this time we're including all angular velocities, so we only filter the outcome
+  
   group_by(age_group, allocation, time, speed) %>%
-  summarise(mean_torque = mean(value, na.rm = TRUE),
-            se_torque = sd(value, na.rm = TRUE) / sqrt(n()),
-            .groups = "drop")
-
-# Creating a combined group variable for easier plotting
-curve.sum <- curve.sum %>%
+  
+  summarise(mean = mean(value, na.rm = TRUE),
+            #sd = sd(value, na.rm = TRUE),
+            .groups = "drop") %>%
+  
+  # This time we combine age_group and allocation, since volume condition is not on the menu. 
   mutate(group = paste(age_group, allocation, sep = "_"))
-
-
-# Plot 1: Comparing changes over time (baseline + halfway + post)
-# Separate panels for each group
-
-plot_time <- curve.sum %>%
-  ggplot(aes(x = speed, y = mean_torque, color = time, group = time)) +
-  geom_line(linewidth = 1) +
-  #geom_point(size = 3) +
-  #geom_errorbar(aes(ymin = mean_torque - se_torque, 
-  #                  ymax = mean_torque + se_torque), 
-  #              width = 10) +
-  facet_wrap(~ age_group + allocation, ncol = 3) +
-  labs(x = "Angular Velocity (d/s)",
-       y = "Peak Torque (Nm)",
-       color = "Time Point",
-       title = "Force-Velocity Curves Across Training") +
-  theme_classic() +
-  theme(legend.position = "bottom")
+  
 
 
 # Plot 2: Single plot showing everything (might be busy)
 curve.plot <- curve.sum %>%
-  ggplot(aes(x = speed, y = mean_torque, color = group, linetype = time, 
+  
+  ggplot(aes(x = speed, y = mean, color = group, linetype = time, 
              group = interaction(group, time))) +
+  
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
+  
   labs(x = "Angular Velocity (d/s)",
        y = "Peak Torque (Nm)",
        color = "Group",
        linetype = "Time Point",
        title = "") +
+  
   scale_color_manual(values = c("yng_int" = "#E69F00",
                                   "old_int" = "#56B4E9",
                                   "old_con" = "gray50"),
                      labels = c("yng_int" = "Young Intervention", 
                                 "old_int" = "Old Intervention", 
                                 "old_con" = "Old Control")) +
+  
   theme_classic() +
   theme(legend.position = "bottom")
 
@@ -1469,7 +1655,30 @@ curve.plot
 
 ```
 
+The plots presented here are only examples, and you'll likely iterate through several versions to explore different perspectives of your data, as advised by Tufte [@tufte_2001]. Effective visualization should always aim to convey the data clearly to readers unfamiliar with it. A general workflow—importing data → tidying → creating exploratory plots → refining and tweaking—provides a solid strategy. Additionally, each plot can be thought of as having its own workflow: starting with your data and systematically building layers of aesthetics, geometric objects, facets, and coordinates, before adding annotations (if applicable) and theme adjustments to finalize the presentation [@wickham_2010].
+ 
+\newpage 
 
+# AUTHOR CONTRIBUTIONS
+T.R. wrote the first draft of the Introduction. S.J.K. wrote the first draft of Section 2, 
+“Setting Up a Collaborative Workspace.” T.U.O. wrote the first drafts of Sections 
+3 and 4, “Conducting Simulations Before Data Acquisition” and “Including Data Packages 
+for Distribution,” and created the final_reportData package. K.L. wrote the first 
+draft of Section 5, “Creating Visualizations from Data Packages.” T.R., S.J.K., T.U.O., 
+and K.L. edited and revised the manuscript and code, and they approved the final 
+version of the manuscript.
+
+
+# ACKNOWLEDGEMENT 
+The authors would like to thank Daniel Hammarström for an excellent course that broadened 
+our perspectives and inspired new ways of thinking. Thank you!
+
+# DISCLAIMERS
+
+**Disclaimer:** This manuscript was written with the help of SIKT KI chat using the 
+gpt-4o model and GPT UIO using ChatGPT (GPT-4.1). The AI was used to verify code chunks, 
+summarize steps in an organized format and rewrite original text for better grammar 
+and flow. The authors takes full responsibility for the resulting output. Link to [Sikt KI](https://sikt.no/tjenester/sikt-ki) and [GPT UiO](https://gpt.uio.no).
 
 
 # Bibliography
