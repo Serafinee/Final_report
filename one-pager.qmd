@@ -3,7 +3,7 @@ title: "Final Report - Resources"
 format: pdf
 ---
 
-# Authers
+# Authors
 
 - Sarah Jasmin Klausen
 - Kristian Lian 
